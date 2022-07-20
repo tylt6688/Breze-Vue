@@ -3,7 +3,6 @@ import router from "../router";
 import Element from "element-ui"
 
 axios.defaults.baseURL = "http://localhost:8090"
-// axios.defaults.baseURL = "http://teachfarm.tylt.xyz:8090"
 
 const request = axios.create({
 	timeout: 5000,

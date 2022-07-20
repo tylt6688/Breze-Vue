@@ -137,7 +137,7 @@
       //TODO 获取当前登录用户信息 Start
       getUserInfo() {
         this.$axios.get("/sys/user/getuserinfo").then(res => {
-          this.userInfo = res.data.result.data;
+          this.userInfo = res.data.result.data.result;
         })
       },
       // 获取当前登录用户信息 End

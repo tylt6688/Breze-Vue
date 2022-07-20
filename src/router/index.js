@@ -31,7 +31,7 @@ const routes = [{
       {
         path: '/userCenter',
         name: 'UserCenter',
-        component: () => import('../views/user/UserCenter.vue'),
+        component: () => import('../views/framework/UserCenter.vue'),
         meta: {
           title: "个人中心"
         },
@@ -39,7 +39,7 @@ const routes = [{
       {
         path: '/indexDetail',
         name: 'Detail',
-        component: () => import('../views/index/Detail.vue'),
+        component: () => import('../views/framework/Detail.vue'),
         meta: {
           title: "信息详情"
         },

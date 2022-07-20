@@ -2,8 +2,7 @@
   <!-- TODO 登录 -->
   <el-container>
     <el-header>
-
-      <strong style="font-size:35px;font-family:楷体 ">欢 迎 来 到 清 枫 一 体 化 权 限 服 务 平 台</strong>
+      <strong style="font-size:35px;font-family:楷体 ">欢 迎 来 到 清 枫 一 体 化 权 限 管 理 平 台</strong>
     </el-header>
 
     <el-main>

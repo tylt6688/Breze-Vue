@@ -7,9 +7,6 @@ import Element from "element-ui"
 import eIconPicker from 'e-icon-picker';
 
 
-import 'vue-video-player/src/custom-theme.css'
-
-
 import "e-icon-picker/lib/symbol.js"; //基本彩色图标库
 import 'e-icon-picker/lib/index.css'; // 基本样式，包含基本图标
 import 'element-ui/lib/theme-chalk/icon.css'; //element-ui 图标库

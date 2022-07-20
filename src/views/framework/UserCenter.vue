@@ -313,7 +313,7 @@
 			// 获取用户信息 Start
 			getUserInfo() {
 				this.$axios.get("/sys/user/getuserinfo").then(res => {
-					this.userInfo = res.data.result.data;
+					this.userInfo = res.data.result.data.result;
 					if (this.userInfo.loginwarn === 0) {
 						this.loginWarn = true;
 					}
@@ -324,8 +324,8 @@
 			// 编辑用户信息时回显 Start
 			editUserInfo(id) {
 				this.$axios.get('/sys/user/info/' + id).then(res => {
-					this.editForm = res.data.result.data
-					this.dialogVisible = true
+					this.editForm = res.data.result.data;
+					this.dialogVisible = true;
 				})
 			},
 			// 编辑用户信息时回显 End
