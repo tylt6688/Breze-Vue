@@ -22,6 +22,7 @@
 
 <script>
     import moment from 'moment';
+    import loginlog from "@/api/logapi/loginLog";
 
     export default {
         name: 'LoginLog',
@@ -50,12 +51,11 @@
             // 格式化日期时间 End
             // 获取表数据 Start
             getLoginLogList() {
-                this.$axios.get("/loginlog/list", {
-                    params: {
-                        current: this.current,
+                let params = {
+                     current: this.current,
                         size: this.size,
-                    }
-                }).then(res => {
+                }
+                loginlog.getLoginLogInfoList(params).then(res => {
                     this.tableData = res.data.result.data.records;
                     this.size = res.data.result.data.size;
                     this.current = res.data.result.data.current;
