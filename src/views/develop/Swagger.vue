@@ -8,7 +8,7 @@ export default {
   components: { iFrame },
   data() {
     return {
-      url: ""
+      url: this.BASE_API+"/swagger-ui/index.html"
     };
   },
   mounted() {

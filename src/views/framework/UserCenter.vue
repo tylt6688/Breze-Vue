@@ -502,7 +502,7 @@ export default {
     },
 
     // 上传头像 End
-    
+     
     // 修改密码 Start
     submitPassForm(formName) {
       this.$refs[formName].validate((valid) => {
