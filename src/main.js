@@ -18,6 +18,8 @@ Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios //定义全局引用变量
 
+Vue.prototype.BASE_API = axios.defaults.baseURL;
+
 Vue.use(Element);
 //全局图标选择管理
 Vue.use(eIconPicker, {

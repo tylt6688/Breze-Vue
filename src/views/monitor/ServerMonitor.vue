@@ -7,7 +7,7 @@
 </template>
 
 <script>
-
+    import serverMonitor from '@/api/monitor/serverMonitor'
     export default {
         name: 'ServerMonitor',
         data() {
@@ -22,7 +22,7 @@
       
             // 获取CPU数据 Start
             getLoginLogList() {
-                this.$axios.get("/monitor/server/cpuinfo").then(res => {
+                serverMonitor.getLoginLogCpuList().then(res => {
                 
                     this.cpuinfo = res.data.result.data;
                 })
