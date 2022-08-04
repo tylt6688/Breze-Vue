@@ -6,7 +6,7 @@ export default{
     return axios({
       url: '/loginlog/list',
       method: 'get',
-      data: params
+      params: params
     })
   },
 }

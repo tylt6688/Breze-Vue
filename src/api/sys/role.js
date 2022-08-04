@@ -6,7 +6,7 @@ export default {
         return axios({
             url: '/sys/role/select',
             method: 'get',
-            data: params
+            params: params
         })
     },
     // 新增或更新角色信息

@@ -13,28 +13,28 @@ export default{
     return axios({
       url: '/notify/select',
       method: 'get',
-      data: params
+      params: params
     })
   },
   getNewsInfo(params){
     return axios({
       url: '/news/select',
       method: 'get',
-      data: params
+      params: params
     })
   },
   getPresenceInfo(params){
     return axios({
       url: '/presence/select',
       method: 'get',
-      data: params
+      params: params
     })
   },
   getThoughtInfo(params){
     return axios({
       url: '/thought/select',
       method: 'get',
-      data: params
+      params: params
     })
   },
 
