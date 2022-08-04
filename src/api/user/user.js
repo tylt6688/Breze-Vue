@@ -6,7 +6,7 @@ export default {
         return axios({
             url: "/sys/user/select",
             method: 'get',
-            data: params
+            params: params
         })
     },
     //TODO 获取当前登录用户信息

@@ -350,7 +350,9 @@ export default {
       roleDialogFormVisible: false,
       roleMoreDialogFormVisible: false,
 
-      searchForm: {},
+      searchForm: {
+        username:""
+      },
       total: 0,
       size: 10,
       current: 1,
@@ -425,6 +427,7 @@ export default {
 
     // 获取用户列表 Start
     getUserList() {
+      console.log("searchForm", this.searchForm.username);
       let params = {
         username: this.searchForm.username,
         current: this.current,
@@ -437,6 +440,7 @@ export default {
         this.total = res.data.result.data.total;
       });
     },
+    
     // 获取用户列表 End
 
     // 获取选中的行数据 Start
@@ -616,19 +620,19 @@ export default {
 
       var roleIds = this.$refs.roleMoreTree.getCheckedKeys();
 
-      user.rolemoreHandle(roleIds,userIds).then((res) => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            message: "批量分配成功",
-            type: "success",
-            onClose: () => {
-              this.getUserList();
-              this.$refs.roleMoreTree.setCheckedKeys([]);
-            },
-          });
-          this.roleMoreDialogFormVisible = false;
+      user.rolemoreHandle(roleIds, userIds).then((res) => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: "批量分配成功",
+          type: "success",
+          onClose: () => {
+            this.getUserList();
+            this.$refs.roleMoreTree.setCheckedKeys([]);
+          },
         });
+        this.roleMoreDialogFormVisible = false;
+      });
     },
     // 批量分配角色 End
 
@@ -650,18 +654,18 @@ export default {
     submitRoleHandle(formName) {
       var roleIds = this.$refs.roleTree.getCheckedKeys();
       console.log(roleIds);
-      user.submitRoleHandle(roleIds,this.roleForm.id).then((res) => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            message: "操作成功",
-            type: "success",
-            onClose: () => {
-              this.getUserList();
-            },
-          });
-          this.roleDialogFormVisible = false;
+      user.submitRoleHandle(roleIds, this.roleForm.id).then((res) => {
+        this.$message({
+          showClose: true,
+          duration: 2000,
+          message: "操作成功",
+          type: "success",
+          onClose: () => {
+            this.getUserList();
+          },
         });
+        this.roleDialogFormVisible = false;
+      });
     },
     // 分配角色 End
 
