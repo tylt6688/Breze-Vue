@@ -2,9 +2,9 @@ import axios from "@/utils/http/axios";
 
 export default {
 
-    getStudentInfoList() {
+    getGroupList() {
         return axios({
-            url: '/department/select',
+            url: '/sys/group/select',
             method: 'get'
         })
     },

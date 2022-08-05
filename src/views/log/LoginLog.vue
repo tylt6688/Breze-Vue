@@ -22,7 +22,7 @@
 
 <script>
     import moment from 'moment';
-    import loginlog from "@/api/logapi/loginLog";
+    import loginlog from "@/api/logapi/logapi";
 
     export default {
         name: 'LoginLog',

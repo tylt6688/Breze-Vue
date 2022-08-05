@@ -188,7 +188,7 @@
           <e-icon-picker
             v-model="editForm.icon"
             placement="bottom"
-            width="400px"
+            width="400"
           />
         </el-form-item>
 
