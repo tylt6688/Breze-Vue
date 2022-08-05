@@ -1,4 +1,4 @@
-import axios from "@/http/axios";
+import axios from "@/utils/http/axios";
 
 export default {
     // 更新登录提醒状态

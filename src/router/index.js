@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import axios from "../http/axios";
+import axios from "../utils/http/axios";
 import store from "../store"
 import Index from "../views/Index.vue"
 

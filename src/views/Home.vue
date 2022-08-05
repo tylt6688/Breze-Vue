@@ -94,7 +94,7 @@
 import SideMenu from "./inc/SideMenu";
 import Tabs from "./inc/Tabs";
 import screenfull from "screenfull";
-import user from "@/api/user/user";
+import user from "@/api/sys/user";
 
 export default {
   name: "Home",

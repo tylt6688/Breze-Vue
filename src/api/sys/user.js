@@ -1,4 +1,4 @@
-import axios from "@/http/axios";
+import axios from "@/utils/http/axios";
 
 export default {
     // 获取用户列表 Start

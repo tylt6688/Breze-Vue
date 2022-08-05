@@ -271,7 +271,7 @@
 <script>
 import moment from "moment";
 import userCenter from "@/api/framework/userCenter";
-import user from "@/api/user/user";
+import user from "@/api/sys/user";
 export default {
   inject: ["reloadAvatar"],
   name: "UserCenter",

@@ -334,7 +334,7 @@
 
 <script>
 import moment from "moment";
-import user from "@/api/user/user";
+import user from "@/api/sys/user";
 import role from "@/api/sys/role";
 
 export default {

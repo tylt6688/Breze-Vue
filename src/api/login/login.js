@@ -1,4 +1,4 @@
-import axios from "@/http/axios";
+import axios from "@/utils/http/axios";
 export default{
     //TODO 获取验证码
     getKaptchaInfo(){

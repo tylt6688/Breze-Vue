@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    // 设定全局token
+    // 此处设定全局token
     token: ''
   },
   getters: {},
