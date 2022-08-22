@@ -1,16 +1,16 @@
 import axios from "@/utils/http/axios";
-export default{
-    //TODO 获取验证码
-    getKaptchaInfo(){
+export default {
+    // 获取验证码
+    getKaptcha() {
         return axios({
             url: '/kaptcha',
             method: 'get'
         })
     },
-    //TODO 获取验证码
-    submitFormLogin(param){
+    // 提交登录请求
+    submitFormLogin(param) {
         return axios({
-            url: '/login?'+param,
+            url: '/login?' + param,
             method: 'post'
         })
     },

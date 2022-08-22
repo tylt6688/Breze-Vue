@@ -2,29 +2,13 @@
   <div class="page">
     <el-form :inline="true">
       <el-form-item>
-        <el-button
-          type="primary"
-          @click="dialogDirVisible = true"
-          icon="el-icon-folder-add"
-          >新增目录</el-button
-        >
-        <el-button
-          type="primary"
-          @click="dialogVisible = true"
-          icon="el-icon-plus"
-          >新增组件</el-button
-        >
+        <el-button type="primary" @click="dialogDirVisible = true" icon="el-icon-folder-add">新增目录</el-button>
+        <el-button type="primary" @click="dialogVisible = true" icon="el-icon-plus">新增组件</el-button>
       </el-form-item>
     </el-form>
 
-    <el-table
-      highlight-current-row
-      :data="tableData"
-      style="width: 100%; margin-bottom: 20px"
-      row-key="id"
-      border
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-    >
+    <el-table highlight-current-row :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
       <el-table-column prop="name" label="名称" sortable width="180">
       </el-table-column>
 
@@ -40,12 +24,8 @@
       <el-table-column prop="type" label="类型" align="center">
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.type === 0">目录</el-tag>
-          <el-tag size="small" v-else-if="scope.row.type === 1" type="success"
-            >菜单</el-tag
-          >
-          <el-tag size="small" v-else-if="scope.row.type === 2" type="info"
-            >按钮</el-tag
-          >
+          <el-tag size="small" v-else-if="scope.row.type === 1" type="success">菜单</el-tag>
+          <el-tag size="small" v-else-if="scope.row.type === 2" type="info">按钮</el-tag>
         </template>
       </el-table-column>
 
@@ -60,33 +40,22 @@
       <el-table-column prop="orderNum" sortable label="排序号" align="center">
       </el-table-column>
 
-      <el-table-column prop="statu" label="状态" align="center">
+      <el-table-column prop="state" label="状态" align="center">
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.statu === 0" type="success"
-            >正常</el-tag
-          >
-          <el-tag size="small" v-else-if="scope.row.statu === 1" type="danger"
-            >禁用</el-tag
-          >
+          <el-tag size="small" v-if="scope.row.state === 0" type="success">正常</el-tag>
+          <el-tag size="small" v-else type="danger">禁用</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column prop="icon" label="操作" width="150">
         <template slot-scope="scope">
-          <el-button type="text" @click="editHandle(scope.row.id)"
-            ><i class="el-icon-edit"></i> 编辑</el-button
-          >
+          <el-button type="text" @click="editHandle(scope.row.id)"><i class="el-icon-edit"></i> 编辑</el-button>
 
           <el-divider direction="vertical"></el-divider>
 
           <template>
-            <el-popconfirm
-              title="确定要删除吗？"
-              @confirm="delHandle(scope.row.id)"
-            >
-              <el-button type="text" slot="reference"
-                ><i class="el-icon-delete"></i> 删除</el-button
-              >
+            <el-popconfirm title="确定要删除吗？" @confirm="delHandle(scope.row.id)">
+              <el-button type="text" slot="reference"><i class="el-icon-delete"></i> 删除</el-button>
             </el-popconfirm>
           </template>
         </template>
@@ -94,19 +63,8 @@
     </el-table>
 
     <!--新增目录对话框-->
-    <el-dialog
-      title="新增目录"
-      :visible.sync="dialogDirVisible"
-      width="600px"
-      :before-close="handleClose"
-    >
-      <el-form
-        :model="editForm"
-        :rules="editDirFormRules"
-        ref="editForm"
-        label-width="100px"
-        class="demo-editForm"
-      >
+    <el-dialog title="新增目录" :visible.sync="dialogDirVisible" width="600px" :before-close="handleClose">
+      <el-form :model="editForm" :rules="editDirFormRules" ref="editForm" label-width="100px" class="demo-editForm">
         <el-form-item label="目录名称" prop="name" label-width="100px">
           <el-input v-model="editForm.name" autocomplete="off"></el-input>
         </el-form-item>
@@ -116,54 +74,31 @@
         </el-form-item>
 
         <el-form-item label="图标" prop="icon" label-width="100px">
-          <e-icon-picker
-            v-model="editForm.icon"
-            placement="bottom"
-            width="400"
-          />
+          <e-icon-picker v-model="editForm.icon" placement="bottom" />
         </el-form-item>
 
-        <el-form-item label="状态" prop="statu" label-width="100px">
-          <el-radio-group v-model="editForm.statu">
+        <el-form-item label="状态" prop="state" label-width="100px">
+          <el-radio-group v-model="editForm.state">
             <el-radio :label="0">正常</el-radio>
             <el-radio :label="1">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="序号" prop="orderNum" label-width="100px">
-          <el-input-number v-model="editForm.orderNum" :min="1" label="序号"
-            >1</el-input-number
-          >
+          <el-input-number v-model="editForm.orderNum" :min="1" label="序号">1</el-input-number>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm('editForm')"
-            >提交</el-button
-          >
+          <el-button type="primary" @click="submitForm('editForm')">提交</el-button>
           <el-button @click="resetForm('editForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
 
     <!--新增二级菜单以及编辑对话框-->
-    <el-dialog
-      title="新增编辑"
-      :visible.sync="dialogVisible"
-      width="600px"
-      :before-close="handleClose"
-    >
-      <el-form
-        :model="editForm"
-        :rules="editFormRules"
-        ref="editForm"
-        label-width="100px"
-        class="demo-editForm"
-      >
-        <el-form-item
-          v-if="editForm.type != 0"
-          label="上级菜单"
-          prop="parentId"
-        >
+    <el-dialog title="新增编辑" :visible.sync="dialogVisible" width="600px" :before-close="handleClose">
+      <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
+        <el-form-item v-if="editForm.type != 0" label="上级菜单" prop="parentId">
           <el-select v-model="editForm.parentId" placeholder="请选择上级菜单">
             <template v-for="(item, index) in tableData">
               <el-option :label="item.name" :value="item.id"></el-option>
@@ -185,42 +120,18 @@
         </el-form-item>
 
         <el-form-item label="图标" prop="icon" label-width="100px">
-          <e-icon-picker
-            v-model="editForm.icon"
-            placement="bottom"
-            width="400"
-          />
+          <e-icon-picker v-model="editForm.icon" placement="bottom" />
         </el-form-item>
 
-        <el-form-item
-          v-if="editForm.type === 1"
-          label="菜单URL"
-          prop="path"
-          label-width="100px"
-        >
+        <el-form-item v-if="editForm.type === 1" label="菜单URL" prop="path" label-width="100px">
           <el-input v-model="editForm.path" autocomplete="off"></el-input>
-          <el-alert
-            title="只有类型为菜单时为必填项，用于页面路径跳转"
-            :closable="false"
-            type="info"
-            style="line-height: 12px"
-          >
+          <el-alert title="只有类型为菜单时为必填项，用于页面路径跳转" :closable="false" type="info" style="line-height: 12px">
           </el-alert>
         </el-form-item>
 
-        <el-form-item
-          v-if="editForm.type === 1"
-          label="菜单组件"
-          prop="component"
-          label-width="100px"
-        >
+        <el-form-item v-if="editForm.type === 1" label="菜单组件" prop="component" label-width="100px">
           <el-input v-model="editForm.component" autocomplete="off"></el-input>
-          <el-alert
-            title="只有类型为菜单时为必填项，用于页面组件生成"
-            :closable="false"
-            type="info"
-            style="line-height: 12px"
-          >
+          <el-alert title="只有类型为菜单时为必填项，用于页面组件生成" :closable="false" type="info" style="line-height: 12px">
           </el-alert>
         </el-form-item>
 
@@ -232,25 +143,19 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="状态" prop="statu" label-width="100px">
-          <el-radio-group v-model="editForm.statu">
+        <el-form-item label="状态" prop="state" label-width="100px">
+          <el-radio-group v-model="editForm.state">
             <el-radio :label="0">正常</el-radio>
             <el-radio :label="1">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="排序号" prop="orderNum" label-width="100px">
-          <el-input-number
-            v-model="editForm.orderNum"
-            :min="1"
-            label="排序号"
-          ></el-input-number>
+          <el-input-number v-model="editForm.orderNum" :min="1" label="排序号"></el-input-number>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm('editForm')"
-            >提交</el-button
-          >
+          <el-button type="primary" @click="submitForm('editForm')">提交</el-button>
           <el-button @click="resetForm('editForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -258,177 +163,157 @@
   </div>
 </template>
 <script>
-import menu from "@/api/sys/menu";
-export default {
-  name: "Menu",
-  data() {
-    return {
-      tableData: [],
-      editForm: {
-        orderNum: 1,
-      },
+  import menu from "@/api/sys/menu";
+  export default {
+    name: "Menu",
+    data() {
+      return {
+        tableData: [],
+        editForm: {
+          orderNum: 1,
+        },
 
-      dialogVisible: false,
-      dialogDirVisible: false,
+        dialogVisible: false,
+        dialogDirVisible: false,
 
-      editDirFormRules: {
-        name: [
-          {
+        editDirFormRules: {
+          name: [{
             required: true,
             message: "请输入名称",
             trigger: "blur",
-          },
-        ],
-        perms: [
-          {
+          }, ],
+          perms: [{
             required: true,
             message: "请输入权限编码",
             trigger: "blur",
-          },
-        ],
+          }, ],
 
-        orderNum: [
-          {
+          orderNum: [{
             required: true,
             message: "请填入排序号",
             trigger: "blur",
-          },
-        ],
-        statu: [
-          {
+          }, ],
+          state: [{
             required: true,
             message: "请选择状态",
             trigger: "blur",
-          },
-        ],
-      },
+          }, ],
+        },
 
-      editFormRules: {
-        parentId: [
-          {
+        editFormRules: {
+          parentId: [{
             required: true,
             message: "请选择上级菜单",
             trigger: "blur",
-          },
-        ],
-        name: [
-          {
+          }, ],
+          name: [{
             required: true,
             message: "请输入名称",
             trigger: "blur",
-          },
-        ],
-        perms: [
-          {
+          }, ],
+          perms: [{
             required: true,
             message: "请输入权限编码",
             trigger: "blur",
-          },
-        ],
-        type: [
-          {
+          }, ],
+          type: [{
             required: true,
             message: "请选择状态",
             trigger: "blur",
-          },
-        ],
-        orderNum: [
-          {
+          }, ],
+          orderNum: [{
             required: true,
             message: "请填入排序号",
             trigger: "blur",
-          },
-        ],
-        statu: [
-          {
+          }, ],
+          statu: [{
             required: true,
             message: "请选择状态",
             trigger: "blur",
-          },
-        ],
-      },
-    };
-  },
-  created() {
-    this.getMenuTree();
-  },
-  methods: {
-    // 获取菜单树 Start
-    getMenuTree() {
-      menu.getMenuTree().then((res) => {
-        this.tableData = res.data.result.data;
-      });
+          }, ],
+        },
+      };
     },
-    // 获取菜单树 End
-
-    // 新增菜单 Start
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          if (!this.editForm.parentId) {
-            this.editForm.parentId = 0;
-            this.editForm.type = 0;
-          }
-          menu.submitMenuForm(this.editForm, this.editForm.id).then((res) => {
-            this.$message({
-              showClose: true,
-              duration: 2000,
-              message: "操作成功",
-              type: "success",
-              onClose: () => {
-                // this.$router.go(0);
-                this.getMenuTree();
-              },
-            });
-            this.handleClose();
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    created() {
+      this.getMenuTree();
     },
-    // 新增菜单 End
-
-    // 回显菜单组件信息 Start
-    editHandle(id) {
-      menu.editHandle(id).then((res) => {
-        //进行已存在信息的表单回显
-        this.dialogVisible = true;
-        this.editForm = res.data.result.data;
-      });
-    },
-    // 回显菜单组件信息 End
-
-    //重新设置编辑模态框为空
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.editForm = {};
-    },
-    //表单关闭后进行重置
-    handleClose() {
-      this.dialogVisible = false;
-      this.dialogDirVisible = false;
-      this.resetForm("editForm");
-    },
-
-    // 删除菜单 Start
-    delHandle(id) {
-      menu.delHandle(id).then((res) => {
-        this.$message({
-          showClose: true,
-          duration: 2000,
-          message: "删除成功",
-          type: "success",
-          onClose: () => {
-            this.getMenuTree();
-          },
+    methods: {
+      // 获取菜单树 Start
+      getMenuTree() {
+        menu.getMenuTree().then((res) => {
+          this.tableData = res.data.result.data;
         });
-      });
+      },
+      // 获取菜单树 End
+
+      // 新增菜单 Start
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if (!this.editForm.parentId) {
+              this.editForm.parentId = 0;
+              this.editForm.type = 0;
+            }
+            menu.submitMenuForm(this.editForm, this.editForm.id).then((res) => {
+              this.$message({
+                showClose: true,
+                duration: 2000,
+                message: "操作成功",
+                type: "success",
+                onClose: () => {
+                  // this.$router.go(0);
+                  this.getMenuTree();
+                },
+              });
+              this.handleClose();
+            });
+          } else {
+            console.log("error submit!!");
+            return false;
+          }
+        });
+      },
+      // 新增菜单 End
+
+      // 回显菜单组件信息 Start
+      editHandle(id) {
+        menu.editHandle(id).then((res) => {
+          //进行已存在信息的表单回显
+          this.dialogVisible = true;
+          this.editForm = res.data.result.data;
+        });
+      },
+      // 回显菜单组件信息 End
+
+      //重新设置编辑模态框为空
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+        this.editForm = {};
+      },
+      //表单关闭后进行重置
+      handleClose() {
+        this.dialogVisible = false;
+        this.dialogDirVisible = false;
+        this.resetForm("editForm");
+      },
+
+      // 删除菜单 Start
+      delHandle(id) {
+        menu.delHandle(id).then((res) => {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            message: "删除成功",
+            type: "success",
+            onClose: () => {
+              this.getMenuTree();
+            },
+          });
+        });
+      },
+      // 删除菜单 End
     },
-    // 删除菜单 End
-  },
-};
+  };
 </script>
 
 

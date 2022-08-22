@@ -21,15 +21,16 @@ Vue.prototype.$axios = axios //定义全局引用变量
 Vue.prototype.BASE_API = axios.defaults.baseURL;
 
 Vue.use(Element);
-//全局图标选择管理
+
+// 全局图标选择管理
 Vue.use(eIconPicker, {
 	FontAwesome: false,
 	ElementUI: true,
-	eIcon: false, //自带的图标，来自阿里妈妈
-	eIconSymbol: false, //是否开启彩色图标
+	eIcon: false, // 自带的图标，来自阿里妈妈
+	eIconSymbol: false, // 是否开启彩色图标
 	addIconList: [],
 	removeIconList: [],
-	zIndex: 3100 //选择器弹层的最低层,全局配置
+	zIndex: 3100 // 选择器弹层的最低层,全局配置
 });
 
 

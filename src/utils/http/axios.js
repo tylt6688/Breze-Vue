@@ -10,20 +10,20 @@ const request = axios.create({
 		'Content-Type': "application/json; charset=utf-8"
 	}
 })
-//进行request请求拦截处理
+// 进行request请求拦截处理
 request.interceptors.request.use(config => {
-	//将所有请求头里面进行jwt设置，方便权限访问
-	config.headers['Authorization'] = localStorage.getItem("token");
+	// 将所有请求头里面进行jwt设置，方便权限访问
+	config.headers['Authorization'] = 'Bearer ' + localStorage.getItem("token");
 	return config
 })
-//进行response后端数据返回拦截
+// 进行response后端数据返回拦截
 request.interceptors.response.use(
 	response => {
 		console.log("AllResponse ->", response);
-		//缩短一点
+		// 缩短一点
 		let res = response.data;
 		console.log("我是每次请求后端的数据", res);
-		//判断后端请求响应是否正确
+		// 判断后端请求响应是否正确
 		if (res.success) {
 			return response;
 		} else if (res instanceof ArrayBuffer) {
@@ -34,7 +34,7 @@ request.interceptors.response.use(
 			return Promise.reject(response.data.message);
 		}
 	},
-	//异常情况判断
+	// 异常情况判断
 	error => {
 		console.log("请求异常了嗷~~", error);
 		if (error.response.data) {
@@ -44,11 +44,11 @@ request.interceptors.response.use(
 			// 	localStorage.clear();
 			// }
 		}
-		//无权限
+		// 无权限
 		else if (error.response.status === 401) {
 			router.push("/in401");
 		}
-		//404notfound
+		// 404notfound
 		else if (error.response.status === 404) {
 			router.push("/in404");
 		}
