@@ -1,8 +1,9 @@
 import axios from "@/utils/http/axios";
+import request from "axios";
 export default {
     // 获取验证码
     getKaptcha() {
-        return axios({
+        return request({
             url: '/kaptcha',
             method: 'get'
         })
