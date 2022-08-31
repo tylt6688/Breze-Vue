@@ -10,7 +10,7 @@
 
     <el-container>
       <el-header>
-        <strong class="title">清 枫 多 端 一 体 化 权 限 服 务 平 台</strong>
+        <!-- <strong class="title">清 枫 多 端 一 体 化 权 限 服 务 平 台</strong> -->
         <div class="header-avatar">
           <el-avatar v-if="isChangeAvatar" fit="scale-down" size="large" :src="userInfo.avatar"></el-avatar>
           <el-dropdown>
@@ -108,7 +108,7 @@
       fullScreen() {
         if (!screenfull.isEnabled) {
           this.$message({
-            message: "you browser can not work",
+            message: "您的浏览器不支持全屏操作",
             type: "warning",
           });
           return false;

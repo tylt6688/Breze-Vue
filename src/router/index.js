@@ -57,7 +57,7 @@ const routes = [{
 
     ]
   },
-  //外部使用
+  // 外部使用
   {
     path: '/404',
     name: 'Page404',
@@ -78,15 +78,15 @@ const router = new VueRouter({
 })
 
 // 防止重复点击一个路径是浏览器报路径重复的错
-const VueRouterPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (to) {
+const VueRouterPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(to) {
   return VueRouterPush.call(this, to).catch(err => err)
 }
 
 
-//TODO 配置全局路由导航守卫
+// 配置全局路由导航守卫
 router.beforeEach((to, from, next) => {
-  //TODO 后端动态路由生成
+  // 后端动态路由生成
   let hasRoute = store.state.menus.hasRoutes;
   // 判断token是否存在
   let token = localStorage.getItem("token");
@@ -104,7 +104,7 @@ router.beforeEach((to, from, next) => {
       path: '/login'
     })
   }
-  // TODO 验证token存在并且hasRoute为空时去请求获取SideMenu菜单树
+  // 验证token存在并且hasRoute为空时去请求获取SideMenu菜单树
   else if (token && !hasRoute) {
     axios.get("/sys/menu/nav", {
       headers: {
@@ -141,7 +141,7 @@ router.beforeEach((to, from, next) => {
       })
     })
   }
-  // TODO 每个页面的浏览器标签名称显示
+  // 每个页面的浏览器标签名称显示
   to.meta.title && (document.title = "清枫Breze—" + to.meta.title);
   next();
 })

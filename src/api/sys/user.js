@@ -9,7 +9,7 @@ export default {
             params: params
         })
     },
-    //TODO 获取当前登录用户信息
+    // 获取当前登录用户信息
     getUserInfo() {
         return axios({
             url: "/sys/user/getuserinfo",
@@ -69,14 +69,22 @@ export default {
             }
         })
     },
-    // 导出当前所有用户Excel
-    exportExcel() {
+    // 下载用户导入模板Excel
+    exportModelExcel() {
         return axios({
-            url: "/sys/user/downloadexcel",
+            url: "/sys/user/download_model_excel",
             method: 'get',
             responseType: "arraybuffer",
         })
     },
+        // 所有用户模板Excel
+        exportExcel() {
+            return axios({
+                url: "/sys/user/export_excel",
+                method: 'get',
+                responseType: "arraybuffer",
+            })
+        },
     // 增加或修改用户 
     submitForm(editForm,id) {
         return axios({
@@ -109,7 +117,7 @@ export default {
             data: roleIds
         })
     },
-    //TODO 退出登录 
+    // 退出登录 
     logout() {
         return axios({
             url: "/logout",

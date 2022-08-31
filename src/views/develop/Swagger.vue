@@ -1,5 +1,7 @@
 <template>
-  <i-frame :src="url" />
+  <div class="page">
+    <i-frame :src="url" />
+  </div>
 </template>
 <script>
   import iFrame from "@/components/iFrame/iFrame";
@@ -16,3 +18,6 @@
     mounted() {},
   };
 </script>
+<style scoped>
+
+</style>

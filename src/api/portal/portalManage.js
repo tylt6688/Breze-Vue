@@ -8,7 +8,7 @@ export default {
             method: 'get'
         })
     },
-    //根据commonTitle删除
+    // 根据commonTitle删除
     delNotify(title) {
         return axios({
             url: '/notify/delete/' + title,

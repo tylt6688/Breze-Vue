@@ -182,7 +182,7 @@
 
         <div style="margin: 20px 0"></div>
         <el-upload ref="upload" style="text-align: center" action="url" drag :http-request="uploadBanner" multiple
-          accept=".png,.jpg" :limit="1" :auto-upload="uploadStatu">
+          accept=".png,.jpg" :limit="1" :auto-upload="uploadState">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将轮播图拖到此处,或<em>点击上传</em>
@@ -205,10 +205,10 @@
 <script>
   import Context from "@/components/Context";
   import tinymce from "@/components/tinymce/tinymce";
-  import indexManage from "@/api/toolapi/indexManage";
-  import index from "@/api/index/index";
+  import portalManage from "@/api/portal/portalManage";
+  import portal from "@/api/portal/portal";
   export default {
-    name: "IndexManage",
+    name: "PortalManage",
     components: {
       Context,
       tinymce,
@@ -236,7 +236,7 @@
         bannerDialogVisible: false,
         notifyDialogVisible: false,
         commonEditDialogVisible: false,
-        uploadStatu: false,
+        uploadState: false,
         banners: [],
         editForm: {},
         notifyForm: {},
@@ -279,7 +279,7 @@
 
       submitCommonEdit() {
         console.log(this.commonEditForm.title);
-        indexManage.submitCommonEdit(this.commonEditForm.title).then((res) => {
+        portalManage.submitCommonEdit(this.commonEditForm.title).then((res) => {
           this.notifyForm = res.data.result.data;
           this.commonEditHandleClose();
           this.$message({
@@ -299,7 +299,7 @@
       },
       //根据commonTitle删除
       delNotify() {
-        indexManage.delNotify(this.commonEditForm.title).then((res) => {
+        portalManage.delNotify(this.commonEditForm.title).then((res) => {
           this.$message({
             showClose: true,
             duration: 1500,
@@ -319,7 +319,7 @@
           current: this.current,
           size: this.size,
         };
-        index.getNotifyInfo(params).then((res) => {
+        portal.getNotifyInfo(params).then((res) => {
           this.notifyTableData = res.data.result.data.records;
           this.size = res.data.result.data.size;
           this.current = res.data.result.data.current;
@@ -331,7 +331,7 @@
           current: this.current,
           size: this.size,
         };
-        index.getNewsInfo(params).then((res) => {
+        portal.getNewsInfo(params).then((res) => {
           this.newsTableData = res.data.result.data.records;
           this.size = res.data.result.data.size;
           this.current = res.data.result.data.current;
@@ -343,7 +343,7 @@
           current: this.current,
           size: this.size,
         };
-        index.getPresenceInfo(params).then((res) => {
+        portal.getPresenceInfo(params).then((res) => {
           this.presenceTableData = res.data.result.data.records;
           this.size = res.data.result.data.size;
           this.current = res.data.result.data.current;
@@ -355,7 +355,7 @@
           current: this.current,
           size: this.size,
         };
-        index.getThoughtInfo(params).then((res) => {
+        portal.getThoughtInfo(params).then((res) => {
           this.thoughtTableData = res.data.result.data.records;
           this.size = res.data.result.data.size;
           this.current = res.data.result.data.current;
@@ -366,7 +366,7 @@
 
       // 获取轮播图 Start
       getBanner() {
-        index.getBannerInfo().then((res) => {
+        portal.getBannerInfo().then((res) => {
           this.banners = res.data.result.data;
         });
       },
@@ -374,7 +374,7 @@
 
       // 编辑轮播图 Start
       editHandle(id) {
-        indexManage.editHandle(id).then((res) => {
+        portalManage.editHandle(id).then((res) => {
           this.editForm = res.data.result.data;
           this.dialogVisible = true;
         });
@@ -400,7 +400,7 @@
         formData.append("file", param.file);
         formData.append("alt", alt);
         formData.append("orderNum", ordernum);
-        indexManage.uploadBanner(formData).then((res) => {
+        portalManage.uploadBanner(formData).then((res) => {
           this.bannerDialogVisible = false;
           this.$message({
             showClose: true,
@@ -422,7 +422,7 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            indexManage.submitBannerForm(this.editForm).then((res) => {
+            portalManage.submitBannerForm(this.editForm).then((res) => {
               this.$message({
                 showClose: true,
                 duration: 2000,
@@ -444,7 +444,7 @@
 
       // 删除Banner图 Start
       delHandle(url) {
-        indexManage.delHandleInfo(url).then((res) => {
+        portalManage.delHandleInfo(url).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,
@@ -526,7 +526,7 @@
       submitNotifyForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            indexManage
+            portalManage
               .submitNotifyForm(this.notifyForm, this.notifyForm.id)
               .then((res) => {
                 this.$message({

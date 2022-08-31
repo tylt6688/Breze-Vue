@@ -12,11 +12,17 @@
       <el-table-column prop="name" label="名称" sortable width="180">
       </el-table-column>
 
-      <el-table-column prop="created" label="创建时间"> </el-table-column>
+      <el-table-column prop="state" label="状态" align="center" width="160">
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.state === 0" type="success">正常</el-tag>
+          <el-tag size="small" v-else type="danger">禁用</el-tag>
+        </template>
+      </el-table-column>
 
       <el-table-column prop="remark" label="备注"> </el-table-column>
+      <el-table-column prop="createTime" label="创建时间"> </el-table-column>
 
-      <el-table-column prop="update" label="更新时间"> </el-table-column>
+      <el-table-column prop="updateTime" label="更新时间"> </el-table-column>
 
       <el-table-column prop="icon" label="操作" width="150px">
         <template slot-scope="scope">

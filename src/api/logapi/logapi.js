@@ -4,7 +4,7 @@ export default{
   
  getLoginLogInfoList(params){
     return axios({
-      url: '/tool/log/listLoginLog',
+      url: '/tool/log/list_login_log',
       method: 'get',
       params: params
     })

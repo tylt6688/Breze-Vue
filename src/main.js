@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import axios from './utils/http/axios'
 import Element from "element-ui"
-import eIconPicker from 'e-icon-picker';
+import eIconPicker from 'e-icon-picker'
 
 
 import "e-icon-picker/lib/symbol.js"; //基本彩色图标库
@@ -14,9 +14,10 @@ import "element-ui/lib/theme-chalk/index.css"
 import './utils/dialog/dialog'
 
 // 控制台生产信息提示是否开启
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-Vue.prototype.$axios = axios //定义全局引用变量
+//定义全局引用变量
+Vue.prototype.$axios = axios; 
 
 Vue.prototype.BASE_API = axios.defaults.baseURL;
 
@@ -38,7 +39,7 @@ Vue.use(eIconPicker, {
 Vue.mixin({
 	methods: {
 		hasAuth(perm) {
-			var authority = this.$store.state.menus.permList
+			var authority = this.$store.state.menus.permList;
 			return authority.indexOf(perm) > -1
 		}
 	}

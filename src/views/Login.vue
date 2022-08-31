@@ -143,7 +143,6 @@
                 this.$router.push("/index");
               })
               .catch((res) => {
-                console.log(res.message);
                 this.getKaptcha();
               });
           } else {

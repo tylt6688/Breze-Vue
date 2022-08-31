@@ -13,7 +13,7 @@
 				reload: this.reload
 			}
 		},
-		//TODO 监听tab栏变化
+		// 监听tab栏变化
 		watch: {
 			$route(to, from) {
 				console.log("from", from.path, "to", to.path)
@@ -44,7 +44,7 @@
 
 <style>
 	#app {
-		font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑";
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}

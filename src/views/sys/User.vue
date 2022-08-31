@@ -357,10 +357,7 @@
 
       // 导出当前所有用户Excel Start
       exportExcel() {
-        this.$axios
-          .get("/sys/user/downloadexcel", {
-            responseType: "arraybuffer",
-          })
+        user.exportExcel()
           .then((res) => {
             const blob = new Blob([res.data]);
             const blobURL = window.URL.createObjectURL(blob);
@@ -380,8 +377,7 @@
 
       // 导出Excel上传模板 Start
       exportModelExcel() {
-        user
-          .exportExcel()
+        user.exportModelExcel()
           .then((res) => {
             const blob = new Blob([res.data]);
             const blobURL = window.URL.createObjectURL(blob);
