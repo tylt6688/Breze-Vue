@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-
+<!-- 我要用echars做仪表盘 都删了  放到那个单独的项目里面了 -->
   </div>
 </template>
 
