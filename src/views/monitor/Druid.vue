@@ -1,5 +1,7 @@
 <template>
-  <i-frame :src="url" />
+    <div>
+    <i-frame :src="url" />
+  </div>
 </template>
 <script>
   import iFrame from "@/components/iFrame/iFrame";

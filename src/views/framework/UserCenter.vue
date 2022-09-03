@@ -285,7 +285,11 @@
         } else {
           loginwarn = 1;
         }
-        userCenter.changeLoginWarn(loginwarn, this.userInfo.id).then((res) => {
+        let params = {
+          loginwarn:loginwarn,
+          id:this.userInfo.id
+        }
+        userCenter.changeLoginWarn(qs.stringify(params)).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,
