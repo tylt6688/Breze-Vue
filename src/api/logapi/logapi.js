@@ -12,7 +12,7 @@ export default{
 
   getHandleLogInfoList(params){
     return axios({
-      url: '/tool/log/listHandleLog',
+      url: '/tool/log/list_handle_log',
       method: 'get',
       params: params
     })

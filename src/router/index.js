@@ -36,14 +36,7 @@ const routes = [{
           title: "个人中心"
         },
       },
-      {
-        path: '/indexDetail',
-        name: 'Detail',
-        component: () => import('../views/framework/Detail.vue'),
-        meta: {
-          title: "信息详情"
-        },
-      },
+
       {
         path: '/in401',
         name: 'Page401',

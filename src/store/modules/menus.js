@@ -3,15 +3,17 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
+let title = '首页';
+let name = 'Index';
 export default {
 	state: {
 		menuList: [],
 		permList: [],
 		hasRoutes: false,
-		editableTabsValue: 'Index',
+		editableTabsValue: name,
 		editableTabs: [{
-			title: '首页',
-			name: 'Index',
+			title: title,
+			name: name,
 		}]
 	},
 	mutations: {
@@ -44,10 +46,10 @@ export default {
 			state.menuList = []
 			state.permList = []
 			state.hasRoutes = false
-			state.editableTabsValue = 'Index'
+			state.editableTabsValue = name
 			state.editableTabs = [{
-				title: '首页',
-				name: 'Index',
+				title: title,
+				name: name,
 			}]
 		}
 

@@ -2,9 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import axios from './utils/http/axios'
 import Element from "element-ui"
 import eIconPicker from 'e-icon-picker'
+import axios from '@/utils/http/axios'
+import qs from "qs"
+
 
 
 import "e-icon-picker/lib/symbol.js"; //基本彩色图标库
@@ -13,11 +15,13 @@ import 'element-ui/lib/theme-chalk/icon.css'; //element-ui 图标库
 import "element-ui/lib/theme-chalk/index.css"
 import './utils/dialog/dialog'
 
+
 // 控制台生产信息提示是否开启
 Vue.config.productionTip = false;
 
 //定义全局引用变量
-Vue.prototype.$axios = axios; 
+// Vue.prototype.$axios = axios; 
+Vue.prototype.$qs = qs;
 
 Vue.prototype.BASE_API = axios.defaults.baseURL;
 

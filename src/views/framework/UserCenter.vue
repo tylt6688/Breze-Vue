@@ -286,8 +286,8 @@
           loginwarn = 1;
         }
         let params = {
-          loginwarn:loginwarn,
-          id:this.userInfo.id
+          loginwarn: loginwarn,
+          id: this.userInfo.id
         }
         userCenter.changeLoginWarn(qs.stringify(params)).then((res) => {
           this.$message({

@@ -12,7 +12,7 @@ export default {
     // 获取当前登录用户信息
     getUserInfo() {
         return axios({
-            url: "/sys/user/getuserinfo",
+            url: "/sys/user/get_userinfo",
             method: 'get'
         })
     },
@@ -26,7 +26,7 @@ export default {
     // 编辑资料
     submitUserInfoForm(editForm) {
         return axios({
-            url: "/sys/user/updateuserinfo",
+            url: "/sys/user/update_userinfo",
             method: 'post',
             data: editForm
         })
@@ -34,7 +34,7 @@ export default {
     // 头像上传
     uploadAvatar(formData) {
         return axios({
-            url: "/sys/user/updateavatar",
+            url: "/sys/user/update_avatar",
             method: 'post',
             data: formData,
             headers: {
@@ -45,15 +45,15 @@ export default {
     // 修改密码
     submitPassForm(passForm) {
         return axios({
-            url: "/sys/user/updatepassword",
+            url: "/sys/user/update_password",
             method: 'post',
             data: passForm,
         })
     },
-     // 重置密码
-     repassPassword(id) {
+    // 重置密码
+    repassPassword(id) {
         return axios({
-            url: "/sys/user/resertpassword",
+            url: "/sys/user/reseat_password",
             method: 'post',
             data: id,
         })
@@ -61,7 +61,7 @@ export default {
     // 用户自定义上传Excel
     uploadExcel(formData) {
         return axios({
-            url: "/sys/user/uploadexcel",
+            url: "/sys/user/upload_excel",
             method: 'post',
             data: formData,
             headers: {
@@ -77,16 +77,16 @@ export default {
             responseType: "arraybuffer",
         })
     },
-        // 所有用户模板Excel
-        exportExcel() {
-            return axios({
-                url: "/sys/user/export_excel",
-                method: 'get',
-                responseType: "arraybuffer",
-            })
-        },
+    // 所有用户模板Excel
+    exportExcel() {
+        return axios({
+            url: "/sys/user/export_excel",
+            method: 'get',
+            responseType: "arraybuffer",
+        })
+    },
     // 增加或修改用户 
-    submitForm(editForm,id) {
+    submitForm(editForm, id) {
         return axios({
             url: "/sys/user/" + (id ? "update" : "insert"),
             method: 'post',
@@ -101,22 +101,23 @@ export default {
             data: ids
         })
     },
-   // 批量分配角色
-   rolemoreHandle(roleIds,userIds) {
+    // 分配角色
+    submitRoleHandle(roleIds, id) {
         return axios({
-            url: "/sys/user/rolepermmore?userIds=" + userIds,
+            url: "/sys/user/role_perm/" + id,
             method: 'post',
             data: roleIds
         })
     },
-   // 分配角色
-   submitRoleHandle(roleIds,id) {
+    // 批量分配角色
+    roleMoreHandle(roleIds, userIds) {
         return axios({
-            url: "/sys/user/roleperm/" + id,
+            url: "/sys/user/role_more_perm?userIds=" + userIds,
             method: 'post',
             data: roleIds
         })
     },
+
     // 退出登录 
     logout() {
         return axios({

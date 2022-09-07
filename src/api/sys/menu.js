@@ -8,7 +8,7 @@ export default {
             method: 'get'
         })
     },
-    // 新增菜单
+    // 新增或修改菜单
     submitMenuForm(editForm, id) {
         return axios({
             url: '/sys/menu/' + (id ? "update" : "insert"),
@@ -26,8 +26,11 @@ export default {
     // 删除菜单 Start
     delHandle(id) {
         return axios({
-            url: '/sys/menu/delete/' + id,
-            method: 'post'
+            url: '/sys/menu/delete',
+            method: 'post',
+            params: {
+                id: id
+            }
         })
     },
 }

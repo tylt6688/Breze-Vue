@@ -35,7 +35,7 @@
                       <el-form-item label="验证码" prop="code" style="width: 380px">
                         <el-input v-model="loginForm.code" style="width: 172px; float: left" maxlength="5"
                           placeholder="请输入验证码"></el-input>
-                        <el-image :src="kaptchaImg" class="kaptchaImg" @click="getKaptcha"></el-image>
+                        <el-image :src="kaptchaImg" class="kaptcha_img" @click="getKaptcha"></el-image>
                       </el-form-item>
                       <el-form-item>
                         <el-button type="primary" round @click="submitForm('loginForm')">立即登录</el-button>
@@ -78,7 +78,6 @@
 </template>
 
 <script>
-  import qs from "qs";
   import login from "@/api/login/login";
   export default {
     name: "Login",
@@ -134,10 +133,10 @@
 
       // 立即登录 Start
       submitForm(formName) {
-        console.log("stringify", qs.stringify(this.loginForm));
+        console.log("stringify", this.$qs.stringify(this.loginForm));
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            login.submitFormLogin(qs.stringify(this.loginForm)).then((res) => {
+            login.submitFormLogin(this.$qs.stringify(this.loginForm)).then((res) => {
                 const jwt = res.headers["authorization"];
                 this.$store.commit("SET_TOKEN", jwt);
                 this.$router.push("/index");
@@ -179,7 +178,7 @@
     height: 260px;
   }
 
-  .kaptchaImg {
+  .kaptcha_img {
     float: left;
     margin-left: 8px;
     border-radius: 4px;
