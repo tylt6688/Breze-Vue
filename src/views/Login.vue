@@ -118,7 +118,8 @@
         },
       };
     },
-    created() {
+
+    mounted() {
       this.getKaptcha();
     },
     methods: {
