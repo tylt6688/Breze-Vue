@@ -1,5 +1,5 @@
 <template>
-  <!-- TODO 登录 -->
+  <!-- 登录 -->
   <el-container>
     <el-header>
       <!-- <strong style="font-size: 35px; font-family: 楷体">欢 迎 来 到 清 枫 一 体 化 权 限 管 理 平 台</strong> -->
@@ -21,7 +21,7 @@
             <div slot="header" class="clearfix">
               <el-tabs>
                 <el-tag type="info">科技拥抱生活🙆‍♂️</el-tag>
-                <!-- TODO 账户密码登录面板 -->
+                <!-- 账户密码登录面板 -->
                 <el-tab-pane label="密码登录">
                   <div class="login">
                     <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
@@ -44,7 +44,7 @@
                     </el-form>
                   </div>
                 </el-tab-pane>
-                <!-- TODO 手机号验证码登录面板 -->
+                <!-- 手机号验证码登录面板 -->
                 <el-tab-pane label="免密登录">
                   <div class="login">
                     <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
@@ -62,7 +62,7 @@
                     </el-form>
                   </div>
                 </el-tab-pane>
-                <!-- TODO 微信扫码登录面板 -->
+                <!-- 微信扫码登录面板 -->
                 <el-tab-pane label="微信登录">
                   <el-image style="width: 50%; height: 50%" :src="require('@/assets/blog.png')"></el-image>
                 </el-tab-pane>
@@ -72,7 +72,7 @@
         </el-col>
       </el-row>
     </el-main>
-    <!-- TODO 网站底部信息 -->
+    <!-- 网站底部信息 -->
     <el-footer> 🐱‍🏍Copyright © 2021-2022 青枫网络工作室 All Rights Reserved.</el-footer>
   </el-container>
 </template>
@@ -152,7 +152,8 @@
         });
       },
       //  立即登录 End
-      // TODO 重置表单 Start
+      
+      //  重置表单 Start
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },

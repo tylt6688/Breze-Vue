@@ -43,6 +43,9 @@
       <el-table-column prop="createTime" label="创建时间" align="center" :formatter="formatDate" show-overflow-tooltip>
       </el-table-column>
 
+      <el-table-column prop="updateTime" label="更新时间" align="center" :formatter="formatDate" show-overflow-tooltip>
+      </el-table-column>
+
       <el-table-column prop="icon" label="操作">
         <template slot-scope="scope">
           <el-button type="text" @click="permHandle(scope.row.id)" icon="el-icon-thumb">分配权限
@@ -98,11 +101,11 @@
     <el-dialog title="分配权限" :visible.sync="permDialogVisible" width="600px">
       <el-form :model="permForm">
         <el-form-item label="父子关联">
-          <el-switch v-model="checkStrictly" inactive-color="#13ce66" active-color="#ff4949">
+          <el-switch v-model="checkStrictly" active-color="#13ce66" inactive-color="#ff4949" >
           </el-switch>
         </el-form-item>
         <el-tree :data="permTreeData" accordion show-checkbox ref="permTree" node-key="id"
-          :check-strictly="checkStrictly" :props="defaultProps">
+          :check-strictly="!checkStrictly" :props="defaultProps">
         </el-tree>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -263,7 +266,7 @@
         });
       },
       editHandle(id) {
-        role.editHandle(id).then((res) => {
+        role.roleInfo(id).then((res) => {
           this.editForm = res.data.result.data;
           this.dialogVisible = true;
         });

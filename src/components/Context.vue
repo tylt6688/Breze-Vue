@@ -1,5 +1,5 @@
 <template>
-    <!--TODO 首页管理数据展示组件 -->
+    <!-- 首页管理数据展示组件 -->
     <el-main>
         <el-table ref="departmentTable" :data="tableData" tooltip-effect="dark" border stripe>
 
@@ -33,7 +33,7 @@
             }
         },
         methods: {
-            // TODO 格式化日期时间 Start
+            // 格式化日期时间 Start
             formatDate(row, column) {
                 let data = row[column.property]
                 if (data == null) {

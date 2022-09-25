@@ -1,8 +1,8 @@
 <template>
   <el-container>
-    <!-- TODO 侧边菜单栏 -->
+    <!-- 侧边菜单栏 -->
     <el-aside width="auto">
-      <!-- TODO 开启滚动，避免出现滚动条 -->
+      <!-- 开启滚动，避免出现滚动条 -->
       <el-scrollbar>
         <SideMenu></SideMenu>
       </el-scrollbar>
@@ -20,7 +20,7 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-user-solid">
-                <router-link to="/userCenter" tag="span">个人中心</router-link>
+                <router-link to="/user_center" tag="span">个人中心</router-link>
               </el-dropdown-item>
               <el-dropdown-item icon="el-icon-switch-button" divided @click.native="logout">退出</el-dropdown-item>
             </el-dropdown-menu>
@@ -41,19 +41,19 @@
         </div>
       </el-header>
 
-      <!--TODO 此处class关联返回顶部操作，禁止删除 -->
+      <!-- 此处class关联返回顶部操作，禁止删除 -->
       <el-main class="container">
-        <!--TODO 将tabs置顶 -->
+        <!-- 将tabs置顶 -->
         <Tabs class="tabs"></Tabs>
 
         <div style="margin: 0 1rem">
-          <!--TODO 加入折叠动画效果 -->
-          <el-collapse-transition>
-            <!-- TODO 中间核心界面 -->
+          <!-- 暂时关闭折叠动画效果 -->
+          <!-- <el-collapse-transition> -->
+            <!-- 中间核心界面 -->
             <router-view></router-view>
-          </el-collapse-transition>
+          <!-- </el-collapse-transition> -->
         </div>
-        <!--TODO 全局内容返回顶部锚点 -->
+        <!-- 全局内容返回顶部锚点 -->
         <el-backtop target=".container" :visibility-height="50" :bottom="30" :right="50"></el-backtop>
       </el-main>
 
@@ -104,7 +104,7 @@
     },
 
     methods: {
-      //TODO 全屏方法 Start
+      // 全屏方法 Start
       fullScreen() {
         if (!screenfull.isEnabled) {
           this.$message({
@@ -120,7 +120,7 @@
       },
       // 全屏方法 End
 
-      //TODO 局部刷新头像 Start
+      // 局部刷新头像 Start
       reloadAvatar() {
         this.getUserInfo();
         this.isChangeAvatar = false;
@@ -128,7 +128,7 @@
       },
       // 局部刷新头像 End
 
-      //TODO 获取当前登录用户信息 Start
+      // 获取当前登录用户信息 Start
       getUserInfo() {
         user.getUserInfo().then((res) => {
           this.userInfo = res.data.result.data.result;
@@ -136,7 +136,7 @@
       },
       // 获取当前登录用户信息 End
 
-      //TODO 退出登录 Start
+      // 退出登录 Start
       logout() {
         user.logout().then((res) => {
           localStorage.clear();

@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <el-tabs tab-position="top" style="height: 100%; text-align: center">
-      <!-- TODO个人资料面板 -->
+      <!-- 个人资料面板 -->
       <el-tab-pane label="用户信息">
         <el-upload class="avatar-uploader" action="url" :show-file-list="false" :http-request="uploadAvatar"
           :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
@@ -69,7 +69,14 @@
               <i class="el-icon-wallet"></i>
               所属部门
             </template>
-            {{ userInfo.department }}
+            {{ userInfo.group }}
+          </el-descriptions-item>
+          <el-descriptions-item>
+            <template slot="label">
+              <i class="el-icon-price-tag"></i>
+              担任岗位
+            </template>
+            {{ userInfo.job }}
           </el-descriptions-item>
 
           <el-descriptions-item>

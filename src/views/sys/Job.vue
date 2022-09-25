@@ -2,14 +2,13 @@
   <div class="page">
     <el-form :inline="true">
       <el-form-item>
-        <el-button type="primary" icon="el-icon-folder-add">新增部门</el-button>
-        <el-button type="primary" icon="el-icon-plus">新增团队</el-button>
+        <el-button type="primary" icon="el-icon-plus">新增岗位</el-button>
       </el-form-item>
     </el-form>
 
     <el-table highlight-current-row :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-      <el-table-column prop="name" label="名称" sortable width="180">
+      <el-table-column prop="name" label="岗位名称" sortable width="180">
       </el-table-column>
 
       <el-table-column prop="state" label="状态" align="center" width="160">
@@ -20,16 +19,14 @@
       </el-table-column>
 
       <el-table-column prop="remark" label="备注"> </el-table-column>
+
       <el-table-column prop="createTime" label="创建时间"> </el-table-column>
 
       <el-table-column prop="updateTime" label="更新时间"> </el-table-column>
 
-      <el-table-column prop="icon" label="操作" width="250px">
-
+      <el-table-column prop="icon" label="操作" width="150px">
         <template slot-scope="scope">
-          <el-button type="text" @click="editHandle(scope.row.id)"><i class="el-icon-connection"></i> 关联职位</el-button>
-
-          <el-divider direction="vertical"></el-divider>
+     
           <el-button type="text" @click="editHandle(scope.row.id)"><i class="el-icon-edit"></i> 编辑</el-button>
 
           <el-divider direction="vertical"></el-divider>
@@ -46,9 +43,9 @@
 </template>
 
 <script>
-  import group from "@/api/sys/group";
+  import job from "@/api/sys/job";
   export default {
-    name: "Group",
+    name: "Job",
     data() {
       return {
         tableData: [],
@@ -59,7 +56,7 @@
     },
     methods: {
       getStudentList() {
-        group.getGroupList().then((res) => {
+        job.getJobList().then((res) => {
           this.tableData = res.data.result.data;
         });
       },
