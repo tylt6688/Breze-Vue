@@ -64,20 +64,7 @@
             </template>
             {{ userInfo.city }}
           </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-wallet"></i>
-              所属部门
-            </template>
-            {{ userInfo.group }}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-price-tag"></i>
-              担任岗位
-            </template>
-            {{ userInfo.job }}
-          </el-descriptions-item>
+
 
           <el-descriptions-item>
             <template slot="label">
@@ -95,13 +82,32 @@
             {{ formatDate(userInfo.loginTime) }}
           </el-descriptions-item>
 
+          
+
+
           <template slot="extra" :slot-scope="userInfo">
             <el-button @click="editUserInfo(userInfo.id)" type="primary" size="small">编辑资料</el-button>
           </template>
         </el-descriptions>
+
+        <el-descriptions title="所任职位" direction="vertical" :column="1" style="margin: 0 auto; width: 70%" border>
+          
+          <el-descriptions-item >
+            <template slot="label">
+              <i class="el-icon-wallet"></i>
+              部门岗位
+            </template>
+            <!-- 这里一定要加作用域插槽: -->
+            <template :slot-scope="userInfo">
+              <el-tag style="margin: 3px" size="small" v-for="(item, index) in userInfo.groupJob" :key="index">
+                {{ item.groupName+"-"+item.jobName }}</el-tag>
+              </template>
+          </el-descriptions-item>
+       
+        </el-descriptions>
       </el-tab-pane>
 
-      <!-- TODO修改密码面板 -->
+      <!-- 修改密码面板 -->
       <el-tab-pane label="修改密码">
         <h2>您好！{{ userInfo.trueName }}</h2>
         <el-form :model="passForm" status-icon :rules="rules" ref="passForm" label-width="100px">
@@ -120,7 +126,7 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <!-- TODO安全隐私面板 -->
+      <!-- 安全隐私面板 -->
       <el-tab-pane label="安全隐私">
         <el-form ref="form" label-width="100px">
           <el-form-item label="登录邮件提醒">
@@ -130,7 +136,7 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <!-- TODO意见反馈面板 -->
+      <!-- 意见反馈面板 -->
       <el-tab-pane label="意见反馈">
         <el-form ref="elForm" :model="suggformData" :rules="suggrules" size="medium" label-width="100px">
           <el-row>
@@ -152,7 +158,7 @@
       </el-tab-pane>
     </el-tabs>
 
-    <!--TODO编辑个人信息模态框-->
+    <!--编辑个人信息模态框-->
     <el-dialog v-dialogDrag title="个人信息" :visible.sync="dialogVisible" width="600px" :before-close="handleClose">
       <el-form :model="editForm" :rules="editFormRules" ref="editForm">
         <el-form-item label="唯一用户名" prop="username" label-width="100px">

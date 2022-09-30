@@ -137,7 +137,9 @@
         current: 1,
 
         dialogVisible: false,
-        editForm: {},
+        editForm: {
+          state: 0
+        },
         tableData: [],
 
         editFormRules: {
@@ -151,7 +153,7 @@
             message: "请输入唯一编码",
             trigger: "blur",
           }, ],
-          statu: [{
+          state: [{
             required: true,
             message: "请选择状态",
             trigger: "blur",
