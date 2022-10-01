@@ -134,10 +134,10 @@
 
       // 立即登录 Start
       submitForm(formName) {
-        console.log("stringify", this.$qs.stringify(this.loginForm));
+        console.log("stringify", this.qs.stringify(this.loginForm));
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            login.submitFormLogin(this.$qs.stringify(this.loginForm)).then((res) => {
+            login.submitFormLogin(this.qs.stringify(this.loginForm)).then((res) => {
                 const jwt = res.headers["authorization"];
                 this.$store.commit("SET_TOKEN", jwt);
                 this.$router.push("/index");
