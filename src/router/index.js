@@ -29,7 +29,7 @@ const routes = [{
         },
       },
       {
-        path: '/userCenter',
+        path: '/user_center',
         name: 'UserCenter',
         component: () => import('../views/framework/UserCenter.vue'),
         meta: {

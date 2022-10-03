@@ -481,13 +481,13 @@
       },
       // 批量分配角色 End
 
-      // 回显角色 Start
+      // 根据用户id回显角色信息 Start
       roleHandle(id) {
         this.roleDialogFormVisible = true;
         user.editUserInfo(id).then((res) => {
           this.roleForm = res.data.result.data;
           let roleIds = [];
-          res.data.result.data.roles.forEach((row) => {
+          this.roleForm.roles.forEach((row) => {
             roleIds.push(row.id);
           });
           this.$refs.roleTree.setCheckedKeys(roleIds);

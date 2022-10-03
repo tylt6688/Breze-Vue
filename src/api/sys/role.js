@@ -18,7 +18,7 @@ export default {
         })
     },
 
-    editHandle(id) {
+    roleInfo(id) {
         return axios({
             url: "/sys/role/info/" + id,
             method: 'get'
