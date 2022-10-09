@@ -110,7 +110,6 @@ router.beforeEach((to, from, next) => {
       store.commit("setPermList", res.data.result.data.authority);
       // 动态绑定路由
       let newRoutes = router.options.routes;
-
       res.data.result.data.nav.forEach(menu => {
 
         if (menu.children) {
@@ -154,10 +153,31 @@ const menuToRoute = (menu) => {
     }
   }
   route.component = () => import('@/views/' + menu.component + '.vue')
-
   return route
 }
 
+// 首页管理模块路由
+async function loadModeRoutes(){
+  let modeRoutes = []
+  let res = await axios.get("/breze/portal/modeCard/select");
+  let modeList = res.data.result.data;
 
+  modeList.forEach(mode =>{
+      modeRoutes.push(
+        {
+          name: mode.modeComponent,
+          path: mode.modeLink,
+          meta:{
+            title: mode.modeTitle
+          },
+          component: () => import('@/views/'+mode.modeComponent+'.vue')
+        }
+      )
+  })
+  modeRoutes.forEach(route=>{
+    router.addRoute('Home',route);
+  })
+}
+loadModeRoutes()
 
 export default router

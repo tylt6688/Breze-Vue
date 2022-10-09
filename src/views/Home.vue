@@ -163,7 +163,9 @@
     z-index: 10;
     background-color: #ffffff;
   }
-
+  .tabs >>> .el-tabs__item:nth-child(1) span{
+    display: none;
+}
   .el-container {
     padding: 0;
     margin: 0 auto;
