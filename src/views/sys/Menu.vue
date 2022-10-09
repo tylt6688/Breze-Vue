@@ -171,6 +171,7 @@
         tableData: [],
         editForm: {
           orderNum: 1,
+          state: 0
         },
 
         dialogVisible: false,

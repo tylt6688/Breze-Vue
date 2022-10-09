@@ -46,7 +46,7 @@
       <el-table-column prop="updateTime" label="更新时间" align="center" :formatter="formatDate" show-overflow-tooltip>
       </el-table-column>
 
-      <el-table-column prop="icon" label="操作">
+      <el-table-column prop="icon" label="操作" width="240">
         <template slot-scope="scope">
           <el-button type="text" @click="permHandle(scope.row.id)" icon="el-icon-thumb">分配权限
           </el-button>

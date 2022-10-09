@@ -89,8 +89,8 @@
         loginForm: {
           username: "",
           password: "",
-          code: "",
           key: "",
+          code: ""
         },
         rules: {
           username: [{

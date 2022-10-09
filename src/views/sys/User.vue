@@ -215,7 +215,9 @@
         size: 10,
         current: 1,
 
-        editForm: {},
+        editForm: {
+          state: 0
+        },
         roleForm: {},
 
         tableData: [],
