@@ -17,6 +17,9 @@
       created() {
        
       },
+      mounted() {
+    
+    },
       methods: {
         // 时间格式化 Start
         formatDate(row, column) {
