@@ -9,6 +9,12 @@ export default {
       params: params
     })
   },
+  findDataById(id){
+    return axios({
+      url: '/breze/portal/modeCard/findDataById/'+id,
+      method: 'get',
+    })
+  },
   // 新增或修改菜单
   submitModeForm(editForm, id) {
     return axios({
@@ -17,7 +23,7 @@ export default {
       data: editForm
     })
   },
-  // 新增或修改菜单
+  // 删除菜单
   deleteModeCard(id) {
     return axios({
       url: '/breze/portal/modeCard/deleteById/' + id,

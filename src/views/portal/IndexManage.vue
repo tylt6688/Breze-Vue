@@ -19,7 +19,7 @@
 
             <!-- 模块显示内容 Start -->
             <el-main>
-                <el-row :gutter="20">
+                <el-row class="main-row" :gutter="20" type="flex" justify="start">
                     <el-col :span="6" class="card-col" v-for="(item,index) in modeCardList" :key="index">
                         <el-card class="box-card" shadow="hover">
                             <div slot="header">
@@ -151,8 +151,10 @@
 
             // 新增模块 
             submitForm(formName) {
+                console.log(this.editForm)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        console.log(this.editForm)
                         modeCard.submitModeForm(this.editForm, this.editForm.id).then((res) => {
                             this.$message({
                                 showClose: true,
@@ -185,8 +187,8 @@
                 switch (val.flag) {
                     case 'edit':
                         this.dialogModeVisible = true;
-                        this.editForm = val.command;
                         this.dialogTitle = "编辑模块"
+                        this.findModeInfo(val.command.id);
                         break;
                     case 'delete':
                         this.deleteModeCard(val.command)
@@ -195,7 +197,11 @@
                         break;
                 }
             },
-            
+            findModeInfo(id){
+                modeCard.findDataById(id).then(res => {
+                    this.editForm = res.data.result.data;
+                })
+            },
             // 删除单个数据 
             deleteModeCard(item) {
                 this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
@@ -259,7 +265,9 @@
         width: 80%;
         border-radius: 25px;
     }
-
+    .main-row{
+        flex-wrap:wrap
+    }
     .card-col {
         margin: 2% 0;
     }
