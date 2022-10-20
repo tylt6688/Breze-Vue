@@ -3,298 +3,278 @@
     <el-header>
       <el-form :inline="true">
         <el-form-item>
-          <el-input v-model="searchForm.titleName" placeholder="请输入名称" clearable>
-            <el-button slot="append" @click="getNameList" icon="el-icon-search">搜索</el-button>
+          <el-input v-model="searchForm.titleName" placeholder="请输入标题名称" clearable>
+            <el-button slot="append" @click="getNavbarPage(0)" icon="el-icon-search">搜索</el-button>
           </el-input>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="navbarDialogVisible = true"  icon="el-icon-picture-outline">
+          <el-button type="primary" @click="insertNavbar()" icon="el-icon-plus">
             添加导航
           </el-button>
         </el-form-item>
-       
+
       </el-form>
     </el-header>
     <el-main>
-        
-        <el-table ref="navbarTable" :data="navbars" tooltip-effect="dark" border stripe table-lauout="auto">
-          <el-table-column prop="flag" label="导航栏类型" >
-          </el-table-column>
-          <el-table-column prop="titleName" label="标题名称" >
-          </el-table-column>
-          <el-table-column prop="titleUrl" label="跳转路径" >
-          </el-table-column>
-          <el-table-column prop="parentId" label="父id">
-          </el-table-column>
-          <el-table-column prop="icon" label="操作" width="150">
-            <template slot-scope="scope">
-              <el-button type="text" @click="editHandle(scope.row.id)" icon="el-icon-edit">编辑</el-button>
-              <el-divider direction="vertical"></el-divider>
-              <template>
-                <el-popconfirm title="确定删除此内容吗?" @confirm="delHandle(scope.row.id)">
-                  <el-button type="text" slot="reference" icon="el-icon-delete">
-                    删除
-                  </el-button>
-                </el-popconfirm>
-              </template>
+      <el-table :data="navbars" style="width: 100%" row-key="id" ref="table" border lazy :load="getChildrens"
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+        <!-- <el-table-column type="index" width="50">
+        </el-table-column> -->
+        <el-table-column prop="titleName" label="标题名称">
+        </el-table-column>
+        <el-table-column prop="flag" label="导航栏类型">
+          <template slot-scope="scope">
+            <div v-if="scope.row.flag === 0">头部导航</div>
+            <div v-if="scope.row.flag === 1">尾部导航</div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="orderNum" label="导航序号">
+        </el-table-column>
+        <el-table-column prop="titleUrl" label="链接地址">
+        </el-table-column>
+        <el-table-column prop="icon" label="操作" width="150">
+          <template slot-scope="scope">
+            <el-button type="text" @click="editFormData(scope.row)" icon="el-icon-edit">编辑</el-button>
+            <el-divider direction="vertical"></el-divider>
+            <template>
+              <el-popconfirm title="确定删除此内容吗?" @confirm="delHandle(scope.row.id)">
+                <el-button type="text" slot="reference" icon="el-icon-delete">
+                  删除
+                </el-button>
+              </el-popconfirm>
             </template>
-          </el-table-column>
-        </el-table>
-      </el-main> 
-      <!-- 分页 -->
-      <div class="block">
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="current"
-                :page-sizes="[2, 5, 10, 20]"
-                :page-size="size"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="total">
-            </el-pagination>
-        </div>
-  <!--编辑主体内容模态框 Start-->
-  <el-dialog title="编辑导航内容" :visible.sync="dialogVisible" width="600px" :before-close="handleClose">
-    <el-form ref="editForm" :model="editForm" :rules="editFormRules">
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-main>
+    <!-- 分页 -->
 
-    
-      <el-form-item label="导航栏类型" prop="flag" label-width="100px">
-        <el-input v-model="editForm.flag" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="导航栏名称" prop="titleName" label-width="100px">
-        <el-input v-model="editForm.titleName" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="跳转路径" prop="titleUrl" label-width="100px">
-        <el-input v-model="editForm.titleUrl" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="父id" prop="parentId" label-width="100px">
-        <el-input v-model="editForm.parentId" autocomplete="off"></el-input>
-      </el-form-item>
-    
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm('editForm')">确 定</el-button>
-      <el-button @click="resetForm('editForm')">取 消</el-button>
-    </div>
-  </el-dialog>
-  <!--编辑主体内容模态框 End-->
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="current"
+      :page-sizes="[2, 5, 10, 20]" :page-size="size" layout="total, sizes, prev, pager, next, jumper" :total="total">
+    </el-pagination>
 
-  <!-- 上传文件模态框 Start -->
-  <el-dialog title="添加主页内容" :visible.sync="navbarDialogVisible" width="600px" :before-close="maincontentMaincontent">
-    <el-form>
-      <el-form-item label="导航栏类型" label-width="100px">
-        <el-input style= "width: 80%" block placeholder="请输入" :autosize="{ minRows: 1, maxRows: 4 }"
-          type="textarea" v-model="form.flag" autocomplete="off">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="导航栏名称" label-width="100px">
-        <el-input style= "width: 80%" block placeholder="请输入" :autosize="{ minRows: 1, maxRows: 4 }"
-          type="textarea" v-model="form.titleName" autocomplete="off">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="跳转路径" label-width="100px">
-        <el-input style= "width: 80%" block placeholder="请输入" :autosize="{ minRows: 1, maxRows: 4 }"
-          type="textarea" v-model="form.titleUrl" autocomplete="off">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="父id" label-width="100px">
-        <el-input style= "width: 80%" block placeholder="请输入" :autosize="{ minRows: 1, maxRows: 4 }"
-          type="textarea" v-model="form.parentId" autocomplete="off">
-        </el-input>
-      </el-form-item>
-      
-    </el-form>
+    <!--编辑主体内容模态框 Start-->
+    <el-dialog :title="title" :visible.sync="dialogVisible" width="600px" :before-close="handleClose">
+      <el-form ref="editForm" :model="editForm" :rules="editFormRules">
+        <el-form-item label="导航栏名称" prop="titleName" label-width="100px">
+          <el-input v-model="editForm.titleName" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="导航栏类型" label-width="100px" prop="flag">
+          <el-select v-model="editForm.flag" placeholder="请选择导航栏类型">
+            <el-option v-for="item in flagValue" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        
+        <el-form-item label="导航序号" prop="titleUrl" label-width="100px">
+          <el-input v-model="editForm.orderNum" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="跳转路径" prop="titleUrl" label-width="100px">
+          <el-input v-model="editForm.titleUrl" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="上一级菜单" label-width="100px" prop="parentId">
+          <el-select v-model="editForm.parentId" placeholder="请选择上一级菜单">
+            <el-option v-for="item in this.parentSelectorList" :key="item.id" :label="item.titleName" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
 
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitnavbar">添 加</el-button>
-      <el-button @click="navbarDialogVisible = false">取 消</el-button>
-    </div>
-  </el-dialog>
-  <!-- 上传文件模态框 End -->
-</div>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm('editForm')">确 定</el-button>
+        <el-button @click="resetForm('editForm')">取 消</el-button>
+      </div>
+    </el-dialog>
+    <!--编辑主体内容模态框 End-->
+  </div>
 
 </template>
 
 <script>
-  
   import navbar from "@/api/portal/navbar";
-export default {
-  name: "MaincontentManage",
-  data() {
-    return {
-      // 分页数据
-      total: 0,
-      current: 1,
-      size: 10,
+  export default {
+    name: "Navbar",
+    data() {
+      return {
+        // 分页数据
+        total: 0,
+        current: 1,
+        size: 10,
 
-      searchForm: {
+        searchForm: {
           titleName: ""
         },
-      imgalt: "",
-      
-      dialogVisible: false,
-      navbarDialogVisible: false,
 
-      titleName:"",
-      flag:"",
-      titleUrl:"",
-      parentId:"",
-      
+        dialogVisible: false,
+        navbars: [],
+        editForm: {},
+        title: "",
+        //表单规则
+        editFormRules: {
+          titleName: [{
+            required: true,
+            message: "请输入标题名称",
+            trigger: "blur",
+          }, ],
+          flag: [{
+            required: true,
+            message: "请选择标题类型",
+            trigger: "change",
+          }, ],
 
-      uploadState: false,
-      form: {},
-      navbars: [],
-      editForm: {},
-      editFormRules: {
-        alt: [{
-          required: true,
-          message: "请输入图片主题",
-          trigger: "blur",
-        }, ],
-      },
-     
-    };
-  },
-  created() {},
-  mounted() {
-    this.getNameList();
-    //this.getNavbar();
-  },
-  methods: {
-
-    
-    handleSizeChange(size){
-
-       this.size=size
-       
-       this.getNameList()
-
+          titleUrl: [{
+            required: true,
+            message: "请填入链接地址",
+            trigger: "blur",
+          }, ],
+          parentId: [{
+            required: true,
+            message: "请选择上一级标题",
+            trigger: "change",
+          }, ],
+        },
+        //标题类型显示数据
+        flagValue: [{
+          value: 0,
+          label: '头部导航'
+        }, {
+          value: 1,
+          label: '尾部导航',
+        }],
+        parentSelectorList: []
+      };
     },
-    handleCurrentChange(current){
-      this.current=current
-      
-      this.getNameList()
-
+    created() {},
+    mounted() {
+      this.getNavbarPage(0);
+      this.findAllNavbar();
     },
-
-    // 获取用户列表 Start
-    getNameList() {
-       // console.log("searchForm", this.searchForm.titleName);
+    methods: {
+      // 获取导航菜单列表 Start
+      getNavbarPage(id) {
         let params = {
           titleName: this.searchForm.titleName,
           current: this.current,
           size: this.size,
+          parentId: id,
         };
-        navbar.getNameList(params).then((res) => {
-          this.navbars=res.data.result.data.records
-          this.total=res.data.result.data.total
-          this.size = res.data.result.data.size;
-          this.current = res.data.result.data.current;
-          this.total = res.data.result.data.total;
+        navbar.getNavbarPage(params).then((res) => {
+          this.navbars = res.data.result.data.records
+          this.total = res.data.result.data.total
         });
       },
+      // 获取导航菜单列表 End
 
-      // 获取用户列表 End
-    // 获取内容 Start
-    getNavbar() {
-      navbar.getNavbarInfo().then((res) => {
-        this.navbars = res.data.result.data;
-      });
-    },
-    // 获取内容 End
-
-    // 编辑内容 Start
-    editHandle(id) { 
-      
-      navbar.editHandle(id).then((res) => {
-        this.editForm = res.data.result.data;
+      //获取子节点
+      getChildrens(tree, treeNode, resolve) {
+        // 懒加载树级
+        let params = {
+          titleName: this.searchForm.titleName,
+          current: this.current,
+          size: this.size,
+          parentId: tree.id,
+        };
+        navbar.getNavbarPage(params).then((res) => {
+          console.log("chiuld", res.data.result.data.records);
+          resolve(res.data.result.data.records);
+        });
+      },
+      //查询所有数据的标题和id
+      findAllNavbar() {
+        navbar.findAllNavbar().then(res => {
+          this.parentSelectorList = res.data.result.data;
+          this.parentSelectorList.push({
+            id: 0,
+            titleName: '无'
+          })
+        })
+      },
+      insertNavbar(){
+        this.title = "新增导航菜单";
         this.dialogVisible = true;
-       
-      });
-    },
-    // 编辑内容 End
-
-    // 取消编辑，重置模态框内容 Start
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.dialogVisible = false;
-      this.editForm = {};
-    },
-    handleClose() {
-      this.resetForm("editForm");
-    },
-    // 取消编辑，重置模态框内容 End
-
-    
-      
-
-    //添加数据 start
-    submitnavbar() {
-      navbar.uploadNavbar(this.form).then((res) => {
-        this.navbarDialogVisible = false;
-        this.$message({
-          showClose: true,
-          duration: 2000,
-          message: "上传成功",
-          type: "success",
-          onClose: () => {
-            this.getNavbar();
-          },
-        });
-      });
-      
-    },
-    // 用户添加数据 End
-
-    // 新增或编辑Banner图 Start
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          navbar.submitNavbarForm(this.editForm).then((res) => {
-            this.$message({
-              showClose: true,
-              duration: 2000,
-              message: "编辑成功",
-              type: "success",
-              onClose: () => {
-                this.getNavbar();
-              },
+      },
+      editFormData(row) {
+          this.title = "编辑导航菜单"
+          this.dialogVisible = true;
+          navbar.getNavbarInfo(row.id).then(res => {
+            console.log(typeof res.data.result.data.flag);
+            this.editForm = res.data.result.data;
+          })
+  
+      },
+      // 新增或编辑Banner图 Start
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            console.log("editForm",this.editForm)
+            navbar.submitNavbarForm(this.editForm, this.editForm.id).then((res) => {
+              this.$message({
+                showClose: true,
+                duration: 2000,
+                message: "操作成功",
+                type: "success",
+                onClose: () => {
+                  this.getNavbarPage(0);
+                },
+              });
+              this.handleClose();
             });
-            this.dialogVisible = false;
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    // 新增或编辑Banner图 End
-
-    // 删除内容 Start
-    delHandle(id) {
-      navbar.delHandleInfo(id).then((res) => {
-        this.$message({
-          showClose: true,
-          duration: 2000,
-          message: "删除成功",
-          type: "success",
-          onClose: () => {
-            this.getNavbar();
-          },
+          } else {
+            console.log("error submit!!");
+            return false;
+          }
         });
-      });
-    },
-    // 删除内容 End
+      },
+      // 新增或编辑Banner图 End
 
-    maincontentMaincontent() {
-      this.navbarDialogVisible = false;
+      // 删除内容 Start
+      delHandle(id) {
+        navbar.delHandleInfo(id).then((res) => {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            message: "删除成功",
+            type: "success",
+            onClose: () => {
+              this.getNavbarPage(0);
+            },
+          });
+        });
+      },
+      // 删除内容 End
+
+      // 取消编辑，重置模态框内容 Start
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+        this.dialogVisible = false;
+        this.editForm = {};
+      },
+      handleClose() {
+        this.resetForm("editForm");
+        this.dialogVisible = false;
+
+      },
+      // 取消编辑，重置模态框内容 End
+
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+        this.size = val;
+        this.getNavbarPage(0);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.current = val;
+        this.getNavbarPage(0);
+      },
+
     },
-   
-  },
-};
+  };
 </script>
 
 <style scoped>
-
+  .el-pagination {
+    float: right;
+    margin-top: 22px;
+  }
 </style>

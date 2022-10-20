@@ -1,28 +1,34 @@
 import axios from '@/utils/http/axios'
 
 export default {
-    // 获取
-    getNavbarInfo() {
+    // 通过Id获取
+    getNavbarInfo(id) {
         return axios({
-            url: '/breze/portal/navbar/select',
+            url: '/breze/portal/navbar/selectNavbar/'+id,
             method: 'get'
         })
     },
-    //分页
-   
-    getNameList(params) {
+    //分页查询
+    getNavbarPage(params) {
         return axios({
             url: '/breze/portal/navbar/page',
             method: 'get',
             params: params
         })
     },
-    // 编辑
-    editHandle(id) {
+    findAllNavbar(){
         return axios({
-            url: '/breze/portal/navbar/info/' + id,
-            method: 'get'
+            url: '/breze/portal/navbar/findAllData',
+            method: 'get',
         })
+    },
+    // 编辑
+    submitNavbarForm(editForm,id){
+        return axios({
+            url: '/breze/portal/navbar/' + (id ? "update" : "insert"),
+            method: 'post',
+            data: editForm
+          })
     },
     // 用户添加
     uploadNavbar(formData) {
@@ -31,14 +37,6 @@ export default {
             method: 'post',
             data: formData,
            
-        })
-    },
-    // 编辑
-    submitNavbarForm(editForm) {
-        return axios({
-            url: '/breze/portal/navbar/update',
-            method: 'post',
-            data: editForm,
         })
     },
     // 删除
