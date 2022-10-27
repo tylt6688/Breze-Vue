@@ -159,7 +159,7 @@
                             this.$message({
                                 showClose: true,
                                 duration: 2000,
-                                message: "操作成功",
+                                message: res.data.message,
                                 type: "success",
                                 onClose: () => {
                                     this.getModeCardInfo();
@@ -212,7 +212,7 @@
                     modeCard.deleteModeCard(item.id).then((res) => {
                         this.$message({
                             type: 'success',
-                            message: '删除成功!',
+                            message: res.data.message,
                             onClose: () => {
                                 this.getModeCardInfo();
                             },

@@ -1,13 +1,6 @@
 import axios from '@/utils/http/axios'
 
 export default {
-    // 通过Id获取
-    getNavbarInfo(id) {
-        return axios({
-            url: '/breze/portal/navbar/selectNavbar/'+id,
-            method: 'get'
-        })
-    },
     //分页查询
     getNavbarPage(params) {
         return axios({
@@ -16,9 +9,24 @@ export default {
             params: params
         })
     },
-    findAllNavbar(){
+    // 通过Id获取
+    getNavbarInfo(id) {
         return axios({
-            url: '/breze/portal/navbar/findAllData',
+            url: '/breze/portal/navbar/selectNavbar/'+id,
+            method: 'get'
+        })
+    },
+    // 查询所有数据
+    findAllNavbar(flag){
+        return axios({
+            url: '/breze/portal/navbar/findAllData/'+flag,
+            method: 'get',
+        })
+    },
+    // 查询所有数据条数
+    findCount(){
+        return axios({
+            url: '/breze/portal/navbar/count',
             method: 'get',
         })
     },
@@ -29,15 +37,6 @@ export default {
             method: 'post',
             data: editForm
           })
-    },
-    // 用户添加
-    uploadNavbar(formData) {
-        return axios({
-            url: '/breze/portal/navbar/insert',
-            method: 'post',
-            data: formData,
-           
-        })
     },
     // 删除
     delHandleInfo(id) {
