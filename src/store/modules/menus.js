@@ -3,8 +3,8 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
-let title = '首页';
-let name = 'Index';
+let title = '仪表盘';
+let name = 'Dashboard';
 export default {
 	state: {
 		menuList: [],

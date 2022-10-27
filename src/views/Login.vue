@@ -140,7 +140,7 @@
             login.submitFormLogin(this.qs.stringify(this.loginForm)).then((res) => {
                 const jwt = res.headers["authorization"];
                 this.$store.commit("SET_TOKEN", jwt);
-                this.$router.push("/index");
+                this.$router.push("/dashboard");
               })
               .catch((res) => {
                 this.getKaptcha();
@@ -152,7 +152,7 @@
         });
       },
       //  立即登录 End
-      
+
       //  重置表单 Start
       resetForm(formName) {
         this.$refs[formName].resetFields();

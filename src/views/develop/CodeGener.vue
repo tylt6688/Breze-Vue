@@ -35,22 +35,22 @@
                     <el-table-column type="index" label="序号" width="50" align="center">
                     </el-table-column>
 
-                    <el-table-column prop="tableName" label="表名称" width="120"> </el-table-column>
+                    <el-table-column prop="tableName" label="数据表名称"> </el-table-column>
 
-                    <el-table-column prop="remark" label="描述信息" width="180" show-overflow-tooltip>
+                    <el-table-column prop="remark" label="描述信息" show-overflow-tooltip>
                     </el-table-column>
 
-                    <el-table-column prop="entity" label="实体" width="120" show-overflow-tooltip>
+                    <el-table-column prop="entity" label="对应实体" show-overflow-tooltip>
                     </el-table-column>
 
-                    <el-table-column prop="coding" label="编码格式" width="180" align="center" :formatter="formatDate"
+                    <el-table-column prop="coding" label="编码格式" align="center" :formatter="formatDate"
                         show-overflow-tooltip>
                     </el-table-column>
-                    <el-table-column prop="createTime" label="创建时间" width="180" align="center" :formatter="formatDate"
+                    <el-table-column prop="createTime" label="创建时间"  align="center" :formatter="formatDate"
                         show-overflow-tooltip>
                     </el-table-column>
 
-                    <el-table-column prop="icon" label="操作">
+                    <el-table-column prop="icon" label="操作" width="260">
                         <template slot-scope="scope">
                             <el-button type="text" @click="editTableInfo(scope.row.id)" icon="el-icon-edit">编辑
                             </el-button>

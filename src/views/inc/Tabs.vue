@@ -1,5 +1,5 @@
 <template>
-  <!--TODO  动态增减标签页 -->
+  <!-- 动态增减标签页 -->
   <el-tabs v-model="editableTabsValue" type="card" :closable="closable" @tab-remove="removeTab" @tab-click="clickTab">
     <el-tab-pane v-for="(item, index) in editableTabs" :key="index" :label="item.title" :name="item.name">
     </el-tab-pane>
@@ -38,7 +38,7 @@
         let activeName = this.editableTabsValue;
 
         //拒绝首页tab删除
-        if (targetName === "Index") {
+        if (targetName === "Dashboard") {
           return;
         }
 
@@ -69,6 +69,3 @@
     },
   };
 </script>
-
-<style scoped>
-</style>

@@ -54,7 +54,7 @@
           <!-- </el-collapse-transition> -->
         </div>
         <!-- 全局内容返回顶部锚点 -->
-        <el-backtop target=".container" :visibility-height="50" :bottom="30" :right="50"></el-backtop>
+        <el-backtop target=".container" :visibility-height="50" :bottom="12" :right="50"></el-backtop>
       </el-main>
 
       <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer>

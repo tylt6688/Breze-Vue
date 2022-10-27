@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import axios from "../utils/http/axios";
 import store from "../store"
-import Index from "../views/Index.vue"
+import Dashboard from "../views/framework/Dashboard.vue"
 
 Vue.use(VueRouter);
 
@@ -19,13 +19,13 @@ const routes = [{
     path: '/',
     name: 'Home',
     component: () => import('../views/Home.vue'),
-    redirect: '/index',
+    redirect: '/dashboard',
     children: [{
-        path: '/index',
-        name: 'Index',
-        component: Index,
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard,
         meta: {
-          title: "首页"
+          title: "仪表盘"
         },
       },
       {

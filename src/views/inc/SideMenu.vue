@@ -9,10 +9,10 @@
         </el-menu-item>
       </el-tooltip>
 
-      <router-link to="/index">
-        <el-menu-item index="Index" @click="selectMenu({ name: 'Index', title: '首页' })">
+      <router-link to="/dashboard">
+        <el-menu-item index="Index" @click="selectMenu({ name: 'Dashboard', title: '仪表盘' })">
           <i class="el-icon-s-home"></i>
-          <span slot="title">首页</span>
+          <span slot="title">仪表盘</span>
         </el-menu-item>
       </router-link>
 
@@ -22,9 +22,9 @@
           <span>{{ menu.title }}</span>
         </template>
 
-        <!--TODO 为了防止跳转不存在的页面，此处需要创建的页面必须有生成路径，假的也行 -->
+        <!-- 为了防止跳转不存在的页面，此处需要创建的页面必须有生成路径，假的也行 -->
         <router-link v-if="item.path != undefined" :to="item.path" :key="index" v-for="(item, index) in menu.children">
-          <!--TODO  为了联动tab栏与侧边菜单栏此处索引必须是name -->
+          <!-- 为了联动tab栏与侧边菜单栏此处索引必须是name -->
           <el-menu-item :index="item.name" @click="selectMenu(item)">
             <template slot="title">
               <i :class="item.icon"></i>
