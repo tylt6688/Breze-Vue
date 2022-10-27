@@ -7,14 +7,14 @@
         </el-header>
         <el-main>
           <el-table ref="bannerTable" :data="banners" tooltip-effect="dark" border stripe>
-            <el-table-column prop="url" label="轮播图" width="300">
+            <el-table-column prop="url" label="轮播图">
               <template slot-scope="scope">
                 <el-image style="width: 100%; height: 120px" :src="scope.row.url"></el-image>
               </template>
             </el-table-column>
-            <el-table-column prop="alt" label="轮播图主题" width="200">
+            <el-table-column prop="alt" label="轮播图主题" >
             </el-table-column>
-            <el-table-column prop="orderNum" label="轮播图序号" width="100" align="center">
+            <el-table-column prop="orderNum" label="轮播图序号" align="center">
             </el-table-column>
             <el-table-column prop="url" label="轮播图地址"> </el-table-column>
             <el-table-column prop="icon" label="操作" width="150">
@@ -168,7 +168,7 @@
           this.$message({
             showClose: true,
             duration: 2000,
-            message: "上传成功",
+            message: res.data.message,
             type: "success",
             onClose: () => {
               this.getBanner();
@@ -189,7 +189,7 @@
               this.$message({
                 showClose: true,
                 duration: 2000,
-                message: "编辑成功",
+                message: res.data.message,
                 type: "success",
                 onClose: () => {
                   this.getBanner();
@@ -211,7 +211,7 @@
           this.$message({
             showClose: true,
             duration: 2000,
-            message: "删除轮播图成功",
+            message: res.data.message,
             type: "success",
             onClose: () => {
               this.getBanner();

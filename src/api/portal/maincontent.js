@@ -1,39 +1,24 @@
 import axios from '@/utils/http/axios'
 
 export default {
-    // 获取
-    getMaincontentInfo() {
-        return axios({
-            url: '/breze/portal/mainContent/select',
-            method: 'get'
-        })
-    },
-    // 编辑
-    editHandle(id) {
-        return axios({
-            url: '/breze/portal/mainContent/info/' + id,
-            method: 'get'
-        })
-    },
+   
     //分页
-    getNameList(params) {
+    getContentList(params) {
         return axios({
             url: '/breze/portal/mainContent/page',
             method: 'get',
             params: params
         })
     },
-    // 用户添加
-    uploadBanner(formData) {
+    // 通过Id查询数据
+    findContentById(id) {
         return axios({
-            url: '/breze/portal/mainContent/insert',
-            method: 'post',
-            data: formData,
-           
+            url: '/breze/portal/mainContent/info/' + id,
+            method: 'get'
         })
     },
-    // 编辑
-    submitMaincontentForm(editForm) {
+    // 编辑（没改变图片）
+    editContent(editForm) {
         return axios({
             url: '/breze/portal/mainContent/update',
             method: 'post',
@@ -41,11 +26,19 @@ export default {
         })
     },
     // 删除
-    delHandleInfo(id) {
+    delContentInfo(formData) {
         return axios({
             url: '/breze/portal/mainContent/delete' ,
             method: 'post',
-            data: id
+            data: formData
         })
     },
+    //新增或编辑(改变原图片)
+    upload(formData){
+        return axios({
+          url: `/breze/portal/mainContent/insert`,
+          method: 'post',
+          data: formData,
+        })
+      },
 }

@@ -19,8 +19,6 @@
     <el-main>
       <el-table :data="navbars" style="width: 100%" row-key="id" ref="table" border lazy :load="getChildrens"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-        <!-- <el-table-column type="index" width="50">
-        </el-table-column> -->
         <el-table-column prop="titleName" label="标题名称">
         </el-table-column>
         <el-table-column prop="flag" label="导航栏类型">
@@ -38,7 +36,7 @@
             <el-button type="text" @click="editFormData(scope.row)" icon="el-icon-edit">编辑</el-button>
             <el-divider direction="vertical"></el-divider>
             <template>
-              <el-popconfirm title="确定删除此内容吗?" @confirm="delHandle(scope.row.id)">
+              <el-popconfirm title="确定删除此内容吗?" @confirm="delHandle(scope.row)">
                 <el-button type="text" slot="reference" icon="el-icon-delete">
                   删除
                 </el-button>
@@ -61,13 +59,13 @@
           <el-input v-model="editForm.titleName" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="导航栏类型" label-width="100px" prop="flag">
-          <el-select v-model="editForm.flag" placeholder="请选择导航栏类型">
+          <el-select v-model="editForm.flag" placeholder="请选择导航栏类型" @change="currStationChange">
             <el-option v-for="item in flagValue" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        
-        <el-form-item label="导航序号" prop="titleUrl" label-width="100px">
+
+        <el-form-item label="导航序号" prop="orderNum" label-width="100px">
           <el-input v-model="editForm.orderNum" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="跳转路径" prop="titleUrl" label-width="100px">
@@ -102,6 +100,8 @@
         current: 1,
         size: 10,
 
+        count: "",
+
         searchForm: {
           titleName: ""
         },
@@ -122,7 +122,12 @@
             message: "请选择标题类型",
             trigger: "change",
           }, ],
-
+          orderNum: [{
+            required: true,
+            message: "请输入导航序号",
+            trigger: "blur",
+          }, ],
+          
           titleUrl: [{
             required: true,
             message: "请填入链接地址",
@@ -142,16 +147,16 @@
           value: 1,
           label: '尾部导航',
         }],
-        parentSelectorList: []
+        parentSelectorList: [],
       };
     },
     created() {},
     mounted() {
       this.getNavbarPage(0);
-      this.findAllNavbar();
+      this.findNavbarCount();
     },
     methods: {
-      // 获取导航菜单列表 Start
+      // 获取导航菜单列表 
       getNavbarPage(id) {
         let params = {
           titleName: this.searchForm.titleName,
@@ -164,7 +169,6 @@
           this.total = res.data.result.data.total
         });
       },
-      // 获取导航菜单列表 End
 
       //获取子节点
       getChildrens(tree, treeNode, resolve) {
@@ -176,43 +180,62 @@
           parentId: tree.id,
         };
         navbar.getNavbarPage(params).then((res) => {
-          console.log("chiuld", res.data.result.data.records);
           resolve(res.data.result.data.records);
         });
       },
-      //查询所有数据的标题和id
-      findAllNavbar() {
-        navbar.findAllNavbar().then(res => {
+      //查询指定导航类型的数据
+      findAllNavbar(flag, row) {
+        navbar.findAllNavbar(flag).then(res => {
           this.parentSelectorList = res.data.result.data;
-          this.parentSelectorList.push({
+          this.parentSelectorList.unshift({
             id: 0,
             titleName: '无'
           })
+          //删除数组中的本身数据，只操作编辑框
+          if (row) {
+            this.parentSelectorList.forEach((item, index) => {
+              if (item.id == row.id) {
+                this.parentSelectorList.splice(index, 1);
+              }
+            })
+          }
         })
       },
-      insertNavbar(){
+      // 查询所有数据数量
+      findNavbarCount() {
+        navbar.findCount().then(res => {
+          this.count = res.data.result.data;
+        })
+      },
+      // 新增按钮调用
+      insertNavbar() {
         this.title = "新增导航菜单";
         this.dialogVisible = true;
+        this.editForm.orderNum = this.count + 1;
       },
+      // 编辑按钮调用
       editFormData(row) {
-          this.title = "编辑导航菜单"
-          this.dialogVisible = true;
-          navbar.getNavbarInfo(row.id).then(res => {
-            console.log(typeof res.data.result.data.flag);
-            this.editForm = res.data.result.data;
-          })
-  
+        this.title = "编辑导航菜单"
+        this.dialogVisible = true;
+        navbar.getNavbarInfo(row.id).then(res => {
+          this.editForm = res.data.result.data;
+          this.findAllNavbar(parseInt(this.editForm.flag), row);
+        })
+
       },
-      // 新增或编辑Banner图 Start
+      // 导航类型选择器值变化调用  flag
+      currStationChange(val) {
+        this.findAllNavbar(val, null);
+      },
+      // 新增或编辑Banner图 
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log("editForm",this.editForm)
             navbar.submitNavbarForm(this.editForm, this.editForm.id).then((res) => {
               this.$message({
                 showClose: true,
                 duration: 2000,
-                message: "操作成功",
+                message: res.data.message,
                 type: "success",
                 onClose: () => {
                   this.getNavbarPage(0);
@@ -226,15 +249,21 @@
           }
         });
       },
-      // 新增或编辑Banner图 End
 
-      // 删除内容 Start
-      delHandle(id) {
-        navbar.delHandleInfo(id).then((res) => {
+      // 删除内容 
+      delHandle(row) {
+        if (row.hasChildren) {
+          this.$message({
+            message: '该数据存在分支，禁止删除',
+            type: 'warning'
+          });
+          return;
+        }
+        navbar.delHandleInfo(row.id).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,
-            message: "删除成功",
+            message: res.data.message,
             type: "success",
             onClose: () => {
               this.getNavbarPage(0);
@@ -242,21 +271,20 @@
           });
         });
       },
-      // 删除内容 End
 
-      // 取消编辑，重置模态框内容 Start
+      // 取消编辑，重置模态框内容 
       resetForm(formName) {
         this.$refs[formName].resetFields();
         this.dialogVisible = false;
         this.editForm = {};
       },
+      // 模态框关闭
       handleClose() {
         this.resetForm("editForm");
         this.dialogVisible = false;
 
       },
-      // 取消编辑，重置模态框内容 End
-
+      // 页码和当前页数量改变调用
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
         this.size = val;
