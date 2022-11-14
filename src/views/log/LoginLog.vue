@@ -2,14 +2,21 @@
     <el-main>
         <el-table ref="LoginLogTable" :data="tableData" tooltip-effect="dark" border stripe>
 
-            <el-table-column prop="userName" label="登录用户" width="150">
+            <el-table-column prop="userName" label="登录用户">
             </el-table-column>
             <el-table-column prop="createTime" label="登录时间" :formatter="formatDate">
             </el-table-column>
-            <el-table-column prop="trueName" label="用户姓名" width="150">
+            <el-table-column prop="trueName" label="用户姓名">
             </el-table-column>
-            <el-table-column prop="state" label="状态" width="150">
+            <el-table-column prop="state" label="状态">
             </el-table-column>
+            <el-table-column prop="ipAddress" label="登录IP">
+            </el-table-column>
+            <el-table-column prop="ipLocation" label="IP所在地">
+            </el-table-column>
+            <el-table-column prop="os" label="操作系统">
+            </el-table-column>
+
 
         </el-table>
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -52,8 +59,8 @@
             // 获取表数据 Start
             getLoginLogList() {
                 let params = {
-                     current: this.current,
-                        size: this.size,
+                    current: this.current,
+                    size: this.size,
                 }
                 loginlog.getLoginLogInfoList(params).then(res => {
                     this.tableData = res.data.result.data.records;

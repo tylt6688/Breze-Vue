@@ -36,7 +36,7 @@ export default {
     //新增或编辑(改变原图片)
     upload(formData){
         return axios({
-          url: `/breze/portal/mainContent/insert`,
+          url: '/breze/portal/mainContent/insert',
           method: 'post',
           data: formData,
         })

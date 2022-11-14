@@ -10,7 +10,7 @@
             </el-table-column>
             <el-table-column prop="requestPath" label="请求路径" width="200">
             </el-table-column>
-                   <el-table-column prop="createTime" label="操作时间" :formatter="formatDate">
+            <el-table-column prop="createTime" label="操作时间" :formatter="formatDate">
             </el-table-column>
 
         </el-table>
@@ -54,8 +54,8 @@
             // 获取表数据 Start
             getLoginLogList() {
                 let params = {
-                     current: this.current,
-                        size: this.size,
+                    current: this.current,
+                    size: this.size,
                 }
                 loginlog.getHandleLogInfoList(params).then(res => {
                     this.tableData = res.data.result.data.records;

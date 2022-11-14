@@ -166,7 +166,7 @@
 
         },
         methods: {
-            //TODO 时间格式化 Start
+            // 时间格式化 Start
             formatDate(row, column) {
                 // 获取单元格数据
                 let data = row[column.property];
@@ -177,7 +177,7 @@
             },
             // 时间格式化 End
 
-            //TODO 获取数据列表 Start
+            // 获取数据列表 Start
             getTableData() {
                 generteCode.getTableData().then((res) => {
 
@@ -192,7 +192,7 @@
             },
             // 获取数据列表 End
 
-            //TODO 查询 Start
+            // 查询 Start
             queryTableData() {
                 if (this.searchForm.tableName == "") {
                     this.tableData = this.tableDataCache;
@@ -217,7 +217,7 @@
             },
             // 查询 End
 
-            //TODO 弹窗查询 Start
+            // 弹窗查询 Start
             queryDialogTableData() {
 
                 if (this.searchForm.tableName == "") {
@@ -243,7 +243,7 @@
             },
             // 弹窗查询 end
 
-            //TODO 导入表格 Start
+            // 导入表格 Start
             addTableData() {
 
                 for (var i = 0; i < this.multipleSelectionDialog.length; i++) {
@@ -260,11 +260,11 @@
             },
             // 导入表格 End
 
-            //TODO 编辑 Start
+            // 编辑 Start
             editTableInfo(id) {},
             // 编辑 End
 
-            //TODO 删除表格 Start
+            // 删除表格 Start
             deleteTableInfo(index) {
 
                 var tempData = this.tableData.splice(index, 1)[0];
@@ -280,7 +280,7 @@
             },
             // 删除表格 End
 
-            //TODO 生成代码 Start
+            // 生成代码 Start
             generateCode(row) {
 
                 var tableNames = []

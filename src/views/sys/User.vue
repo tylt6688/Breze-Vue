@@ -97,7 +97,7 @@
     </el-table>
 
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-      layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]" :current-page="current"
+      layout="total, sizes, prev, pager, next, jumper" background :page-sizes="[10, 20, 50, 100]" :current-page="current"
       :page-size="size" :total="total">
     </el-pagination>
 

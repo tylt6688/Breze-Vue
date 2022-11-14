@@ -53,7 +53,7 @@ export default {
     // 重置密码
     repassPassword(id) {
         return axios({
-            url: "/sys/user/reseat_password",
+            url: "/sys/user/reset_password",
             method: 'post',
             data: id,
         })

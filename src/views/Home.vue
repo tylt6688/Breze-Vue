@@ -131,7 +131,7 @@
       // 获取当前登录用户信息 Start
       getUserInfo() {
         user.getUserInfo().then((res) => {
-          this.userInfo = res.data.result.data.result;
+          this.userInfo = res.data.result.data;
         });
       },
       // 获取当前登录用户信息 End

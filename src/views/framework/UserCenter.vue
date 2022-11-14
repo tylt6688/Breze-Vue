@@ -82,8 +82,6 @@
             {{ formatDate(userInfo.loginTime) }}
           </el-descriptions-item>
 
-          
-
 
           <template slot="extra" :slot-scope="userInfo">
             <el-button @click="editUserInfo(userInfo.id)" type="primary" size="small">编辑资料</el-button>
@@ -91,8 +89,8 @@
         </el-descriptions>
 
         <el-descriptions title="所任职位" direction="vertical" :column="1" style="margin: 0 auto; width: 70%" border>
-          
-          <el-descriptions-item >
+
+          <el-descriptions-item>
             <template slot="label">
               <i class="el-icon-wallet"></i>
               部门岗位
@@ -101,9 +99,9 @@
             <template :slot-scope="userInfo">
               <el-tag style="margin: 3px" size="small" v-for="(item, index) in userInfo.groupJob" :key="index">
                 {{ item.groupName+"-"+item.jobName }}</el-tag>
-              </template>
+            </template>
           </el-descriptions-item>
-       
+
         </el-descriptions>
       </el-tab-pane>
 
@@ -284,6 +282,17 @@
       this.getUserInfo();
     },
     methods: {
+      // 获取用户信息 Start
+      getUserInfo() {
+        user.getUserInfo().then((res) => {
+          this.userInfo = res.data.result.data;
+          if (this.userInfo.loginWarn === 0) {
+            this.loginWarn = true;
+          }
+        });
+      },
+      // 获取用户信息 End
+
       formatDate(date) {
         if (date == null) {
           return null;
@@ -292,17 +301,11 @@
       },
       // 更新登录提醒状态 Start
       changeLoginWarn(e) {
-        var loginwarn = "";
-        if (e) {
-          loginwarn = 0;
-        } else {
-          loginwarn = 1;
-        }
+        var flag = e ? 0 : 1;
         let params = {
-          loginwarn: loginwarn,
-          id: this.userInfo.id
+          loginWarn: flag,
         }
-        userCenter.changeLoginWarn(qs.stringify(params)).then((res) => {
+        userCenter.changeLoginWarn(this.qs.stringify(params)).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,
@@ -317,16 +320,7 @@
       },
       // 更新登录提醒状态 End
 
-      // 获取用户信息 Start
-      getUserInfo() {
-        user.getUserInfo().then((res) => {
-          this.userInfo = res.data.result.data.result;
-          if (this.userInfo.loginwarn === 0) {
-            this.loginWarn = true;
-          }
-        });
-      },
-      // 获取用户信息 End
+
 
       // 编辑用户信息时回显 Start
       editUserInfo(id) {

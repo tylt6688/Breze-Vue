@@ -23,7 +23,7 @@ request.interceptors.response.use(
 		// 缩短一点
 		let res = response.data;
 		console.log("我是每次请求后端的数据", res);
-		// 判断后端请求响应是否正确
+		// 判断后端响应是否正确
 		if (res.success) {
 			return response;
 		} else if (res instanceof ArrayBuffer) {

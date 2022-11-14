@@ -99,6 +99,8 @@ router.beforeEach((to, from, next) => {
   }
   // 验证token存在并且hasRoute为空时去请求获取SideMenu菜单树
   else if (token && !hasRoute) {
+    loadModeRoutes();
+
     axios.get("/sys/menu/nav", {
       headers: {
         Authorization: localStorage.getItem("token")
@@ -178,6 +180,5 @@ async function loadModeRoutes(){
     router.addRoute('Home',route);
   })
 }
-loadModeRoutes()
 
 export default router
