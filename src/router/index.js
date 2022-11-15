@@ -70,11 +70,7 @@ const router = new VueRouter({
   routes
 })
 
-// 防止重复点击一个路径是浏览器报路径重复的错
-const VueRouterPush = VueRouter.prototype.push;
-VueRouter.prototype.push = function push(to) {
-  return VueRouterPush.call(this, to).catch(err => err)
-}
+
 
 
 // 配置全局路由导航守卫
@@ -179,6 +175,12 @@ async function loadModeRoutes(){
   modeRoutes.forEach(route=>{
     router.addRoute('Home',route);
   })
+}
+
+// 防止重复点击一个路径是浏览器报路径重复的错
+const VueRouterPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(to) {
+  return VueRouterPush.call(this, to).catch(err => err)
 }
 
 export default router
