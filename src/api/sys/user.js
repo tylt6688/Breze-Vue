@@ -1,6 +1,13 @@
 import axios from "@/utils/http/axios";
 
 export default {
+    // 获取当前登录用户信息
+    getUserInfo() {
+        return axios({
+            url: "/sys/user/get_userinfo",
+            method: 'get'
+        })
+    },
     // 获取用户列表 Start
     getUserList(params) {
         return axios({
@@ -9,13 +16,7 @@ export default {
             params: params
         })
     },
-    // 获取当前登录用户信息
-    getUserInfo() {
-        return axios({
-            url: "/sys/user/get_userinfo",
-            method: 'get'
-        })
-    },
+
     // 编辑用户信息时回显
     editUserInfo(id) {
         return axios({

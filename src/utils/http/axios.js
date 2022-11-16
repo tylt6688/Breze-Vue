@@ -43,21 +43,24 @@ request.interceptors.response.use(
 			// if (error.massage == "token令牌异常" || "token令牌已过期") {
 			// 	localStorage.clear();
 			// }
-		
+			// 无权限
+			if (error.response.status === 401) {
+				router.push("/in401");
+			} else if (error.response.status === 403) {
+				router.push("/in401");
+			}
+			// 404notfound
+			else if (error.response.status === 404) {
+				router.push("/in404");
+			}
+
 		}
-		// 无权限
-		else if (error.response.status === 401) {
-			router.push("/in401");
-		}
-		// 404notfound
-		else if (error.response.status === 404) {
-			router.push("/in404");
-		}
+
 		Element.Message.error(error.massage, {
 			showClose: true,
 			duration: 1500
 		})
-		
+
 		return Promise.reject(error)
 	}
 )

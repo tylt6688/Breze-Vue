@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
-import axios from "../utils/http/axios";
-import store from "../store"
-import Dashboard from "../views/framework/Dashboard.vue"
+import Login from '@/views/Login.vue'
+import axios from "@/utils/http/axios";
+import store from "@/store"
+import bus from "@/bus"
+import Dashboard from "@/views/framework/Dashboard.vue"
 
 Vue.use(VueRouter);
 
@@ -79,7 +80,7 @@ router.beforeEach((to, from, next) => {
   let hasRoute = store.state.menus.hasRoutes;
   // 判断token是否存在
   let token = localStorage.getItem("token");
-  // 如果当前是登录页并且token不存在时就不管了,防止手动输入登录
+  // 如果当前是登录页并且token为空时就去登录页,不为空且正确时直接跳转主页，防止手动输入登录地址时不跳转情况
   if (to.path == '/login') {
     if (!token) {
       next();
@@ -87,21 +88,19 @@ router.beforeEach((to, from, next) => {
       next('/');
     }
   }
-  // token不存在的话直接跳到登录页
+  // token为空的话直接跳到登录页
   else if (!token) {
     next({
       path: '/login'
     })
   }
-  // 验证token存在并且hasRoute为空时去请求获取SideMenu菜单树
+  // 验证token不为空并且hasRoute为空时去请求获取SideMenu菜单树
   else if (token && !hasRoute) {
-    loadModeRoutes();
-
-    axios.get("/sys/menu/nav", {
-      headers: {
-        Authorization: localStorage.getItem("token")
-      }
-    }).then(res => {
+  
+    axios.get("/sys/menu/nav").then(res => {
+      bus.$emit('aEvent',"loadUserInfo");
+      // 加载Portal首页管理模块路由
+      loadModeRoutes();
       // 拿到menuList
       store.commit("setMenuList", res.data.result.data.nav);
       // 拿到用户权限

@@ -49,8 +49,8 @@
         <div style="margin: 0 1rem">
           <!-- 暂时关闭折叠动画效果 -->
           <!-- <el-collapse-transition> -->
-            <!-- 中间核心界面 -->
-            <router-view></router-view>
+          <!-- 中间核心界面 -->
+          <router-view></router-view>
           <!-- </el-collapse-transition> -->
         </div>
         <!-- 全局内容返回顶部锚点 -->
@@ -63,10 +63,11 @@
 </template>
 
 <script>
-  import SideMenu from "./inc/SideMenu";
-  import Tabs from "./inc/Tabs";
-  import screenfull from "screenfull";
-  import user from "@/api/sys/user";
+  import SideMenu from "./inc/SideMenu"
+  import Tabs from "./inc/Tabs"
+  import screenfull from "screenfull"
+  import user from "@/api/sys/user"
+  import bus from "@/bus"
 
   export default {
     name: "Home",
@@ -95,9 +96,16 @@
         messageNum: "",
       };
     },
+    computed: {
+      loadUserInfo() {
+        bus.$on('aEvent', (res) => {
+          console.log(res)
+          this.getUserInfo();
+        })
+      }
+    },
 
     mounted() {
-      this.getUserInfo();
       this.screenIcon = screenfull.isFullscreen ?
         "el-icon-crop" :
         "el-icon-full-screen";
@@ -163,9 +171,11 @@
     z-index: 10;
     background-color: #ffffff;
   }
-  .tabs >>> .el-tabs__item:nth-child(1) span{
+
+  .tabs>>>.el-tabs__item:nth-child(1) span {
     display: none;
-}
+  }
+
   .el-container {
     padding: 0;
     margin: 0 auto;
