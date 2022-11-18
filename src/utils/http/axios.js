@@ -12,6 +12,7 @@ const request = axios.create({
 })
 // 进行request请求拦截处理
 request.interceptors.request.use(config => {
+	console.log("发送的请求",config)
 	// 将所有请求头里面进行jwt设置，方便权限访问
 	config.headers['Authorization'] = 'Bearer ' + localStorage.getItem("token");
 	return config
@@ -30,7 +31,20 @@ request.interceptors.response.use(
 			console.log("判断数据是否为文件类型", res instanceof ArrayBuffer);
 			return response;
 		} else {
-			Element.Message.error(res.message);
+			if (res.errorCode === 700) {
+				Element.Message.error(res.message + ",将在3秒后返回登陆页面");
+				var time = setInterval(function () {
+					router.push("/login");
+					localStorage.clear();
+					if(window.location.pathname === "/login"){
+						clearInterval(time);
+					}
+					// location.reload()
+				}, 1500)
+	
+			} else {
+				Element.Message.error(res.message);
+			}
 			return Promise.reject(response.data.message);
 		}
 	},
