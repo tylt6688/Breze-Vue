@@ -70,7 +70,7 @@
   import bus from "@/bus"
 
   export default {
-    emits: ['aEvent'],
+    emits: ['LoadUserInfo'],
     name: "Home",
     provide() {
       return {
@@ -84,7 +84,6 @@
     data() {
       return {
         screenIcon: "",
-
         // 注射方式局部刷新头像
         isChangeAvatar: true,
         // 首页右上角用户信息
@@ -99,17 +98,14 @@
     },
 
     mounted() {
-      bus.$on('aEvent', (res) => {
-        console.log("res", res)
+      bus.$on('LoadUserInfo', (res) => {
         this.getUserInfo();
       })
       this.getUserInfoFormLocal();
-      this.screenIcon = screenfull.isFullscreen ?
-        "el-icon-crop" :
-        "el-icon-full-screen";
+      this.screenIcon = screenfull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
     },
     beforeDestroy() {
-      bus.$off('aEvent');
+      bus.$off('LoadUserInfo');
     },
 
     methods: {
@@ -132,26 +128,29 @@
       // 局部刷新头像 Start
       reloadAvatar() {
         this.getUserInfo();
+        this.getUserInfoFormLocal();
         this.isChangeAvatar = false;
         this.$nextTick(() => (this.isChangeAvatar = true));
       },
       // 局部刷新头像 End
 
-      getUserInfoFormLocal(){
-        if(localStorage.getItem("userInfo")){
-        var userShow = JSON.parse(localStorage.getItem("userInfo"));
-        this.userInfo.trueName = userShow.trueName;
-        this.userInfo.avatar = userShow.avatar;
-      }
+      getUserInfoFormLocal() {
+        if (localStorage.getItem("userInfo")) {
+          var userShow = JSON.parse(localStorage.getItem("userInfo"));
+          this.userInfo.trueName = userShow.trueName;
+          this.userInfo.avatar = userShow.avatar;
+        }
       },
 
       // 获取当前登录用户信息 Start
       getUserInfo() {
         user.getUserInfo().then((res) => {
-          console.log(res)
           this.userInfo = res.data.result.data;
-          var jsonData = {"avatar":res.data.result.data.avatar,"trueName":res.data.result.data.trueName}
-          localStorage.setItem("userInfo",JSON.stringify(jsonData))
+          var jsonData = {
+            "avatar": res.data.result.data.avatar,
+            "trueName": res.data.result.data.trueName
+          }
+          localStorage.setItem("userInfo", JSON.stringify(jsonData))
         });
       },
       // 获取当前登录用户信息 End

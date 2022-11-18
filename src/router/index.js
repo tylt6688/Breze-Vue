@@ -98,7 +98,7 @@ router.beforeEach((to, from, next) => {
   else if (token && !hasRoute) {
   
     axios.get("/sys/menu/nav").then(res => {
-      bus.$emit('aEvent');
+      bus.$emit('LoadUserInfo');
       // 加载Portal首页管理模块路由
       loadModeRoutes();
       // 拿到menuList

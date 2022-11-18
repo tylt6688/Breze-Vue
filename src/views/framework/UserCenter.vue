@@ -386,7 +386,6 @@
         const formData = new FormData();
         formData.append("avatar", param.file);
         user.uploadAvatar(formData).then((res) => {
-          console.log(res.data);
           this.$message({
             showClose: true,
             duration: 2000,
