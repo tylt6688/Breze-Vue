@@ -1,6 +1,7 @@
-import axios from "axios";
-import router from "@/router";
+import axios from "axios"
+import router from "@/router"
 import Element from "element-ui"
+
 
 axios.defaults.baseURL = "http://localhost:8090"
 
@@ -18,7 +19,9 @@ request.interceptors.request.use(config => {
 	return config
 })
 // 进行response后端数据返回拦截
+
 request.interceptors.response.use(
+	
 	response => {
 		console.log("AllResponse ->", response);
 		// 缩短一点
@@ -26,6 +29,7 @@ request.interceptors.response.use(
 		console.log("我是每次请求后端的数据", res);
 		// 判断后端响应是否正确
 		if (res.success) {
+			
 			return response;
 		} else if (res instanceof ArrayBuffer) {
 			console.log("判断数据是否为文件类型", res instanceof ArrayBuffer);

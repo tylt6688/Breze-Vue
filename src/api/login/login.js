@@ -1,10 +1,10 @@
-import axios from "@/utils/http/axios";
+import axios from "@/utils/http";
 import request from "axios";
 export default {
     // 获取验证码
-    getKaptcha() {
+    getCaptcha() {
         return request({
-            url: '/kaptcha',
+            url: '/captcha',
             method: 'get'
         })
     },

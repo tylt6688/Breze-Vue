@@ -35,7 +35,7 @@
                       <el-form-item label="验证码" prop="code" style="width: 380px">
                         <el-input v-model="loginForm.code" style="width: 172px; float: left" maxlength="5"
                           placeholder="请输入验证码"></el-input>
-                        <el-image :src="kaptchaImg" class="kaptcha_img" @click="getKaptcha"></el-image>
+                        <el-image :src="captchaImg" class="captcha_img" @click="getCaptcha"></el-image>
                       </el-form-item>
                       <el-form-item>
                         <el-button type="primary" round @click="submitForm('loginForm')">立即登录</el-button>
@@ -84,7 +84,7 @@
     data() {
       return {
         // 图片验证码
-        kaptchaImg: "",
+        captchaImg: "",
         // 登录表单
         loginForm: {
           username: "",
@@ -120,14 +120,14 @@
     },
 
     mounted() {
-      this.getKaptcha();
+      this.getCaptcha();
     },
     methods: {
       // 获取验证码 Start
-      getKaptcha() {
-        login.getKaptcha().then((res) => {
+      getCaptcha() {
+        login.getCaptcha().then((res) => {
           this.loginForm.key = res.data.result.data.key;
-          this.kaptchaImg = res.data.result.data.base64Img;
+          this.captchaImg = res.data.result.data.base64Img;
         });
       },
       // 获取验证码 End
@@ -143,7 +143,7 @@
                 this.$router.push("/dashboard");
               })
               .catch((res) => {
-                this.getKaptcha();
+                this.getCaptcha();
               });
           } else {
             console.log("错误提交!");
@@ -180,7 +180,7 @@
     height: 260px;
   }
 
-  .kaptcha_img {
+  .captcha_img {
     float: left;
     margin-left: 8px;
     border-radius: 4px;

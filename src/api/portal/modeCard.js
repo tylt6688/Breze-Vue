@@ -1,4 +1,4 @@
-import axios from '@/utils/http/axios'
+import axios from '@/utils/http'
 
 export default {
   // 获取模块信息
@@ -9,9 +9,9 @@ export default {
       params: params
     })
   },
-  findDataById(id){
+  findDataById(id) {
     return axios({
-      url: '/breze/portal/modeCard/findDataById/'+id,
+      url: '/breze/portal/modeCard/findDataById/' + id,
       method: 'get',
     })
   },

@@ -1,4 +1,4 @@
-import axios from "@/utils/http/axios";
+import axios from "@/utils/http";
 
 export default {
     // 获取菜单树
@@ -27,7 +27,7 @@ export default {
     delHandle(id) {
         return axios({
             url: '/sys/menu/delete',
-            method: 'post',
+            method: 'delete',
             params: {
                 id: id
             }

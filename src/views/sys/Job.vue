@@ -8,6 +8,8 @@
 
     <el-table highlight-current-row :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+      <el-table-column type="selection" width="50" align="center">
+      </el-table-column>
       <el-table-column prop="name" label="岗位名称" sortable width="180">
       </el-table-column>
 

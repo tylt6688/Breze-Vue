@@ -57,7 +57,8 @@
         <el-backtop target=".container" :visibility-height="50" :bottom="12" :right="50"></el-backtop>
       </el-main>
 
-      <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer>
+      <!-- <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer> -->
+      <el-footer> 🐱‍🏍 Copyright © 2022 💙 开发测试专用 </el-footer>
     </el-container>
   </el-container>
 </template>

@@ -97,8 +97,12 @@
             </template>
             <!-- 这里一定要加作用域插槽: -->
             <template :slot-scope="userInfo">
-              <el-tag style="margin: 3px" size="small" v-for="(item, index) in userInfo.groupJob" :key="index">
-                {{ item.groupName+"-"+item.jobName }}</el-tag>
+              <span v-for="(item, index) in userInfo.groupJob" :key="index">
+                <el-tag v-if="item.children" style="margin: 3px" size="small">
+                  {{ item.name+"-"+item.children.name+"-"+item.job }}</el-tag>
+                <el-tag v-else style="margin: 3px" size="small">
+                  {{ item.name+"-"+item.job }}</el-tag>
+              </span>
             </template>
           </el-descriptions-item>
 

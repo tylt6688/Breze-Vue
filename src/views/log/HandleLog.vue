@@ -4,7 +4,7 @@
 
             <el-table-column prop="title" label="操作内容" width="150">
             </el-table-column>
-            <el-table-column prop="type" label="操作终端">
+            <el-table-column prop="os" label="操作终端">
             </el-table-column>
             <el-table-column prop="requestIp" label="所属IP" width="150">
             </el-table-column>

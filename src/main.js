@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import Element from "element-ui"
 import eIconPicker from 'e-icon-picker'
-import axios from '@/utils/http/axios'
+import axios from '@/utils/http'
 import qs from "qs"
 
 
@@ -13,7 +13,7 @@ import "e-icon-picker/lib/symbol.js" // 基本彩色图标库
 import 'e-icon-picker/lib/index.css' // 基本样式，包含基本图标
 import 'element-ui/lib/theme-chalk/icon.css' // element-ui 图标库
 import "element-ui/lib/theme-chalk/index.css"
-import './utils/dialog/dialog'
+import './utils/dialog'
 
 
 

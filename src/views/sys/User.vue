@@ -38,7 +38,8 @@
     </el-form>
 
     <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" border stripe
-      @selection-change="handleSelectionChange">
+      @selection-change="handleSelectionChange" @cell-mouse-enter="hoverRow" @cell-mouse-leave="leaveRow"
+      :row-class-name="tableRowClassName">
       <el-table-column type="selection" width="50" align="center">
       </el-table-column>
 
@@ -76,7 +77,8 @@
       </el-table-column>
 
       <el-table-column prop="icon" label="操作" width="330">
-        <template slot-scope="scope">
+        <template slot-scope="scope" >
+          <div style="color:#ffbf00;" v-show="scope.row.showRightOp">
           <el-button type="text" @click="roleHandle(scope.row.id)" icon="el-icon-thumb">分配角色</el-button>
           <el-divider direction="vertical"></el-divider>
 
@@ -92,13 +94,14 @@
               <el-button type="text" slot="reference" icon="el-icon-delete">删除</el-button>
             </el-popconfirm>
           </template>
+        </div>
         </template>
       </el-table-column>
     </el-table>
 
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-      layout="total, sizes, prev, pager, next, jumper" background :page-sizes="[10, 20, 50, 100]" :current-page="current"
-      :page-size="size" :total="total">
+      layout="total, sizes, prev, pager, next, jumper" background :page-sizes="[10, 20, 50, 100]"
+      :current-page="current" :page-size="size" :total="total">
     </el-pagination>
 
     <!--新增编辑单用户模态框 Start-->
@@ -141,7 +144,7 @@
     <el-dialog title="批量新增用户" :visible.sync="moreDialogVisible" width="600px" :before-close="moreHandClose">
       <el-button type="primary" round @click="exportModelExcel">下载 Excel 导入模板</el-button>
 
-      <el-upload ref="upload" class="downloadModel" action="url" drag :http-request="uploadExcel" multiple
+      <el-upload class="downloadModel" ref="upload" action="url" drag :http-request="uploadExcel" multiple
         accept=".xls,.xlsx" :limit="1" :auto-upload="uploadState">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -207,7 +210,6 @@
         checkStrictly: true,
         roleDialogFormVisible: false,
         roleMoreDialogFormVisible: false,
-
         searchForm: {
           username: ""
         },
@@ -236,7 +238,7 @@
             message: "请输入用户名称",
             trigger: "blur",
           }, ],
-          truename: [{
+          trueName: [{
             required: true,
             message: "请输入用户真实姓名",
             trigger: "blur",
@@ -259,6 +261,19 @@
       this.getRoleTree();
     },
     methods: {
+      tableRowClassName({ row, rowIndex }) {
+      //把每一行的索引放进row
+      row.index = rowIndex;
+    },
+      hoverRow(row) {
+        row.showRightOp = true;
+        this.$set(this.tableData, row.index, row);
+      },
+      leaveRow(row) {
+        row.showRightOp = false;
+        this.$set(this.tableData, row.index, row);
+      },
+
       // 格式化日期时间 Start
       formatDate(row, column) {
         let data = row[column.property];
@@ -279,7 +294,6 @@
 
       // 获取用户列表 Start
       getUserList() {
-        console.log("searchForm", this.searchForm.username);
         let params = {
           username: this.searchForm.username,
           current: this.current,
@@ -290,6 +304,9 @@
           this.size = res.data.result.data.size;
           this.current = res.data.result.data.current;
           this.total = res.data.result.data.total;
+          this.tableData.map((item, index) => {
+                item.showRightOp = false;  //需要先在tableData数组中每个元素添加showRightOp为false
+              });
         });
       },
 

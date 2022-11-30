@@ -1,4 +1,4 @@
-import axios from '@/utils/http/axios'
+import axios from '@/utils/http'
 
 export default {
     //分页查询

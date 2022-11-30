@@ -1,10 +1,10 @@
-import axios from "@/utils/http/axios";
+import axios from "@/utils/http";
 
 export default {
     // 获取角色列表数据
     getRoleList(params) {
         return axios({
-            url: '/sys/role/select',
+            url: '/sys/role/select_page',
             method: 'get',
             params: params
         })
