@@ -62,7 +62,7 @@ export default {
     // 用户自定义上传Excel
     uploadExcel(formData) {
         return axios({
-            url: "/sys/user/upload_excel",
+            url: "/sys/user/import_excel",
             method: 'post',
             data: formData,
             headers: {
@@ -103,7 +103,7 @@ export default {
         })
     },
     // 分配角色
-    submitRoleHandle(roleIds, id) {
+    submitRole(id, roleIds) {
         return axios({
             url: "/sys/user/role_perm/" + id,
             method: 'post',

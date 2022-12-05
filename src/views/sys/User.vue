@@ -77,24 +77,24 @@
       </el-table-column>
 
       <el-table-column prop="icon" label="操作" width="330">
-        <template slot-scope="scope" >
+        <template slot-scope="scope">
           <div style="color:#ffbf00;" v-show="scope.row.showRightOp">
-          <el-button type="text" @click="roleHandle(scope.row.id)" icon="el-icon-thumb">分配角色</el-button>
-          <el-divider direction="vertical"></el-divider>
+            <el-button type="text" @click="roleHandle(scope.row.id)" icon="el-icon-thumb">分配角色</el-button>
+            <el-divider direction="vertical"></el-divider>
 
-          <el-button type="text" @click="repassHandle(scope.row.id, scope.row.username)" icon="el-icon-refresh-left">
-            重置密码</el-button>
-          <el-divider direction="vertical"></el-divider>
+            <el-button type="text" @click="repassHandle(scope.row.id, scope.row.username)" icon="el-icon-refresh-left">
+              重置密码</el-button>
+            <el-divider direction="vertical"></el-divider>
 
-          <el-button type="text" @click="editHandle(scope.row.id)" icon="el-icon-edit">编辑</el-button>
-          <el-divider direction="vertical"></el-divider>
+            <el-button type="text" @click="editHandle(scope.row.id)" icon="el-icon-edit">编辑</el-button>
+            <el-divider direction="vertical"></el-divider>
 
-          <template>
-            <el-popconfirm title="确定删除此用户吗?" @confirm="delHandle(scope.row.id)">
-              <el-button type="text" slot="reference" icon="el-icon-delete">删除</el-button>
-            </el-popconfirm>
-          </template>
-        </div>
+            <template>
+              <el-popconfirm title="确定删除此用户吗?" @confirm="delHandle(scope.row.id)">
+                <el-button type="text" slot="reference" icon="el-icon-delete">删除</el-button>
+              </el-popconfirm>
+            </template>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -261,10 +261,13 @@
       this.getRoleTree();
     },
     methods: {
-      tableRowClassName({ row, rowIndex }) {
-      //把每一行的索引放进row
-      row.index = rowIndex;
-    },
+      tableRowClassName({
+        row,
+        rowIndex
+      }) {
+        //把每一行的索引放进row
+        row.index = rowIndex;
+      },
       hoverRow(row) {
         row.showRightOp = true;
         this.$set(this.tableData, row.index, row);
@@ -305,8 +308,8 @@
           this.current = res.data.result.data.current;
           this.total = res.data.result.data.total;
           this.tableData.map((item, index) => {
-                item.showRightOp = false;  //需要先在tableData数组中每个元素添加showRightOp为false
-              });
+            item.showRightOp = false; //需要先在tableData数组中每个元素添加showRightOp为false
+          });
         });
       },
 
@@ -518,7 +521,7 @@
       submitRoleHandle(formName) {
         var roleIds = this.$refs.roleTree.getCheckedKeys();
         console.log(roleIds);
-        user.submitRoleHandle(roleIds, this.roleForm.id).then((res) => {
+        user.submitRole(this.roleForm.id, roleIds).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,

@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<router-view v-if="isRouterAlive"></router-view>
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -8,12 +8,8 @@
 <script>
 	export default {
 		name: "App",
-		provide() {
-			return {
-				reload: this.reload
-			}
-		},
-		// 监听tab栏变化
+
+		// TODO 监听tab栏变化
 		watch: {
 			$route(to, from) {
 				console.log("from", from.path, "to", to.path)
@@ -27,16 +23,10 @@
 			}
 		},
 		data() {
-			return {
-				isRouterAlive: true
-			}
+			return {}
 		},
 		methods: {
-			// 方便后期注射刷新使用，暂时没用
-			reload() {
-				this.isRouterAlive = false
-				this.$nextTick(() => this.isRouterAlive = true)
-			}
+
 		},
 	}
 </script>
@@ -47,6 +37,15 @@
 		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑";
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+		/* 使网站整体变灰色，用于特殊纪念日使用 Start */
+		/* -webkit-filter: grayscale(100%);
+		-moz-filter: grayscale(100%);
+		-ms-filter: grayscale(100%);
+		-o-filter: grayscale(100%);
+		filter: grayscale(100%);
+		filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); */
+		/* 使网站整体变灰色，用于特殊纪念日使用 End */
+
 	}
 
 	html,
@@ -61,4 +60,7 @@
 	a {
 		text-decoration: none;
 	}
+
+
+	.gray {}
 </style>

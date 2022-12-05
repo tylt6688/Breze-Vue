@@ -98,8 +98,8 @@
             <!-- 这里一定要加作用域插槽: -->
             <template :slot-scope="userInfo">
               <span v-for="(item, index) in userInfo.groupJob" :key="index">
-                <el-tag v-if="item.children" style="margin: 3px" size="small">
-                  {{ item.name+"-"+item.children.name+"-"+item.job }}</el-tag>
+                <el-tag v-if="(item.children.length>0)" style="margin: 3px" size="small">
+                  {{ item.name+"-"+item.children[0].name+"-"+item.job }}</el-tag>
                 <el-tag v-else style="margin: 3px" size="small">
                   {{ item.name+"-"+item.job }}</el-tag>
               </span>
