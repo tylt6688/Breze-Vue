@@ -34,7 +34,7 @@ request.interceptors.response.use(
 			console.log("判断数据是否为文件类型", res instanceof ArrayBuffer);
 			return response;
 		} else {
-			if (res.errorCode === 700) {
+			if (res.errorCode === 900) {
 				var times = 3;
 				Element.Message.error(res.message + ",将在" + times + "秒后返回登陆页面", {
 					showClose: false,
@@ -58,7 +58,7 @@ request.interceptors.response.use(
 			if (error.response.status === 401) {
 				router.push("/in401");
 			} else if (error.response.status === 403) {
-				router.push("/in401");
+				router.push("/in403");
 			} else if (error.response.status === 404) {
 				router.push("/in404");
 			}
@@ -66,7 +66,7 @@ request.interceptors.response.use(
 		}
 
 		Element.Message.error(error.massage, {
-			showClose: true,
+			showClose: false,
 			duration: 1500
 		})
 

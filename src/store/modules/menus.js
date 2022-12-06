@@ -23,7 +23,7 @@ export default {
 		setPermList(state, perms) {
 			state.permList = perms
 		},
-		changeRouteStatus(state, hasRoutes) {
+		changeRouteState(state, hasRoutes) {
 			state.hasRoutes = hasRoutes
 		},
 

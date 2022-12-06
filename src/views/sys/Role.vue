@@ -25,15 +25,15 @@
       <el-table-column type="selection" width="55" align="center">
       </el-table-column>
 
-      <el-table-column prop="name" label="名称" width="200"> </el-table-column>
+      <el-table-column prop="name" label="名称" show-overflow-tooltip> </el-table-column>
 
-      <el-table-column prop="code" label="唯一编码" width="180" show-overflow-tooltip>
+      <el-table-column prop="code" label="唯一编码" width="100" show-overflow-tooltip>
       </el-table-column>
 
       <el-table-column prop="remark" label="描述" show-overflow-tooltip>
       </el-table-column>
 
-      <el-table-column prop="state" label="状态" align="center" width="160">
+      <el-table-column prop="state" label="状态" align="center" width="140">
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.state === 0" type="success">正常</el-tag>
           <el-tag size="small" v-else type="danger">禁用</el-tag>
@@ -101,7 +101,7 @@
     <el-dialog title="分配权限" :visible.sync="permDialogVisible" width="600px">
       <el-form :model="permForm">
         <el-form-item label="父子关联">
-          <el-switch v-model="checkStrictly" active-color="#13ce66" inactive-color="#ff4949" >
+          <el-switch v-model="checkStrictly" active-color="#13ce66" inactive-color="#ff4949">
           </el-switch>
         </el-form-item>
         <el-tree :data="permTreeData" accordion show-checkbox ref="permTree" node-key="id"
@@ -201,7 +201,7 @@
       handleSelectionChange(val) {
         console.log("勾选", val);
         this.multipleSelection = val;
-        this.delBtlStatu = val.length == 0;
+        this.delBtlState = val.length == 0;
       },
 
       handleSizeChange(val) {
@@ -257,7 +257,6 @@
                   this.getRoleList();
                 },
               });
-
               this.dialogVisible = false;
               this.resetEditForm(formName);
             });

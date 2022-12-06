@@ -5,10 +5,12 @@
         <el-input v-model="searchForm.username" placeholder="请输入用户名" clearable @input="getUserList">
           <!-- <el-button slot="append" @click="getUserList" icon="el-icon-search">搜索</el-button> -->
         </el-input>
-        
+
       </el-form-item>
-      <el-form-item label=""><el-input  v-model="searchForm.trueName" placeholder="请输入姓名" clearable @input="getUserList">
-        </el-input></el-form-item>
+      <el-form-item label="">
+        <el-input v-model="searchForm.trueName" placeholder="请输入姓名" clearable @input="getUserList">
+        </el-input>
+      </el-form-item>
 
       <el-form-item>
         <el-button type="primary" @click="dialogVisible = true" v-if="hasAuth('sys:user:insert')" icon="el-icon-plus">
@@ -52,7 +54,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="username" label="用户名" width="120">
+      <el-table-column prop="username" label="用户名" width="120"  show-overflow-tooltip>
       </el-table-column>
 
       <el-table-column prop="name" sortable label="角色名称">
@@ -62,12 +64,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="trueName" align="center" label="真实姓名" width="100">
+      <el-table-column prop="trueName" align="center" label="真实姓名" width="100"  show-overflow-tooltip>
       </el-table-column>
 
-      <el-table-column prop="email" label="邮箱"> </el-table-column>
+      <el-table-column prop="email" label="邮箱" show-overflow-tooltip> </el-table-column>
 
-      <el-table-column prop="phone" label="手机号"> </el-table-column>
+      <el-table-column prop="phone" label="手机号"  show-overflow-tooltip> </el-table-column>
 
       <el-table-column prop="state" label="状态" align="center" width="80">
         <template slot-scope="scope">
@@ -76,7 +78,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="createTime" label="创建时间" align="center" :formatter="formatDate" width="160">
+      <el-table-column prop="createTime" label="创建时间" align="center" :formatter="formatDate"  show-overflow-tooltip>
       </el-table-column>
 
       <el-table-column prop="icon" label="操作" width="330">
@@ -121,7 +123,7 @@
           <el-input v-model="editForm.trueName" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="邮箱" prop="email" label-width="100px">
+        <el-form-item label="邮箱" prop="email" label-width="100px" >
           <el-input v-model="editForm.email" autocomplete="off"></el-input>
         </el-form-item>
 
@@ -565,8 +567,7 @@
               showClose: true,
               duration: 2000,
               message: "重置密码成功",
-              type: "success",
-              onClose: () => {},
+              type: "success"
             });
           });
         });

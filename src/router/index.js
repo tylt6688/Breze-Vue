@@ -37,11 +37,16 @@ const routes = [{
           title: "个人中心"
         },
       },
-
+      // 错误页面
       {
         path: '/in401',
         name: 'Page401',
         component: () => import('../views/error/401.vue')
+      },
+      {
+        path: '/in403',
+        name: 'Page403',
+        component: () => import('../views/error/403.vue')
       },
       {
         path: '/in404',
@@ -51,16 +56,22 @@ const routes = [{
 
     ]
   },
-  // 外部使用
-  {
-    path: '/404',
-    name: 'Page404',
-    component: () => import('../views/error/404.vue')
-  },
+  // 外部全屏错误使用  
   {
     path: '/401',
     name: 'Page401',
     component: () => import('../views/error/401.vue')
+  },
+
+  {
+    path: '/403',
+    name: 'Page403',
+    component: () => import('../views/error/403.vue')
+  },
+  {
+    path: '/404',
+    name: 'Page404',
+    component: () => import('../views/error/404.vue')
   },
 
 ]
@@ -96,7 +107,7 @@ router.beforeEach((to, from, next) => {
   }
   // 验证token不为空并且hasRoute为空时去请求获取SideMenu菜单树
   else if (token && !hasRoute) {
-  
+
     axios.get("/sys/menu/nav").then(res => {
       bus.$emit('LoadUserInfo');
       // 加载Portal首页管理模块路由
@@ -123,7 +134,7 @@ router.beforeEach((to, from, next) => {
       })
       router.addRoutes(newRoutes);
       hasRoute = true;
-      store.commit("changeRouteStatus", hasRoute);
+      store.commit("changeRouteState", hasRoute);
       // 都没问题的话地址请求哪里就去哪里
       next({
         path: to.path
@@ -154,25 +165,23 @@ const menuToRoute = (menu) => {
 }
 
 // 首页管理模块路由
-async function loadModeRoutes(){
+async function loadModeRoutes() {
   let modeRoutes = []
   let res = await axios.get("/breze/portal/modeCard/select");
   let modeList = res.data.result.data;
 
-  modeList.forEach(mode =>{
-      modeRoutes.push(
-        {
-          name: mode.modeComponent,
-          path: mode.modeLink,
-          meta:{
-            title: mode.modeTitle
-          },
-          component: () => import('@/views/'+mode.modeComponent+'.vue')
-        }
-      )
+  modeList.forEach(mode => {
+    modeRoutes.push({
+      name: mode.modeComponent,
+      path: mode.modeLink,
+      meta: {
+        title: mode.modeTitle
+      },
+      component: () => import('@/views/' + mode.modeComponent + '.vue')
+    })
   })
-  modeRoutes.forEach(route=>{
-    router.addRoute('Home',route);
+  modeRoutes.forEach(route => {
+    router.addRoute('Home', route);
   })
 }
 
