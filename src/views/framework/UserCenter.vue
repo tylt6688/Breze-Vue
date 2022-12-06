@@ -227,9 +227,11 @@
         loginWarn: false,
         dialogVisible: false,
         editForm: {},
-        userInfo: {},
+        userInfo: {
+          loginWarn: undefined,
+        },
         editFormRules: {
-          truename: [{
+          trueName: [{
             required: true,
             message: "请输入用户真实姓名",
             trigger: "blur",

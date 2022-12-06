@@ -2,10 +2,13 @@
   <div class="page">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="searchForm.username" placeholder="请输入用户名" clearable>
-          <el-button slot="append" @click="getUserList" icon="el-icon-search">搜索</el-button>
+        <el-input v-model="searchForm.username" placeholder="请输入用户名" clearable @input="getUserList">
+          <!-- <el-button slot="append" @click="getUserList" icon="el-icon-search">搜索</el-button> -->
         </el-input>
+        
       </el-form-item>
+      <el-form-item label=""><el-input  v-model="searchForm.trueName" placeholder="请输入姓名" clearable @input="getUserList">
+        </el-input></el-form-item>
 
       <el-form-item>
         <el-button type="primary" @click="dialogVisible = true" v-if="hasAuth('sys:user:insert')" icon="el-icon-plus">
@@ -211,7 +214,14 @@
         roleDialogFormVisible: false,
         roleMoreDialogFormVisible: false,
         searchForm: {
-          username: ""
+          username: "",
+          password: "",
+          trueName: "",
+          phone: "",
+          email: "",
+          city: "",
+          loginWarn: 0,
+          state: 0
         },
         total: 0,
         size: 10,
@@ -298,9 +308,13 @@
       // 获取用户列表 Start
       getUserList() {
         let params = {
-          username: this.searchForm.username,
-          current: this.current,
-          size: this.size,
+          "username": this.searchForm.username,
+          "trueName": this.searchForm.trueName,
+          "phone": this.searchForm.phone,
+          "email": this.searchForm.email,
+          "city": this.searchForm.city,
+          "current": this.current,
+          "size": this.size,
         };
         user.getUserList(params).then((res) => {
           this.tableData = res.data.result.data.records;

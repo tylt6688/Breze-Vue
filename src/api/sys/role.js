@@ -24,11 +24,11 @@ export default {
             method: 'get'
         })
     },
-    delHandle(ids) {
+    delHandle(roleIds) {
         return axios({
             url: "/sys/role/delete",
-            method: 'post',
-            data: ids
+            method: 'delete',
+            data: roleIds
         })
     },
     // 根据角色id获取相应菜单列表

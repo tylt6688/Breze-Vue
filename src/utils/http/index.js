@@ -21,22 +21,22 @@ request.interceptors.request.use(config => {
 // 进行response后端数据返回拦截
 
 request.interceptors.response.use(
-	
+
 	response => {
-		console.log("AllResponse ->", response);
+		console.log("AllResponse ===>>>", response);
 		// 缩短一点
 		let res = response.data;
-		console.log("我是每次请求后端的数据", res);
+		console.log("响应数据ResponseData===>>>", res);
 		// 判断后端响应是否正确
 		if (res.success) {
-			
 			return response;
 		} else if (res instanceof ArrayBuffer) {
 			console.log("判断数据是否为文件类型", res instanceof ArrayBuffer);
 			return response;
 		} else {
 			if (res.errorCode === 700) {
-				Element.Message.error(res.message + ",将在3秒后返回登陆页面", {
+				var times = 3;
+				Element.Message.error(res.message + ",将在" + times + "秒后返回登陆页面", {
 					showClose: false,
 					duration: 3000,
 					onClose: () => {
@@ -52,21 +52,14 @@ request.interceptors.response.use(
 	},
 	// 异常情况判断
 	error => {
-		console.log("请求异常了嗷~~", error);
+		console.log("请求异常===>>>", error);
 		if (error.response.data) {
 			error.massage = error.response.data.message;
-			// 如果是因为token的异常就将localStorage中清空
-			// if (error.massage == "token令牌异常" || "token令牌已过期") {
-			// 	localStorage.clear();
-			// }
-			// 无权限
 			if (error.response.status === 401) {
 				router.push("/in401");
 			} else if (error.response.status === 403) {
 				router.push("/in401");
-			}
-			// 404notfound
-			else if (error.response.status === 404) {
+			} else if (error.response.status === 404) {
 				router.push("/in404");
 			}
 

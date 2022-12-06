@@ -273,6 +273,7 @@
           this.dialogVisible = true;
         });
       },
+      // 删除角色
       delHandle(id) {
         var ids = [];
         if (id) {

@@ -9,11 +9,11 @@ export default {
         })
     },
     // 获取用户列表 Start
-    getUserList(params) {
+    getUserList(userDto) {
         return axios({
             url: "/sys/user/select",
-            method: 'get',
-            params: params
+            method: 'post',
+            data: userDto
         })
     },
 
@@ -73,7 +73,7 @@ export default {
     // 下载用户导入模板Excel
     exportModelExcel() {
         return axios({
-            url: "/sys/user/download_model_excel",
+            url: "/sys/user/export_model_excel",
             method: 'get',
             responseType: "arraybuffer",
         })
@@ -111,7 +111,7 @@ export default {
         })
     },
     // 批量分配角色
-    roleMoreHandle(roleIds, userIds) {
+    roleMoreHandle(userIds, roleIds) {
         return axios({
             url: "/sys/user/role_more_perm?userIds=" + userIds,
             method: 'post',
