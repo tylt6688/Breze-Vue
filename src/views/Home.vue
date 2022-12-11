@@ -15,8 +15,7 @@
           <el-avatar v-if="isChangeAvatar" fit="scale-down" size="large" :src="userInfo.avatar"></el-avatar>
           <el-dropdown>
             <span class="el-dropdown-link">
-              {{ userInfo.trueName
-              }}<i class="el-icon-arrow-down el-icon--right"></i>
+              {{ userInfo.trueName}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-user-solid">
@@ -99,9 +98,7 @@
     },
 
     mounted() {
-      bus.$on('LoadUserInfo', (res) => {
-        this.getUserInfo();
-      })
+      bus.$on('LoadUserInfo',this.getUserInfo());
       this.getUserInfoFormLocal();
       this.screenIcon = screenfull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
     },

@@ -1,10 +1,19 @@
 import axios from "@/utils/http";
 
 export default {
-    getTableData() {
+    getDataBases() {
+        return axios({
+            url: "/tool/code/show_databases",
+            method: 'get'
+        })
+    },
+    getTableData(dataBaseName) {
         return axios({
             url: "/tool/code/tables",
-            method: 'get'
+            method: 'get',
+            params: {
+                dataBaseName
+            }
         })
     },
     generteCode(params){

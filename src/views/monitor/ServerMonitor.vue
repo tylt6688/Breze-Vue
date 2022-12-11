@@ -1,8 +1,6 @@
 <template>
     <el-main>
-
-        <div id="main" style="width: 800px; height: 600px;"></div>
-        <div>{{cpuinfo}}</div>
+        <div id="main" style="width: 100%; height: 500px;"></div>
     </el-main>
 
 </template>
@@ -49,8 +47,8 @@
                             endAngle: -45,
                             clockwise: true,
                             min: 0,
-                            max: 220,
-                            splitNumber: 22,
+                            max: 100,
+                            splitNumber: 10,
                             data: data1,
                         },
                         // {

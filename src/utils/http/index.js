@@ -56,11 +56,11 @@ request.interceptors.response.use(
 		if (error.response.data) {
 			error.massage = error.response.data.message;
 			if (error.response.status === 401) {
-				router.push("/in401");
+				router.push("/401");
 			} else if (error.response.status === 403) {
-				router.push("/in403");
+				router.push("/403");
 			} else if (error.response.status === 404) {
-				router.push("/in404");
+				router.push("/404");
 			}
 
 		}

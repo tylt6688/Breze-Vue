@@ -8,17 +8,20 @@
                 </el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="el-icon-download" @click="generateCode(null)">文件生成
+                <el-button type="primary" icon="el-icon-download" @click="generateCode(null)">批量生成
                 </el-button>
             </el-form-item>
+       
+
             <el-form-item>
-                <el-button type="info" @click="getDialogData" icon="el-icon-upload">
-                    导入表格</el-button>
+                <el-select v-model="value" placeholder="请选择数据库" @change="getTableData">
+                    <el-option v-for="(item,index) in options" :value="item" :key="index">
+                    </el-option>
+                </el-select>
             </el-form-item>
 
             <el-form-item>
-                <el-button type="danger" icon="el-icon-delete">批量删除</el-button>
-
+                <el-tag type="success" >当前数据库：{{currentDataBase}}</el-tag>
             </el-form-item>
         </el-form>
         <!-- 头部操作部分 End -->
@@ -43,25 +46,20 @@
                     <el-table-column prop="entity" label="对应实体" show-overflow-tooltip>
                     </el-table-column>
 
-                    <el-table-column prop="coding" label="编码格式" align="center" :formatter="formatDate"
-                        show-overflow-tooltip>
+                    <el-table-column prop="coding" label="编码格式" align="center" show-overflow-tooltip>
                     </el-table-column>
-                    <el-table-column prop="createTime" label="创建时间"  align="center" :formatter="formatDate"
+
+                    <el-table-column prop="createTime" label="创建时间" align="center" :formatter="formatDate"
                         show-overflow-tooltip>
                     </el-table-column>
 
-                    <el-table-column prop="icon" label="操作" width="260">
+                    <el-table-column prop="icon" label="操作" align="center">
                         <template slot-scope="scope">
-                            <el-button type="text" @click="editTableInfo(scope.row.id)" icon="el-icon-edit">编辑
-                            </el-button>
-                            <el-divider direction="vertical"></el-divider>
-                            <el-button type="text" slot="reference" @click="deleteTableInfo(scope.$index)"
-                                icon="el-icon-delete">删除</el-button>
-                            <el-divider direction="vertical"></el-divider>
                             <el-button type="text" @click="generateCode(scope.row)" icon="el-icon-download">生成代码
                             </el-button>
                         </template>
                     </el-table-column>
+
                 </el-table>
             </el-col>
         </el-row>
@@ -138,6 +136,9 @@
         name: "CodeGener",
         data() {
             return {
+                options: [],
+                value: '',
+                currentDataBase:'',
                 searchForm: {
                     tableName: "",
                 },
@@ -162,7 +163,8 @@
             };
         },
         created() {
-            this.getTableData();
+            this.getTableData(this.value);
+            this.getDataBases();
 
         },
         methods: {
@@ -176,10 +178,22 @@
                 return moment(data).format("YYYY-MM-DD HH:mm:ss");
             },
             // 时间格式化 End
+            // 获取数据库 Start
+            getDataBases() {
+                generteCode.getDataBases().then((res) => {
+                    this.options = res.data.result.data;
+                    console.log(this.options)
+                })
+            },
+            // 获取数据库 End
 
             // 获取数据列表 Start
-            getTableData() {
-                generteCode.getTableData().then((res) => {
+            getTableData(tableName) {
+                if (tableName == "") {
+                    tableName = "breze";
+                }
+                this.currentDataBase = tableName;
+                generteCode.getTableData(tableName).then((res) => {
 
                     this.tableDataCache = res.data.result.data;
 
@@ -298,6 +312,7 @@
                     return;
                 }
                 let params = {
+                    dataBaseName: this.value,
                     tableNames: tableNames,
                     tablePrefix: tablePrefixs,
                     packageName: "",
