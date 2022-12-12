@@ -118,7 +118,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // token为空的话直接跳到登录页
-    next('/login');
+    next();
   }
 
   // 每个页面的浏览器标签名称显示

@@ -1,6 +1,7 @@
 import axios from "axios"
 import router from "@/router"
 import Element from "element-ui"
+import { countDownMessage } from '@/utils/messagecount'
 
 
 axios.defaults.baseURL = "http://localhost:8090"
@@ -35,15 +36,7 @@ request.interceptors.response.use(
 			return response;
 		} else {
 			if (res.errorCode === 900) {
-				var times = 3;
-				Element.Message.error(res.message + ",将在" + times + "秒后返回登陆页面", {
-					showClose: false,
-					duration: 3000,
-					onClose: () => {
-						localStorage.clear();
-						router.push("/login");
-					}
-				});
+				countDownMessage(3,res.message);
 			} else {
 				Element.Message.error(res.message);
 			}
