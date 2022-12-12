@@ -1,6 +1,17 @@
 <template>
   <div class="page">
-    <div id="main" style="width: 600px;height:400px;"></div>
+    <el-row>
+      <el-col :span="4">
+        <div class="data-box">
+          <div class="box-content">
+            <h4>本周访问量</h4>
+            <h2>43566</h2>
+            <div id="weekbrokenline" style="width: 600px;height:400px;display: block"></div>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+    <!-- <div id="weekbrokenline" style="width: 600px;height:400px;"></div> -->
   </div>
 </template>
 <script>
@@ -13,28 +24,33 @@
       };
     },
     mounted() {
-        this.getData();
+      this.getData();
     },
     methods: {
       getData() {
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
+      
+        var weekbrokenline = echarts.init(document.getElementById('weekbrokenline'));
         // 绘制图表
-        myChart.setOption({
-          title: {
-            text: 'ECharts 入门示例'
-          },
-          tooltip: {},
+        window.onresize = function() {
+    myChart.resize();
+  };
+        weekbrokenline.setOption({
           xAxis: {
-            data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+            type: 'category',
+            data: ['A', 'B', 'C'],
+            show: false
           },
-          yAxis: {},
+          yAxis: {
+            type: 'value',
+            show: false,
+            data: [0,20,40,60]
+          },
           series: [{
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
+            data: [2, 23, 14],
+            type: 'line',
           }]
-        });
+        })
       },
 
     },

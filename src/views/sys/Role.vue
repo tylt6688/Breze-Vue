@@ -122,7 +122,7 @@
   import menu from "@/api/sys/menu";
 
   export default {
-    inject: ["reload"],
+    // inject: ["reload"],
     name: "Role",
     data() {
       return {

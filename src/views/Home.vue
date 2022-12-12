@@ -98,7 +98,10 @@
     },
 
     mounted() {
-      bus.$on('LoadUserInfo',this.getUserInfo());
+      let that = this;
+      bus.$on('LoadUserInfo',function(){
+        that.getUserInfo();
+      });
       this.getUserInfoFormLocal();
       this.screenIcon = screenfull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
     },
