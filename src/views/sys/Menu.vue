@@ -37,7 +37,12 @@
 
       <el-table-column prop="component" label="页面组件"> </el-table-column>
 
-      <el-table-column prop="orderNum" sortable label="排序号" align="center">
+      <el-table-column prop="orderNum"  sortable label="排序号" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.type===0">{{scope.row.orderNum}}</el-tag>
+          <el-tag v-else-if="scope.row.type===1" type="success">{{scope.row.orderNum}}</el-tag>
+          <el-tag v-else type="info">{{scope.row.orderNum}}</el-tag>
+        </template>
       </el-table-column>
 
       <el-table-column prop="state" label="状态" align="center">
@@ -227,7 +232,7 @@
             message: "请填入排序号",
             trigger: "blur",
           }, ],
-          statu: [{
+          state: [{
             required: true,
             message: "请选择状态",
             trigger: "blur",
@@ -247,6 +252,11 @@
       },
       // 获取菜单树 End
 
+      changeSortNum(row, column, cellValue) {
+        if (row.type == 0) {
+          return 'abc'
+        }
+      },
       // 新增菜单 Start
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -262,7 +272,6 @@
                 message: "操作成功",
                 type: "success",
                 onClose: () => {
-                  // this.$router.go(0);
                   this.getMenuTree();
                 },
               });

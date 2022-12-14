@@ -1,7 +1,7 @@
 import axios from "axios"
 import router from "@/router"
 import Element from "element-ui"
-import { countDownMessage } from '@/utils/messagecount'
+import { countDownMessage } from '@/utils/message_timer'
 
 
 axios.defaults.baseURL = "http://localhost:8090"

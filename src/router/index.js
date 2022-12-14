@@ -81,7 +81,6 @@ router.beforeEach((to, from, next) => {
     }
     // 验证token不为空并且hasRoute为空时去请求获取SideMenu菜单树
     else if (!hasRoute) {
-
       axios.get("/sys/menu/nav").then(res => {
         // 传递给Home页面一个触发事件，让Home页面去更新加载用户信息
         bus.$emit('LoadUserInfo');
@@ -92,7 +91,7 @@ router.beforeEach((to, from, next) => {
         // 动态绑定路由
         let newRoutes = router.options.routes;
         res.data.result.data.nav.forEach(menu => {
-
+    
           if (menu.children) {
             menu.children.forEach(e => {
               // 转成路由
@@ -122,7 +121,7 @@ router.beforeEach((to, from, next) => {
   }
 
   // 每个页面的浏览器标签名称显示
-  to.meta.title && (document.title = "清枫 Breze—" + to.meta.title);
+  to.meta.title && (document.title = "清枫Breze—" + to.meta.title);
   next();
 })
 
@@ -143,6 +142,8 @@ const menuToRoute = (menu) => {
   route.component = () => import('@/views/' + menu.component + '.vue')
   return route
 }
+
+
 
 // 首页管理模块路由
 async function loadModeRoutes() {

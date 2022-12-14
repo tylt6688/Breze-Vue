@@ -29,12 +29,11 @@
     methods: {
       getData() {
         // 基于准备好的dom，初始化echarts实例
-      
         var weekbrokenline = echarts.init(document.getElementById('weekbrokenline'));
         // 绘制图表
-        window.onresize = function() {
-    myChart.resize();
-  };
+        window.onresize = function () {
+          myChart.resize();
+        };
         weekbrokenline.setOption({
           xAxis: {
             type: 'category',
@@ -44,7 +43,7 @@
           yAxis: {
             type: 'value',
             show: false,
-            data: [0,20,40,60]
+            data: [0, 20, 40, 60]
           },
           series: [{
             data: [2, 23, 14],
