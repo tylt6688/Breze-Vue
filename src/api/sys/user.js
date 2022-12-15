@@ -98,7 +98,7 @@ export default {
     delHandle(ids) {
         return axios({
             url: "/sys/user/delete",
-            method: 'post',
+            method: 'delete',
             data: ids
         })
     },

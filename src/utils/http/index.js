@@ -27,12 +27,12 @@ request.interceptors.response.use(
 		console.log("AllResponse ===>>>", response);
 		// 缩短一点
 		let res = response.data;
-		console.log("响应数据ResponseData===>>>", res);
+		console.log("响应数据===>ResponseData===>>>", res);
 		// 判断后端响应是否正确
 		if (res.success) {
 			return response;
 		} else if (res instanceof ArrayBuffer) {
-			console.log("判断数据是否为文件类型", res instanceof ArrayBuffer);
+			console.log("是否为文件类型===>", res instanceof ArrayBuffer);
 			return response;
 		} else {
 			if (res.errorCode === 900) {
