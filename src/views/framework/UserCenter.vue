@@ -89,7 +89,6 @@
         </el-descriptions>
 
         <el-descriptions title="所任职位" direction="vertical" :column="1" style="margin: 0 auto; width: 70%" border>
-
           <el-descriptions-item>
             <template slot="label">
               <i class="el-icon-wallet"></i>

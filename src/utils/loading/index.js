@@ -6,7 +6,7 @@ import Vue from 'vue'
 
 let loading
 let needLoadingRequestCount = 0 // 声明一个对象用于存储请求个数
-function startLoading (target_region) {
+function startLoading(target_region) {
     loading = Vue.prototype.$loading({
         lock: true,
         text: '努力加载中...',
@@ -15,16 +15,16 @@ function startLoading (target_region) {
     })
 }
 
-function endLoading () {
+function endLoading() {
     loading.close()
 }
-export function showFullScreenLoading (target_region) {
+export function showFullScreenLoading(target_region) {
     if (needLoadingRequestCount === 0) {
         startLoading(target_region)
     }
     needLoadingRequestCount++
 }
-export function hideFullScreenLoading () {
+export function hideFullScreenLoading() {
     if (needLoadingRequestCount <= 0) return
     needLoadingRequestCount--
     if (needLoadingRequestCount === 0) {
