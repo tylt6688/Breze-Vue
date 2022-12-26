@@ -12,6 +12,15 @@
       <el-header>
         <!-- <strong class="title">清 枫 多 端 一 体 化 权 限 服 务 平 台</strong> -->
         <div class="header-avatar">
+          <div class="header-search">
+            <div class="search-div">
+              <el-button id="search-btn" class="search-btn" slot="append" @click="handleSelect" icon="el-icon-search"
+                circle></el-button>
+              <el-autocomplete id="inline-input" class="inline-input" v-model="searchForm.titleName" value-key="title"
+                :fetch-suggestions="querySearch" placeholder="请输入菜单名称" :trigger-on-focus="false"
+                @select="handleSelect"></el-autocomplete>
+            </div>
+          </div>
           <el-avatar v-if="isChangeAvatar" fit="scale-down" size="large" :src="userInfo.avatar"></el-avatar>
           <el-dropdown>
             <span class="el-dropdown-link">
@@ -34,6 +43,9 @@
               </el-dropdown>
             </el-badge>
           </div>
+          <div style="width:40px">
+            <i class="el-icon-refresh" style="font-weight:bold;cursor:pointer;" @click="reload"></i>
+          </div>
           <el-tooltip effect="dark" content="全屏切换" placement="bottom">
             <i @click="fullScreen" :class="screenIcon"></i>
           </el-tooltip>
@@ -49,7 +61,7 @@
           <!-- 暂时关闭折叠动画效果 -->
           <!-- <el-collapse-transition> -->
           <!-- 中间核心界面 -->
-          <router-view></router-view>
+          <router-view v-if="isRouterAlive"></router-view>
           <!-- </el-collapse-transition> -->
         </div>
         <!-- 全局内容返回顶部锚点 -->
@@ -67,6 +79,7 @@
   import Tabs from "./inc/Tabs"
   import screenfull from "screenfull"
   import user from "@/api/sys/user"
+  import menu from "@/api/sys/menu"
   import bus from "@/bus"
 
   export default {
@@ -81,6 +94,7 @@
       SideMenu,
       Tabs,
     },
+    function () {},
     data() {
       return {
         screenIcon: "",
@@ -92,14 +106,19 @@
           trueName: "",
           avatar: "",
         },
+        searchForm: {
+          titleName: ""
+        },
         // 消息数量
         messageNum: "",
+        restaurants: [],
+        isRouterAlive:true
       };
     },
 
     mounted() {
       let that = this;
-      bus.$on('LoadUserInfo',function(){
+      bus.$on('LoadUserInfo', function () {
         that.getUserInfo();
       });
       this.getUserInfoFormLocal();
@@ -110,6 +129,13 @@
     },
 
     methods: {
+      // 局部刷新页面
+      reload() {
+      this.isRouterAlive = false;
+      this.$nextTick( () => {
+        this.isRouterAlive = true;
+      })
+    },
       // 全屏方法 Start
       fullScreen() {
         if (!screenfull.isEnabled) {
@@ -156,6 +182,37 @@
       },
       // 获取当前登录用户信息 End
 
+      // 搜索框查询菜单跳转
+      querySearch(queryString, cb) {
+        var results = [{
+          "component": "",
+          "id": "",
+          "name": "",
+          "path": "",
+          "title": ""
+        }]
+        this.searchForm.titleName = queryString;
+        menu.selectByMenuName(this.searchForm.titleName).then((res) => {
+          this.restaurants = res.data.result.data;
+          this.restaurants.forEach(function (item, index, obj) {
+            results[index].id = item.id;
+            results[index].title = item.name;
+            results[index].path = item.path;
+            results[index].name = item.perms;
+            results[index].component = item.component;
+          })
+          cb(results);
+        })
+      },
+
+      // 搜索框选择或点击事件
+      handleSelect(item) {
+        this.$store.commit("addTab", item);
+         this.$router.push({
+          name: item.name,
+        });
+      },
+
       // 退出登录 Start
       logout() {
         user.logout().then((res) => {
@@ -197,10 +254,47 @@
 
   .header-avatar {
     float: right;
-    width: 260px;
+    width: 560px;
     display: flex;
     justify-content: space-around;
     align-items: center;
+
+  }
+
+  .header-search {
+    width: 260px;
+    text-align: right;
+  }
+
+  .search-div {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row-reverse;
+  }
+
+  .inline-input {
+    width: 100%;
+  }
+
+  .search-btn {
+    position: relative;
+    right: 40px;
+    border: 0;
+    z-index: 90;
+    background: Transparent;
+    color: #ffffff;
+  }
+  .search-btn >>> i{
+    font-weight: 900;
+  }
+
+  .inline-input>>>.el-input__inner {
+    border-radius: 45px;
+ 
+    background: Transparent;
+    border: 2px solid #ffffff;
+    color: #ffffff;
   }
 
   .el-dropdown-link {
@@ -228,9 +322,6 @@
     padding-top: 2px;
   }
 
-  .badge_item {
-    margin-right: 20px;
-  }
 
   .el-main {
     color: #333;
