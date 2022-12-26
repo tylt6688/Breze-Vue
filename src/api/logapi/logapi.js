@@ -17,4 +17,10 @@ export default{
       params: params
     })
   },
+  getUserLoginData(){
+    return axios({
+      url: '/tool/log/login_count',
+      method: 'get',
+    })
+  },
 }
