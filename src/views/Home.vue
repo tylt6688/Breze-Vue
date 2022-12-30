@@ -17,8 +17,8 @@
               <el-button id="search-btn" class="search-btn" slot="append" @click="handleSelect" icon="el-icon-search"
                 circle></el-button>
               <el-autocomplete id="inline-input" class="inline-input" v-model="searchForm.titleName" value-key="title"
-                :fetch-suggestions="querySearch" placeholder="请输入菜单名称" :trigger-on-focus="false"
-                @select="handleSelect"></el-autocomplete>
+                :fetch-suggestions="querySearch" placeholder="请输入菜单名称" :trigger-on-focus="false" @select="handleSelect">
+              </el-autocomplete>
             </div>
           </div>
           <el-avatar v-if="isChangeAvatar" fit="scale-down" size="large" :src="userInfo.avatar"></el-avatar>
@@ -68,8 +68,8 @@
         <el-backtop target=".container" :visibility-height="50" :bottom="12" :right="50"></el-backtop>
       </el-main>
 
-      <!-- <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer> -->
-      <el-footer> 🐱‍🏍 Copyright © 2022 💙 开发测试专用 </el-footer>
+      <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer>
+      <!-- <el-footer> 🐱‍🏍 Copyright © 2022 💙 开发测试专用 </el-footer> -->
     </el-container>
   </el-container>
 </template>
@@ -112,7 +112,7 @@
         // 消息数量
         messageNum: "",
         restaurants: [],
-        isRouterAlive:true
+        isRouterAlive: true
       };
     },
 
@@ -131,11 +131,11 @@
     methods: {
       // 局部刷新页面
       reload() {
-      this.isRouterAlive = false;
-      this.$nextTick( () => {
-        this.isRouterAlive = true;
-      })
-    },
+        this.isRouterAlive = false;
+        this.$nextTick(() => {
+          this.isRouterAlive = true;
+        })
+      },
       // 全屏方法 Start
       fullScreen() {
         if (!screenfull.isEnabled) {
@@ -208,7 +208,7 @@
       // 搜索框选择或点击事件
       handleSelect(item) {
         this.$store.commit("addTab", item);
-         this.$router.push({
+        this.$router.push({
           name: item.name,
         });
       },
@@ -285,13 +285,14 @@
     background: Transparent;
     color: #ffffff;
   }
-  .search-btn >>> i{
+
+  .search-btn>>>i {
     font-weight: 900;
   }
 
   .inline-input>>>.el-input__inner {
     border-radius: 45px;
- 
+
     background: Transparent;
     border: 2px solid #ffffff;
     color: #ffffff;

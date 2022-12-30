@@ -126,4 +126,12 @@ export default {
             method: 'post'
         })
     },
+    // 获取用户数量 
+    getUserCount() {
+        return axios({
+            url: "/sys/user/user_count",
+            method: 'get'
+        })
+    },
+
 }

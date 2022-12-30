@@ -23,4 +23,10 @@ export default{
       method: 'get',
     })
   },
+  getUserLoginCategory(){
+    return axios({
+      url: '/tool/log/login_category',
+      method: 'get',
+    })
+  },
 }
