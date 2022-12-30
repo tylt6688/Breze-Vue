@@ -178,6 +178,8 @@
         </el-form-item>
         <el-form-item label="居住地" prop="city" label-width="100px">
           <el-input v-model="editForm.city" autocomplete="off"></el-input>
+          <el-alert title="省市通过'-'隔开" :closable="false" type="info" show-icon style="line-height: 12px">
+          </el-alert>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
