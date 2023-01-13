@@ -31,7 +31,8 @@ export default {
 		addTab(state, tab) {
 			// 防止多次点击多个激活导致标签重复问题
 			let index = state.editableTabs.findIndex(e => e.name === tab.name)
-
+			// TODO 查看tab
+			console.log("查看tab",tab);
 			if (index === -1) {
 				// -1表示没有找到已经激活的页面，开始创建
 				state.editableTabs.push({

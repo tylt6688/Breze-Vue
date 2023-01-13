@@ -2,12 +2,12 @@
   <!-- 登录 -->
   <el-container>
     <el-header>
-      <!-- <strong style="font-size: 35px; font-family: 楷体">欢 迎 来 到 清 枫 一 体 化 权 限 管 理 平 台</strong> -->
+      <!-- <strong style="font-size: 35px; font-family: 楷体">欢 迎 来 到 清 枫 一 体 化 管 理 平 台</strong> -->
     </el-header>
 
     <el-main>
       <el-row type="flex" justify="center" align="middle">
-        <el-col :xl="6" :lg="8" :xs="4" :sm="2" :md="5">
+        <el-col :xs="8" :sm="8" :md="8" :lg="9" :xl="11">
           <el-image fit="cover" :src="require('@/assets/login.png')" style="margin-top: 60px">
           </el-image>
         </el-col>
@@ -16,7 +16,7 @@
           <el-divider direction="vertical"></el-divider>
         </el-col>
 
-        <el-col :xl="6" :lg="7">
+        <el-col :xs="8" :sm="6" :md="8" :lg="7" :xl="11">
           <el-card class="box-card" shadow="hover" :body-style="{ padding: '0px' }">
             <div slot="header" class="clearfix">
               <el-tabs>
@@ -73,7 +73,7 @@
       </el-row>
     </el-main>
     <!-- 网站底部信息 -->
-    <el-footer> 🐱‍🏍Copyright © 2021-2022 青枫网络工作室 All Rights Reserved.</el-footer>
+    <el-footer> 🐱‍🏍Copyright © 2021-2022 清枫网络工作室 All Rights Reserved.</el-footer>
   </el-container>
 </template>
 

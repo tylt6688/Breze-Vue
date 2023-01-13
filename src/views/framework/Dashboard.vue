@@ -4,7 +4,7 @@
       <el-col :span="5" class="contain-card">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="font-weight:bold">网站用户量</span>
+            <span style="font-weight:bold">用户人数</span>
             <span class="card-flag">总</span>
           </div>
           <el-row class="data-show">
@@ -13,7 +13,7 @@
                 <i class="el-icon-s-custom"></i>
               </div>
             </el-col>
-            <el-col :span="16" class="count-text" style="padding-left: 20px;">{{this.userCount}}
+            <el-col :span="16" class="count-text" style="padding-left: 20px;">{{this.userCount}} 人
 
             </el-col>
             <el-col :span="2">
@@ -31,7 +31,7 @@
       <el-col :span="5" class="contain-card">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="font-weight:bold">消息</span>
+            <span style="font-weight:bold">消息数量</span>
             <span class="card-flag">总</span>
           </div>
           <el-row class="data-show">
@@ -101,9 +101,9 @@
               <div style="font-size:20px;color: green;">
                 <i class="el-icon-caret-top"></i>
               </div>
-              <!-- <div style="font-size:20px;color: red;">
+              <div style="font-size:20px;color: red;">
                 <i class="el-icon-caret-bottom"></i>
-              </div> -->
+              </div>
             </el-col>
           </el-row>
         </el-card>
@@ -111,7 +111,7 @@
       </el-col>
     </el-row>
     <el-row type="flex" justify="space-between" style="margin: 2%;">
-      <el-col :span="16"  class="contain-card">
+      <el-col :span="16" class="contain-card">
         <div class="echarts-div">
           <echarts id="income-bar" :option="barOption"></echarts>
         </div>
@@ -130,7 +130,7 @@
           <echarts id="visits-polyline" :option="LineOption"></echarts>
         </div>
       </el-col>
-      <el-col :span="9"  class="contain-card">
+      <el-col :span="9" class="contain-card">
         <div class="echarts-div">
           <echarts id="visitor-type-polyline" :option="pieOption" v-if="this.pieList.length !== 0"></echarts>
           <el-empty description="今天暂无登录用户" v-if="this.pieList.length === 0"></el-empty>
@@ -374,7 +374,7 @@
       getUserLoginLineList() {
         logapi.getUserLoginData().then((res) => {
           this.LineList = res.data.result.data;
-          let maxlist = []
+          var maxlist = []
           res.data.result.data.forEach(element => {
             maxlist.push(element.loginCount)
           });
@@ -454,8 +454,9 @@
     font-size: 20px;
     font-weight: bold;
   }
-  .echarts-div{
-    border:1px solid #E9E9EB;
+
+  .echarts-div {
+    border: 1px solid #E9E9EB;
     padding: 2%;
   }
 </style>

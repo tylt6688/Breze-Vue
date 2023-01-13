@@ -9,7 +9,7 @@
 
     <el-table highlight-current-row :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-      <el-table-column prop="name" label="名称" sortable width="180">
+      <el-table-column prop="title" label="名称" sortable width="180">
       </el-table-column>
 
       <el-table-column prop="perms" label="权限编码" sortable width="200">
@@ -70,8 +70,8 @@
     <!--新增目录对话框-->
     <el-dialog title="新增目录" :visible.sync="dialogDirVisible" width="600px" :before-close="handleClose">
       <el-form :model="editForm" :rules="editDirFormRules" ref="editForm" label-width="100px" class="demo-editForm">
-        <el-form-item label="目录名称" prop="name" label-width="100px">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
+        <el-form-item label="目录名称" prop="title" label-width="100px">
+          <el-input v-model="editForm.title" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="权限编码" prop="perms" label-width="100px">
@@ -106,18 +106,18 @@
         <el-form-item v-if="editForm.type != 0" label="上级菜单" prop="parentId">
           <el-select v-model="editForm.parentId" placeholder="请选择上级菜单">
             <template v-for="(item, index) in tableData">
-              <el-option :label="item.name" :value="item.id"></el-option>
+              <el-option :label="item.title" :value="item.id"></el-option>
               <template v-for="(child, index) in item.children">
-                <el-option :label="child.name" :value="child.id">
-                  <span>{{ "- " + child.name }}</span>
+                <el-option :label="child.title" :value="child.id">
+                  <span>{{ "- " + child.title }}</span>
                 </el-option>
               </template>
             </template>
           </el-select>
         </el-form-item>
 
-        <el-form-item label="组件名称" prop="name" label-width="100px">
-          <el-input v-model="editForm.name" autocomplete="off"></el-input>
+        <el-form-item label="组件名称" prop="title" label-width="100px">
+          <el-input v-model="editForm.title" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="权限编码" prop="perms" label-width="100px">
@@ -252,11 +252,6 @@
       },
       // 获取菜单树 End
 
-      changeSortNum(row, column, cellValue) {
-        if (row.type == 0) {
-          return 'abc'
-        }
-      },
       // 新增菜单 Start
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {

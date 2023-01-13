@@ -12,7 +12,7 @@
 		// TODO 监听tab栏变化
 		watch: {
 			$route(to, from) {
-				console.log("from", from.path, "to", to.path)
+				console.log("from", from.path, "to", to.path,"title",to.meta.title,"name",to.name)
 				if (to.path != '/login') {
 					let obj = {
 						name: to.name,
@@ -37,6 +37,7 @@
 		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑";
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+
 		/* 使网站整体变灰色，用于特殊纪念日使用 Start */
 		/* -webkit-filter: grayscale(100%);
 		-moz-filter: grayscale(100%);
@@ -61,6 +62,4 @@
 		text-decoration: none;
 	}
 
-
-	.gray {}
 </style>

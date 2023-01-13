@@ -55,7 +55,6 @@
 
         this.editableTabsValue = activeName;
         this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
-
         this.$router.push({
           name: activeName,
         });

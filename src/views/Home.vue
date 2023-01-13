@@ -10,13 +10,13 @@
 
     <el-container>
       <el-header>
-        <!-- <strong class="title">清 枫 多 端 一 体 化 权 限 服 务 平 台</strong> -->
+        <!-- <strong class="title">青 枫 多 端 一 体 化 管 理 平 台</strong> -->
         <div class="header-avatar">
           <div class="header-search">
             <div class="search-div">
-              <el-button id="search-btn" class="search-btn" slot="append" @click="handleSelect" icon="el-icon-search"
-                circle></el-button>
-              <el-autocomplete id="inline-input" class="inline-input" v-model="searchForm.titleName" value-key="title"
+              <el-button class="search-btn" slot="append" @click="handleSelect" icon="el-icon-search" circle>
+              </el-button>
+              <el-autocomplete class="inline-input" v-model="searchForm.titleName" value-key="viewName"
                 :fetch-suggestions="querySearch" placeholder="请输入菜单名称" :trigger-on-focus="false" @select="handleSelect">
               </el-autocomplete>
             </div>
@@ -68,8 +68,8 @@
         <el-backtop target=".container" :visibility-height="50" :bottom="12" :right="50"></el-backtop>
       </el-main>
 
-      <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer>
-      <!-- <el-footer> 🐱‍🏍 Copyright © 2022 💙 开发测试专用 </el-footer> -->
+      <!-- <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer> -->
+      <el-footer> 🐱‍🏍 Copyright © 2022 💙 开发测试专用 </el-footer>
     </el-container>
   </el-container>
 </template>
@@ -94,12 +94,11 @@
       SideMenu,
       Tabs,
     },
-    function () {},
     data() {
       return {
-        screenIcon: "",
         // 注射方式局部刷新头像
         isChangeAvatar: true,
+        screenIcon: "",
         // 首页右上角用户信息
         userInfo: {
           id: "",
@@ -117,16 +116,17 @@
     },
 
     mounted() {
-      let that = this;
-      bus.$on('LoadUserInfo', function () {
-        that.getUserInfo();
-      });
+      // const that = this;
+      // bus.$on('LoadUserInfo', function () {
+      //   that.getUserInfo();
+      // });
+      this.getUserInfo();
       this.getUserInfoFormLocal();
       this.screenIcon = screenfull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
     },
-    beforeDestroy() {
-      bus.$off('LoadUserInfo');
-    },
+    // beforeDestroy() {
+    //   bus.$off('LoadUserInfo');
+    // },
 
     methods: {
       // 局部刷新页面
@@ -146,9 +146,7 @@
           return false;
         }
         screenfull.toggle();
-        this.screenIcon = screenfull.isFullscreen ?
-          "el-icon-full-screen" :
-          "el-icon-crop";
+        this.screenIcon = screenfull.isFullscreen ? "el-icon-full-screen" : "el-icon-crop";
       },
       // 全屏方法 End
 
@@ -177,7 +175,9 @@
             "avatar": res.data.result.data.avatar,
             "trueName": res.data.result.data.trueName
           }
-          localStorage.setItem("userInfo", JSON.stringify(jsonData))
+          this.$store.commit("SET_USER_INFO", jsonData);
+
+          // localStorage.setItem("userInfo", JSON.stringify(jsonData));
         });
       },
       // 获取当前登录用户信息 End
@@ -185,21 +185,19 @@
       // 搜索框查询菜单跳转
       querySearch(queryString, cb) {
         var results = [{
-          "component": "",
-          "id": "",
-          "name": "",
-          "path": "",
-          "title": ""
+          viewName: "",
+          title: "",
+          name: "",
+          path: ""
         }]
         this.searchForm.titleName = queryString;
         menu.selectByMenuName(this.searchForm.titleName).then((res) => {
           this.restaurants = res.data.result.data;
           this.restaurants.forEach(function (item, index, obj) {
-            results[index].id = item.id;
-            results[index].title = item.name;
+            results[index].viewName = item.parentTitle + " > " + item.title;
+            results[index].title = item.title;
+            results[index].name = item.name;
             results[index].path = item.path;
-            results[index].name = item.perms;
-            results[index].component = item.component;
           })
           cb(results);
         })
@@ -207,17 +205,16 @@
 
       // 搜索框选择或点击事件
       handleSelect(item) {
+        this.searchForm.titleName = "";
         this.$store.commit("addTab", item);
-        this.$router.push({
-          name: item.name,
-        });
+        this.$router.push(item.path);
       },
 
       // 退出登录 Start
       logout() {
         user.logout().then((res) => {
           localStorage.clear();
-          sessionStorage.clear();
+          // sessionStorage.clear();
           this.$store.commit("resetState");
           this.$router.push("/login");
         });
@@ -287,15 +284,23 @@
   }
 
   .search-btn>>>i {
-    font-weight: 900;
+    font-weight: 920;
   }
 
   .inline-input>>>.el-input__inner {
     border-radius: 45px;
-
     background: Transparent;
-    border: 2px solid #ffffff;
+    border: 2px solid #c1e1ff;
+  }
+
+  /* 设置inline-input中placeholder颜色为白色 */
+  .inline-input>>>.el-input__inner::placeholder {
     color: #ffffff;
+  }
+
+  .inline-input:hover>>>.el-input__inner {
+    border: 2px solid #ffffff;
+    background: #038af8ed;
   }
 
   .el-dropdown-link {

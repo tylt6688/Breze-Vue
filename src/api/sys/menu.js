@@ -34,10 +34,10 @@ export default {
         })
     },
     // 根据名称查询二级菜单
-    selectByMenuName(menuName){
+    selectByMenuName(menuTitle) {
         return axios({
-            url:'/sys/menu/select_menu_name/'+menuName,
-            method:'get',
+            url: '/sys/menu/select_menu_title/' + menuTitle,
+            method: 'get',
         })
     }
 }

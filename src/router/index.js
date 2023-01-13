@@ -60,12 +60,12 @@ const routes = [{
 
 ]
 
+// 设置路由模式为history
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
-
 
 
 // 配置全局路由导航守卫
@@ -83,7 +83,7 @@ router.beforeEach((to, from, next) => {
     else if (!hasRoute) {
       axios.get("/sys/menu/nav").then(res => {
         // 传递给Home页面一个触发事件，让Home页面去更新加载用户信息
-        bus.$emit('LoadUserInfo');
+        // bus.$emit('LoadUserInfo');
         // 拿到menuList
         store.commit("setMenuList", res.data.result.data.nav);
         // 拿到用户权限
@@ -91,7 +91,6 @@ router.beforeEach((to, from, next) => {
         // 动态绑定路由
         let newRoutes = router.options.routes;
         res.data.result.data.nav.forEach(menu => {
-    
           if (menu.children) {
             menu.children.forEach(e => {
               // 转成路由
@@ -119,7 +118,6 @@ router.beforeEach((to, from, next) => {
     // token为空的话直接跳到登录页
     next();
   }
-
   // 每个页面的浏览器标签名称显示
   to.meta.title && (document.title = "清枫Breze—" + to.meta.title);
   next();
@@ -131,6 +129,8 @@ const menuToRoute = (menu) => {
   if (!menu.component) {
     return null
   }
+  // TODO 查看转成路由的menu
+  console.log("查看转成路由的menu", menu);
   let route = {
     name: menu.name,
     path: menu.path,
@@ -142,7 +142,6 @@ const menuToRoute = (menu) => {
   route.component = () => import('@/views/' + menu.component + '.vue')
   return route
 }
-
 
 
 // 首页管理模块路由
