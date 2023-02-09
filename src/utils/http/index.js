@@ -1,19 +1,19 @@
 import axios from "axios"
 import router from "@/router"
 import Element from "element-ui"
-import { countDownMessage } from '@/utils/message_timer'
+import {countDownMessage} from '@/utils/message_timer'
 
 
 axios.defaults.baseURL = "http://localhost:8090"
 
-const request = axios.create({
+const service = axios.create({
 	timeout: 5000,
 	headers: {
 		'Content-Type': "application/json; charset=utf-8"
 	}
 })
 // 进行request请求拦截处理
-request.interceptors.request.use(config => {
+service.interceptors.request.use(config => {
 	console.log("发送的请求", config)
 	// 将所有请求头里面进行jwt设置，方便权限访问
 	config.headers['Authorization'] = 'Bearer ' + localStorage.getItem("token");
@@ -21,7 +21,7 @@ request.interceptors.request.use(config => {
 })
 // 进行response后端数据返回拦截
 
-request.interceptors.response.use(
+service.interceptors.response.use(
 
 	response => {
 		console.log("AllResponse ===>>>", response);
@@ -36,7 +36,7 @@ request.interceptors.response.use(
 			return response;
 		} else {
 			if (res.errorCode === 900) {
-				countDownMessage(3,res.message);
+				countDownMessage(3, res.message);
 			} else {
 				Element.Message.error(res.message);
 			}
@@ -67,4 +67,4 @@ request.interceptors.response.use(
 	}
 )
 
-export default request
+export default service

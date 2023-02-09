@@ -2,7 +2,7 @@
   <div class="page">
     <el-menu :collapse="isCollapse" :collapse-transition="true"
       :default-active="this.$store.state.menus.editableTabsValue" class="el-menu-vertical-demo"
-      background-color="#304156" text-color="#fff" active-text-color="#F5E44F" :unique-opened="true">
+      background-color="#304156" text-color="#fff" active-text-color="#F5E44F" :unique-opened="uniqueOpened">
       <el-tooltip :content="content" placement="right-start">
         <el-menu-item style="position: sticky; top: 0; z-index: 10" @click="changeCollapse">
           <i :class="icon" style="color: white; font-size: 24px"></i>
@@ -16,7 +16,7 @@
         </el-menu-item>
       </router-link>
 
-      <el-submenu :index="menu.name + ''" v-for="(menu, index) in menuList" :key="index">
+      <el-submenu :index="menu.title + ''" v-for="(menu, index) in menuList" :key="index">
         <template slot="title">
           <i :class="menu.icon"></i>
           <span>{{ menu.title }}</span>
@@ -43,6 +43,7 @@
     data() {
       return {
         icon: "",
+        uniqueOpened: true,
         isCollapse: true,
         content: "展开",
       };

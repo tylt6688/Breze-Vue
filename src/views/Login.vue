@@ -51,6 +51,7 @@
                       <el-form-item label="手机号" prop="username" style="width: 380px">
                         <el-input v-model="loginForm.username"></el-input>
                       </el-form-item>
+                      
                       <el-form-item label="验证码" prop="password" style="width: 380px">
                         <el-input v-model="loginForm.password" type="password"></el-input>
                       </el-form-item>
@@ -73,7 +74,7 @@
       </el-row>
     </el-main>
     <!-- 网站底部信息 -->
-    <el-footer> 🐱‍🏍Copyright © 2021-2022 清枫网络工作室 All Rights Reserved.</el-footer>
+    <el-footer> 🐱‍🏍Copyright © 2021-2022 青枫网络工作室 All Rights Reserved.</el-footer>
   </el-container>
 </template>
 
@@ -87,8 +88,8 @@
         captchaImg: "",
         // 登录表单
         loginForm: {
-          username: "",
-          password: "",
+          username: "breze",
+          password: "123456",
           key: "",
           code: ""
         },

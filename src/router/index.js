@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Login from '@/views/Login.vue'
 import axios from "@/utils/http";
 import store from "@/store"
-import bus from "@/bus"
 import Dashboard from "@/views/framework/Dashboard.vue"
 
 Vue.use(VueRouter);
