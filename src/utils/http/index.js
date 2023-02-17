@@ -1,7 +1,7 @@
 import axios from "axios"
 import router from "@/router"
 import Element from "element-ui"
-import {countDownMessage} from '@/utils/message_timer'
+import {countDownMessage} from '@/utils/message_timer/index'
 
 
 axios.defaults.baseURL = "http://localhost:8090"
@@ -27,7 +27,7 @@ service.interceptors.response.use(
 		console.log("AllResponse ===>>>", response);
 		// 缩短一点
 		let res = response.data;
-		console.log("响应数据===>ResponseData===>>>", res);
+		console.log("响应数据=>ResponseData===>>>", res);
 		// 判断后端响应是否正确
 		if (res.success) {
 			return response;

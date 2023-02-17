@@ -1,29 +1,33 @@
-import Message from 'element-ui'
+import Element from "element-ui"
 import router from "@/router"
 /**
  * 倒计时提示信息工具，启动函数countDownMessage(),参数index-->倒计时数。messageInfo-->返回数据错误提示
  */
 var element = null;
 
-function countTime(index, messageInfo) {
+function countTime(index, msg) {
     setTimeout(function () {
         if (index == 0) {
             // 计时结束后的操作
             localStorage.clear();
-            router.push("/login");
+            router.replace("/login");
         } else {
-            element.message = messageInfo + `,将在${index}秒后返回登陆页面`;
-            countTime(--index, messageInfo);
+            element.message = msg + `,将在${index}秒后返回登陆页面`;
+            countTime(--index, msg);
         }
     }, 1000);
-};
-export function countDownMessage(index, messageInfo) {
-    element = Message({
+}
+
+export function countDownMessage(index, msg) {
+    element = Element.Message({
         showClose: false,
-        message: messageInfo + `,将在${index}秒后返回登陆页面`,
+        message: msg + `,将在${index}秒后返回登陆页面`,
         type: "error",
         duration: `${index}000`
     });
     index--
-    countTime(index, messageInfo);
+    countTime(index, msg);
+}
+export default{
+    countDownMessage
 }
