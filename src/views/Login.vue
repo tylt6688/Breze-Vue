@@ -33,7 +33,7 @@
                         <el-input v-model="loginForm.password" type="password" placeholder="请输入密码"></el-input>
                       </el-form-item>
                       <el-form-item label="验证码" prop="code" style="width: 380px">
-                        <el-input v-model="loginForm.code" style="width: 172px; float: left" maxlength="5"
+                        <el-input v-model="loginForm.code" style="width: 140px; float: left" maxlength="5"
                           placeholder="请输入验证码"></el-input>
                         <el-image :src="captchaImg" class="captcha_img" @click="getCaptcha"></el-image>
                       </el-form-item>

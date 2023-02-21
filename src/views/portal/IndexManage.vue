@@ -106,9 +106,14 @@
                 editForm: {},
                 //表单规则
                 editModeFormRules: {
-                    modeTitle: [{
+                    mainTitle: [{
                         required: true,
-                        message: "请输入模块名称",
+                        message: "请输入主标题",
+                        trigger: "blur",
+                    }, ],
+                    subtitle: [{
+                        required: true,
+                        message: "请输入副标题",
                         trigger: "blur",
                     }, ],
                     modeInfo: [{

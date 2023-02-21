@@ -16,8 +16,11 @@
       </el-form>
     </el-header>
     <el-main>
-      <el-table ref="maincontentTable" :data="maincontents" tooltip-effect="dark" border stripe>
-        <el-table-column prop="titleName" label="内容模块标题">
+      <el-table ref="maincontentTable"  :data="maincontents" style="width: 100%" row-key="orderNum" border lazy :load="getChildrens"
+        :tree-props="{ children: 'children' }">
+        <el-table-column prop="mainTitle" label="主标题">
+        </el-table-column>
+        <el-table-column prop="subtitle" label="副标题">
         </el-table-column>
 
         <el-table-column prop="titleInfo" label="内容模块简介">
@@ -34,7 +37,7 @@
         </el-table-column>
         <el-table-column prop="routerPath" label="指定路由跳转"> </el-table-column>
         <el-table-column prop="orderNum" label="内容序号"> </el-table-column>
-        <el-table-column prop="buttonInfo" label="按钮信息"> </el-table-column>
+
         <el-table-column prop="icon" label="操作" width="160">
           <template slot-scope="scope">
             <el-button type="text" @click="editContent(scope.row.id)" icon="el-icon-edit">编辑</el-button>
@@ -60,8 +63,11 @@
     <el-dialog :title="title" :visible.sync="dialogVisible" width="600px" style="margin-top:-10vh"
       :before-close="handleClose">
       <el-form ref="editForm" :model="editForm" :rules="editFormRules">
-        <el-form-item label="内容标题" prop="titleName" label-width="100px">
-          <el-input v-model="editForm.titleName" autocomplete="off"></el-input>
+        <el-form-item label="主标题" prop="titleName" label-width="100px">
+          <el-input v-model="editForm.mainTitle" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="副标题" prop="titleName" label-width="100px">
+          <el-input v-model="editForm.subtitle" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="内容简介" prop="titleInfo" label-width="100px">
           <el-input v-model="editForm.titleInfo" autocomplete="off"></el-input>
@@ -183,9 +189,11 @@
           titleName: this.searchForm.titleName,
           current: this.current,
           size: this.size,
+          parentId: 0
         };
         maincontent.getContentList(params).then((res) => {
-          this.maincontents = res.data.result.data.records
+          this.maincontents = res.data.result.data.records;
+          console.log("maincontents",this.maincontents)
           this.total = res.data.result.data.total
           this.maincontents.forEach(maincontent => {
             this.orderList.push(
@@ -194,7 +202,11 @@
           })
         });
       },
-
+      //获取子节点
+      getChildrens(tree, treeNode, resolve) {
+        // 懒加载树级 
+          resolve(this.maincontents.children)
+      },
       // 获取内容 
       insertContent() {
         this.dialogVisible = true;
