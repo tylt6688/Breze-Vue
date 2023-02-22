@@ -9,10 +9,10 @@ function countTime(index, msg) {
     setTimeout(function () {
         if (index == 0) {
             // 计时结束后的操作
-            localStorage.clear();
+            
             router.replace("/login");
         } else {
-            element.message = msg + `,将在${index}秒后返回登陆页面`;
+            element.message = msg + `,将在${index}秒后返回登录页面`;
             countTime(--index, msg);
         }
     }, 1000);
@@ -21,7 +21,7 @@ function countTime(index, msg) {
 export function countDownMessage(index, msg) {
     element = Element.Message({
         showClose: false,
-        message: msg + `,将在${index}秒后返回登陆页面`,
+        message: msg + `,将在${index}秒后返回登录页面`,
         type: "error",
         duration: `${index}000`
     });

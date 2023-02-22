@@ -120,8 +120,11 @@
       // bus.$on('LoadUserInfo', function () {
       //   that.getUserInfo();
       // });
-      this.getUserInfo();
-      this.getUserInfoFormLocal();
+      if (this.$store.state.token) {
+        this.getUserInfo();
+        this.getUserInfoFormLocal();
+      }
+
       this.screenIcon = screenfull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
     },
     // beforeDestroy() {
@@ -160,22 +163,20 @@
       // 局部刷新头像 End
 
       getUserInfoFormLocal() {
-        if (localStorage.getItem("userInfo")) {
-          var userShow = JSON.parse(localStorage.getItem("userInfo"));
-          this.userInfo.trueName = userShow.trueName;
-          this.userInfo.avatar = userShow.avatar;
-        }
+        var userShow = JSON.parse(this.$store.state.userInfo);
+        this.userInfo.trueName = userShow.trueName;
+        this.userInfo.avatar = userShow.avatar;
       },
 
       // 获取当前登录用户信息 Start
       getUserInfo() {
         user.getUserInfo().then((res) => {
           this.userInfo = res.data.result.data;
-          var jsonData = {
+          var userData = {
             "avatar": res.data.result.data.avatar,
             "trueName": res.data.result.data.trueName
           }
-          this.$store.commit("SET_USER_INFO", jsonData);
+          this.$store.commit("SET_USER_INFO", userData);
 
           // localStorage.setItem("userInfo", JSON.stringify(jsonData));
         });

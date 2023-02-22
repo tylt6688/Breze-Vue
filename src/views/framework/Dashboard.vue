@@ -365,9 +365,12 @@
 
     },
     mounted() {
-      this.getUserLoginLineList();
-      this.getUserLoginPieList();
-      this.getUserCount();
+      if (this.$store.state.token) {
+        this.getUserLoginLineList();
+        this.getUserLoginPieList();
+        this.getUserCount();
+      }
+
     },
     methods: {
       //获取用户登录情况

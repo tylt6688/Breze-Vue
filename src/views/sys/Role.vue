@@ -126,22 +126,30 @@
     name: "Role",
     data() {
       return {
-        searchForm: {},
+        permDialogVisible: false,
         // 批量删除
         delBtlState: true,
         // 父子联动
         checkStrictly: true,
+        dialogVisible: false,
         // 分页数据
         total: 0,
         size: 10,
         current: 1,
 
-        dialogVisible: false,
+        tableData: [],
+        permTreeData: [],
+        multipleSelection: [],
+        searchForm: {},
+        permForm: {},
         editForm: {
           state: 0
         },
-        tableData: [],
 
+        defaultProps: {
+          label: "title",
+          children: "children",
+        },
         editFormRules: {
           name: [{
             required: true,
@@ -160,18 +168,9 @@
           }, ],
         },
 
-        multipleSelection: [],
-
-        permDialogVisible: false,
-        permForm: {},
-        defaultProps: {
-          children: "children",
-          label: "name",
-        },
-        permTreeData: [],
       };
     },
-    created() {
+    mounted() {
       this.getRoleList();
       menu.getMenuTree().then((res) => {
         this.permTreeData = res.data.result.data;

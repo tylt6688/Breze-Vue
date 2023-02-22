@@ -74,7 +74,8 @@
       </el-row>
     </el-main>
     <!-- 网站底部信息 -->
-    <el-footer> 🐱‍🏍Copyright © 2021-2022 青枫网络工作室 All Rights Reserved.</el-footer>
+    <!-- <el-footer> 🐱‍🏍Copyright © 2021-2022 青枫网络工作室 All Rights Reserved.</el-footer> -->
+    <el-footer> 🐱‍🏍Copyright © 2021-2022 All Rights Reserved.</el-footer>
   </el-container>
 </template>
 
