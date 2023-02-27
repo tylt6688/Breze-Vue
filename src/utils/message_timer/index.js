@@ -9,7 +9,7 @@ function countTime(index, msg) {
     setTimeout(function () {
         if (index == 0) {
             // 计时结束后的操作
-            
+            localStorage.clear();
             router.replace("/login");
         } else {
             element.message = msg + `,将在${index}秒后返回登录页面`;

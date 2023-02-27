@@ -33,7 +33,6 @@ service.interceptors.response.use(
 		} else if (res.errorCode === 900) {
 			countDownMessage(3, res.message);
 		}
-		// Element.Message.error(res.message);
 		return Promise.reject(res.message);
 	},
 	// 异常情况判断
@@ -59,9 +58,6 @@ service.interceptors.response.use(
 			}
 
 		}
-
-		
-
 		return Promise.reject(error);
 	}
 )

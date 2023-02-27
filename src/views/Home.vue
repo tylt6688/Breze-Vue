@@ -53,11 +53,11 @@
       </el-header>
 
       <!-- 此处class关联返回顶部操作，禁止删除 -->
-      <el-main class="container">
+      <el-main class="container" v-loading.fullscreen.lock="fullscreenLoading">
         <!-- 将tabs置顶 -->
         <Tabs class="tabs"></Tabs>
 
-        <div style="margin: 0 1rem">
+        <div style="margin: 0 1rem"  >
           <!-- 暂时关闭折叠动画效果 -->
           <!-- <el-collapse-transition> -->
           <!-- 中间核心界面 -->
@@ -111,7 +111,8 @@
         // 消息数量
         messageNum: "",
         restaurants: [],
-        isRouterAlive: true
+        isRouterAlive: true,
+        fullscreenLoading: false
       };
     },
 
@@ -120,9 +121,11 @@
       // bus.$on('LoadUserInfo', function () {
       //   that.getUserInfo();
       // });
-      if (this.$store.state.token) {
+      if (localStorage.getItem("token")) {
         this.getUserInfo();
         this.getUserInfoFormLocal();
+      }else{
+        this.fullscreenLoading = true;
       }
 
       this.screenIcon = screenfull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
@@ -352,4 +355,9 @@
     float: right;
     font-size: 20px;
   }
+</style>
+<style>
+.el-loading-mask{
+  z-index: 1000 !important;
+}
 </style>
