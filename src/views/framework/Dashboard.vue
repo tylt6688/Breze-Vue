@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-loading.fullscreen.lock="fullscreenLoading">
     <el-row type="flex" justify="space-between" style="margin-top:2%">
       <el-col :span="5" class="contain-card">
         <el-card class="box-card">
@@ -155,6 +155,7 @@
         yAxisMax: "",
         userCount: "",
         weeldAndDay: "",
+        fullscreenLoading: false
       };
     },
     computed: {
@@ -365,7 +366,7 @@
 
     },
     mounted() {
-      if (this.$store.state.token) {
+      if (localStorage.getItem("token")) {
         this.getUserLoginLineList();
         this.getUserLoginPieList();
         this.getUserCount();
