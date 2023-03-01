@@ -125,7 +125,7 @@
         this.getUserInfo();
         this.getUserInfoFormLocal();
       }else{
-        this.fullscreenLoading = true;
+        // this.fullscreenLoading = true;
       }
 
       this.screenIcon = screenfull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";

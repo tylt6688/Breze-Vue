@@ -16,8 +16,8 @@
       </el-form>
     </el-header>
     <el-main>
-      <el-table ref="maincontentTable"  :data="maincontents" style="width: 100%" row-key="orderNum" border lazy :load="getChildrens"
-        :tree-props="{ children: 'children' }">
+      <el-table ref="maincontentTable" :data="maincontents" style="width: 100%" row-key="orderNum" border lazy
+        :load="getChildrens" :tree-props="{ children: 'children' }">
         <el-table-column prop="mainTitle" label="主标题">
         </el-table-column>
         <el-table-column prop="subtitle" label="副标题">
@@ -39,7 +39,7 @@
         <el-table-column prop="orderNum" label="内容序号"> </el-table-column>
 
         <el-table-column prop="icon" label="操作" width="160">
-          <template slot-scope="scope">
+          <template slot-scope="scope" v-if="scope.row.parentId != 0">
             <el-button type="text" @click="editContent(scope.row.id)" icon="el-icon-edit">编辑</el-button>
             <el-divider direction="vertical"></el-divider>
             <template>
@@ -63,10 +63,10 @@
     <el-dialog :title="title" :visible.sync="dialogVisible" width="600px" style="margin-top:-10vh"
       :before-close="handleClose">
       <el-form ref="editForm" :model="editForm" :rules="editFormRules">
-        <el-form-item label="主标题" prop="titleName" label-width="100px">
+        <el-form-item label="主标题" prop="mainTitle" label-width="100px">
           <el-input v-model="editForm.mainTitle" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="副标题" prop="titleName" label-width="100px">
+        <el-form-item label="副标题" prop="subtitle" label-width="100px">
           <el-input v-model="editForm.subtitle" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="内容简介" prop="titleInfo" label-width="100px">
@@ -93,13 +93,17 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="导航序号" prop="orderNum" label-width="100px">
-          <el-input v-model="editForm.orderNum" autocomplete="off"></el-input>
+          <!-- <el-input v-model="editForm.orderNum" autocomplete="off"></el-input> -->
+          <el-input-number v-model="editForm.orderNum" :min="1"></el-input-number>
         </el-form-item>
         <el-form-item label="跳转链接" prop="routerPath" label-width="100px">
           <el-input v-model="editForm.routerPath" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="按钮信息" prop="buttonInfo" label-width="100px">
-          <el-input v-model="editForm.buttonInfo" autocomplete="off"></el-input>
+        <el-form-item label="父级菜单" label-width="100px" prop="parentId">
+          <el-select v-model="editForm.parentId" placeholder="请选择上一级菜单">
+            <el-option v-for="item in this.maincontents" :key="item.id" :label="item.mainTitle" :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
 
       </el-form>
@@ -149,7 +153,12 @@
         form: {},
         maincontents: [],
         editFormRules: {
-          titleName: [{
+          mainTitle: [{
+            required: true,
+            message: "请输入标题",
+            trigger: "blur",
+          }, ],
+          subtitle: [{
             required: true,
             message: "请输入标题",
             trigger: "blur",
@@ -169,10 +178,10 @@
             message: "请填入链接地址",
             trigger: "blur",
           }, ],
-          buttonInfo: [{
+          parentId: [{
             required: true,
-            message: "请输入按钮显示信息",
-            trigger: "blur",
+            message: "请选择上一级标题",
+            trigger: "change",
           }, ],
         },
       };
@@ -193,19 +202,27 @@
         };
         maincontent.getContentList(params).then((res) => {
           this.maincontents = res.data.result.data.records;
-          console.log("maincontents",this.maincontents)
+          console.log("maincontents", this.maincontents)
           this.total = res.data.result.data.total
           this.maincontents.forEach(maincontent => {
             this.orderList.push(
               maincontent.orderNum
             )
+            if (maincontent.children.length != 0) {
+              maincontent.children.forEach(maincontent => {
+                this.orderList.push(
+                  maincontent.orderNum
+                )
+              })
+            }
           })
+          console.log("orderList", this.orderList)
         });
       },
       //获取子节点
       getChildrens(tree, treeNode, resolve) {
         // 懒加载树级 
-          resolve(this.maincontents.children)
+        resolve(this.maincontents.children)
       },
       // 获取内容 
       insertContent() {
@@ -263,12 +280,18 @@
         maincontent
           .upload(form)
           .then((response) => {
+            this.dialogVisible = false;
+           this.editForm={};
+            this.$refs.upload.clearFiles()
             this.$message({
-              message: res.data.message,
+              showClose: true,
+              duration: 2000,
+              message: response.data.message,
               type: "success",
+              onClose: () => {
+                this.getContentList();
+              },
             });
-            this.$refs["upload"].clearFiles();
-            this.getContentList();
           })
           .catch((error) => {
             this.$refs["upload"].clearFiles();
@@ -329,11 +352,9 @@
       },
       // 取消编辑，重置模态框内容 
       resetForm(formName) {
-        this.$refs[formName].resetFields();
         this.dialogVisible = false;
-        this.editForm = {};
+        this.$refs[formName].resetFields();
         this.$refs.upload.clearFiles()
-        this.fileList = []
         var edit = document.getElementsByClassName("el-upload--picture-card")[0];
         edit.style.display = ""
       },
@@ -358,7 +379,7 @@
 </script>
 
 <style scoped>
-.el-pagination {
+  .el-pagination {
     float: right;
     margin-top: 22px;
   }

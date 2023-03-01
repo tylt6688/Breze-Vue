@@ -85,7 +85,7 @@
 
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitBanner">上传</el-button>
-        <el-button @click="bannerDialogVisible = false">取 消</el-button>
+        <el-button @click="handCloseUplod">取 消</el-button>
       </div>
     </el-dialog>
     <!-- 上传文件模态框 End -->
@@ -155,16 +155,26 @@
       },
       // 取消编辑，重置模态框内容 End
 
+      handCloseUplod(){
+        this.imgalt = "";
+        this.bannerDialogVisible = false;
+        this.$refs.upload.clearFiles()
+      },
+
       // 用户自定义上传Banner图 Start
       uploadBanner(param) {
         const alt = this.imgalt;
         const ordernum = this.ordernum;
+        console.log("ordernum",ordernum)
         const formData = new FormData();
+        console.log("formdata",typeof formData)
         formData.append("file", param.file);
         formData.append("alt", alt);
         formData.append("orderNum", ordernum);
         banner.uploadBanner(formData).then((res) => {
-          this.bannerDialogVisible = false;
+          this.imgalt = "";
+        this.bannerDialogVisible = false;
+        this.$refs.upload.clearFiles()
           this.$message({
             showClose: true,
             duration: 2000,
