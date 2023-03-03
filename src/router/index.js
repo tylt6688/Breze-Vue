@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/views/Login.vue'
-import axios from "@/utils/http";
 import store from "@/store"
-import Dashboard from "@/views/framework/Dashboard.vue"
+import axios from "@/utils/http"
+import Login from '@/views/Login.vue'
+import DashBoard from "@/views/framework/DashBoard.vue"
 
 Vue.use(VueRouter);
 
@@ -18,12 +18,12 @@ const routes = [{
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue'),
+    component: () => import('@/views/Home.vue'),
     redirect: '/dashboard',
     children: [{
         path: '/dashboard',
-        name: 'Dashboard',
-        component: Dashboard,
+        name: 'DashBoard',
+        component: DashBoard,
         meta: {
           title: "仪表盘"
         },
@@ -31,7 +31,7 @@ const routes = [{
       {
         path: '/user_center',
         name: 'UserCenter',
-        component: () => import('../views/framework/UserCenter.vue'),
+        component: () => import('@/views/framework/UserCenter.vue'),
         meta: {
           title: "个人中心"
         },
@@ -43,18 +43,17 @@ const routes = [{
   {
     path: '/401',
     name: '401Page',
-    component: () => import('../views/error/401.vue')
+    component: () => import('@/views/error/401.vue')
   },
-
   {
     path: '/403',
     name: '403Page',
-    component: () => import('../views/error/403.vue')
+    component: () => import('@/views/error/403.vue')
   },
   {
     path: '/404',
     name: '404Page',
-    component: () => import('../views/error/404.vue')
+    component: () => import('@/views/error/404.vue')
   },
 
 ]
@@ -73,7 +72,7 @@ router.beforeEach((to, from, next) => {
   let hasRoute = store.state.menus.hasRoutes;
 
   let token = localStorage.getItem("token");
-  // 如果当前是登录页并且token为空时就去登录页,不为空且正确时直接跳转主页，防止手动输入登录地址时不跳转情况
+  // 如果当前是登录页并且token为空时就去登录页,不为空且正确时直接跳转主页,防止手动输入登录地址时不跳转情况
   if (token) {
     if (to.path == '/login') {
       next('/');

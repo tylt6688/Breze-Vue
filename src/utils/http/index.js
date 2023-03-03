@@ -1,9 +1,7 @@
 import axios from "axios"
 import router from "@/router"
-import Element from "element-ui"
-import {
-	countDownMessage
-} from '@/utils/message_timer/index'
+import { Message } from 'element-ui'
+import { countDownMessage } from '@/utils/message_timer/index'
 
 
 axios.defaults.baseURL = "http://localhost:8090"
@@ -45,13 +43,13 @@ service.interceptors.response.use(
 				countDownMessage(3, error.massage);
 			} else if (error.response.status === 403) {
 				router.push("/403");
-				Element.Message.error(error.massage, {
+				Message.error(error.massage, {
 					showClose: false,
 					duration: 1500
 				})
 			} else if (error.response.status === 404) {
 				router.push("/404");
-				Element.Message.error(error.massage, {
+				Message.error(error.massage, {
 					showClose: false,
 					duration: 1500
 				})

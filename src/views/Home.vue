@@ -57,7 +57,7 @@
         <!-- 将tabs置顶 -->
         <Tabs class="tabs"></Tabs>
 
-        <div style="margin: 0 1rem"  >
+        <div style="margin: 0 1rem">
           <!-- 暂时关闭折叠动画效果 -->
           <!-- <el-collapse-transition> -->
           <!-- 中间核心界面 -->
@@ -124,7 +124,7 @@
       if (localStorage.getItem("token")) {
         this.getUserInfo();
         this.getUserInfoFormLocal();
-      }else{
+      } else {
         this.fullscreenLoading = true;
       }
 
@@ -166,7 +166,7 @@
       // 局部刷新头像 End
 
       getUserInfoFormLocal() {
-        var userShow = JSON.parse(this.$store.state.userInfo);
+        var userShow = JSON.parse(localStorage.getItem("userInfo"));
         this.userInfo.trueName = userShow.trueName;
         this.userInfo.avatar = userShow.avatar;
       },
@@ -176,12 +176,12 @@
         user.getUserInfo().then((res) => {
           this.userInfo = res.data.result.data;
           var userData = {
-            "avatar": res.data.result.data.avatar,
-            "trueName": res.data.result.data.trueName
+            avatar: res.data.result.data.avatar,
+            trueName: res.data.result.data.trueName
           }
           this.$store.commit("SET_USER_INFO", userData);
 
-          // localStorage.setItem("userInfo", JSON.stringify(jsonData));
+          // localStorage.setItem("userInfo", JSON.stringify(userData));
         });
       },
       // 获取当前登录用户信息 End
@@ -274,10 +274,6 @@
     flex-direction: row-reverse;
   }
 
-  .inline-input {
-    width: 100%;
-  }
-
   .search-btn {
     position: relative;
     right: 40px;
@@ -289,6 +285,10 @@
 
   .search-btn>>>i {
     font-weight: 920;
+  }
+
+  .inline-input {
+    width: 100%;
   }
 
   .inline-input>>>.el-input__inner {
@@ -357,7 +357,7 @@
   }
 </style>
 <style>
-.el-loading-mask{
-  z-index: 1000 !important;
-}
+  .el-loading-mask {
+    z-index: 1000 !important;
+  }
 </style>

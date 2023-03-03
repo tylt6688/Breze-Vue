@@ -46,7 +46,6 @@
 		filter: grayscale(100%);
 		filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); */
 		/* 使网站整体变灰色，用于特殊纪念日使用 End */
-
 	}
 
 	html,
