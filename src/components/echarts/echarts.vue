@@ -1,5 +1,5 @@
 <template>
-    <div :id="id" :style="style"></div>
+    <div :id="id" :style="style" v-resize="resize"></div>
 </template>
 
 <script>
@@ -8,7 +8,7 @@
         name: 'charts',
         data() {
             return {
-                chart: ''
+                chart: '',
             }
         },
         props: {
@@ -71,6 +71,7 @@
         },
         mounted() {
             this.init();
+         this.adaptiveInit();
         },
         methods: {
             init() {
@@ -79,7 +80,19 @@
                 window.onresize = function () {
                     this.chart.resize();
                 };
+            },
+            adaptiveInit(){
+                setTimeout(() => {
+                this.init();
+                const resizeOb = new ResizeObserver((entries) => {
+                    for (const entry of entries) {
+                        echarts.getInstanceByDom(entry.target).resize();
+                    }
+                });
+                resizeOb.observe(document.getElementById(this.id));
+            });
             }
-        }
+        },
+
     }
 </script>
