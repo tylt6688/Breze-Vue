@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 let title = '仪表盘';
-let name = 'Dashboard';
+let name = 'DashBoard';
 export default {
 	state: {
 		menuList: [],

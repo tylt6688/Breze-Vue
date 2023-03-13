@@ -1,39 +1,43 @@
 <template>
   <div class="page">
-    <el-menu :collapse="isCollapse" :collapse-transition="true"
-      :default-active="this.$store.state.menus.editableTabsValue" class="el-menu-vertical-demo"
-      background-color="#304156" text-color="#fff" active-text-color="#F5E44F" :unique-opened="uniqueOpened">
-      <el-tooltip :content="content" placement="right-start">
-        <el-menu-item style="position: sticky; top: 0; z-index: 10" @click="changeCollapse">
-          <i :class="icon" style="color: white; font-size: 24px"></i>
-        </el-menu-item>
-      </el-tooltip>
+    <!-- 开启滚动，避免出现滚动条 -->
+    <el-scrollbar>
+      <el-menu :collapse="isCollapse" :collapse-transition="true"
+        :default-active="this.$store.state.menus.editableTabsValue" class="el-menu-vertical-demo"
+        background-color="#304156" text-color="#fff" active-text-color="#F5E44F" :unique-opened="uniqueOpened">
+        <el-tooltip :content="content" placement="right-start">
+          <el-menu-item style="position: sticky; top: 0; z-index: 10" @click="changeCollapse">
+            <i :class="icon" style="color: white; font-size: 24px"></i>
+          </el-menu-item>
+        </el-tooltip>
 
-      <router-link to="/dashboard">
-        <el-menu-item index="Index" @click="selectMenu({ name: 'Dashboard', title: '仪表盘' })">
-          <i class="el-icon-s-home"></i>
-          <span slot="title">仪表盘</span>
-        </el-menu-item>
-      </router-link>
-
-      <el-submenu :index="menu.title + ''" v-for="(menu, index) in menuList" :key="index">
-        <template slot="title">
-          <i :class="menu.icon"></i>
-          <span>{{ menu.title }}</span>
-        </template>
-
-        <!-- 为了防止跳转不存在的页面，此处需要创建的页面必须有生成路径，假的也行 -->
-        <router-link v-if="item.path != undefined" :to="item.path" :key="index" v-for="(item, index) in menu.children">
-          <!-- 为了联动tab栏与侧边菜单栏此处索引必须是name -->
-          <el-menu-item :index="item.name" @click="selectMenu(item)">
-            <template slot="title">
-              <i :class="item.icon"></i>
-              <span slot="title">{{ item.title }}</span>
-            </template>
+        <router-link :to="this.dashboard.path">
+          <el-menu-item index="Index" @click="selectMenu({ name: this.dashboard.name, title: this.dashboard.title })">
+            <i class="el-icon-s-home"></i>
+            <span slot="title">{{dashboard.title}}</span>
           </el-menu-item>
         </router-link>
-      </el-submenu>
-    </el-menu>
+
+        <el-submenu :index="menu.title + ''" v-for="(menu, index) in menuList" :key="index">
+          <template slot="title">
+            <i :class="menu.icon"></i>
+            <span>{{ menu.title }}</span>
+          </template>
+
+          <!-- 为了防止跳转不存在的页面，此处需要创建的页面必须有生成路径，假的也行 -->
+          <router-link v-if="item.path != undefined" :to="item.path" :key="index"
+            v-for="(item, index) in menu.children">
+            <!-- 为了联动tab栏与侧边菜单栏此处索引必须是name -->
+            <el-menu-item :index="item.name" @click="selectMenu(item)">
+              <template slot="title">
+                <i :class="item.icon"></i>
+                <span slot="title">{{ item.title }}</span>
+              </template>
+            </el-menu-item>
+          </router-link>
+        </el-submenu>
+      </el-menu>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -45,7 +49,7 @@
         icon: "",
         uniqueOpened: true,
         isCollapse: true,
-        content: "展开",
+        content: "展开"
       };
     },
     //TODO 计算属性动态监控，对菜单数据变化实时绑定
@@ -57,11 +61,7 @@
       },
     },
     mounted() {
-      if (this.isCollapse) {
-        this.icon = "el-icon-s-unfold";
-      } else {
-        this.icon = "el-icon-s-fold";
-      }
+      this.icon = this.isCollapse ? "el-icon-s-unfold" : "el-icon-s-fold";
     },
 
     methods: {
@@ -69,15 +69,14 @@
         this.$store.commit("addTab", item);
       },
       changeCollapse() {
-        var that = this;
-        if (that.isCollapse) {
-          this.isCollapse = false;
+        if (this.isCollapse) {
           this.icon = "el-icon-s-fold";
           this.content = "收起";
+          this.isCollapse = false;
         } else {
-          this.isCollapse = true;
           this.icon = "el-icon-s-unfold";
           this.content = "展开";
+          this.isCollapse = true;
         }
       },
     },

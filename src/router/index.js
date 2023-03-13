@@ -2,8 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from "@/store"
 import axios from "@/utils/http"
+
 import Login from '@/views/Login.vue'
-import DashBoard from "@/views/framework/DashBoard.vue"
+import Home from '@/views/Home.vue'
+
 
 Vue.use(VueRouter);
 
@@ -18,12 +20,12 @@ const routes = [{
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/Home.vue'),
+    component: Home,
     redirect: '/dashboard',
     children: [{
         path: '/dashboard',
         name: 'DashBoard',
-        component: DashBoard,
+        component: () => import('@/views/framework/DashBoard.vue'),
         meta: {
           title: "仪表盘"
         },

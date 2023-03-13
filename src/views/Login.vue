@@ -7,16 +7,16 @@
 
     <el-main>
       <el-row type="flex" justify="center" align="middle">
-        <el-col :xs="8" :sm="8" :md="8" :lg="9" :xl="11">
+        <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="7">
           <el-image fit="cover" :src="require('@/assets/login.png')" style="margin-top: 60px">
           </el-image>
         </el-col>
 
-        <el-col :span="2">
+        <el-col :xs="1" :sm="2" :md="2" :lg="2" :xl="2">
           <el-divider direction="vertical"></el-divider>
         </el-col>
 
-        <el-col :xs="8" :sm="6" :md="8" :lg="7" :xl="11">
+        <el-col :xs="8" :sm="8" :md="8" :lg="7" :xl="6">
           <el-card class="box-card" shadow="hover" :body-style="{ padding: '0px' }">
             <div slot="header" class="clearfix">
               <el-tabs>
@@ -25,14 +25,14 @@
                 <el-tab-pane label="密码登录">
                   <div class="login">
                     <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
-                      <el-form-item label="用户名" prop="username" style="width: 380px">
+                      <el-form-item class="login-form-item" label="用户名" prop="username">
                         <el-input v-model="loginForm.username" placeholder="请输入用户名"></el-input>
                       </el-form-item>
-                      <el-form-item prop="password" style="width: 380px">
+                      <el-form-item class="login-form-item" prop="password">
                         <span slot="label"> 密&emsp;码 </span>
                         <el-input v-model="loginForm.password" type="password" placeholder="请输入密码"></el-input>
                       </el-form-item>
-                      <el-form-item label="验证码" prop="code" style="width: 380px">
+                      <el-form-item class="login-form-item" label="验证码" prop="code">
                         <el-input v-model="loginForm.code" style="width: 140px; float: left" maxlength="5"
                           placeholder="请输入验证码"></el-input>
                         <el-image :src="captchaImg" class="captcha_img" @click="getCaptcha"></el-image>
@@ -48,12 +48,12 @@
                 <el-tab-pane label="免密登录">
                   <div class="login">
                     <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
-                      <el-form-item label="手机号" prop="username" style="width: 380px">
-                        <el-input v-model="loginForm.username"></el-input>
+                      <el-form-item class="login-form-item" label="手机号" prop="username">
+                        <el-input v-model="verifyForm.phone"></el-input>
                       </el-form-item>
-                      
-                      <el-form-item label="验证码" prop="password" style="width: 380px">
-                        <el-input v-model="loginForm.password" type="password"></el-input>
+
+                      <el-form-item class="login-form-item" label="验证码" prop="password">
+                        <el-input v-model="verifyForm.verify"></el-input>
                       </el-form-item>
 
                       <el-form-item>
@@ -94,6 +94,10 @@
           key: "",
           code: ""
         },
+        verifyForm: {
+          phone: "",
+          verify: ""
+        },
         rules: {
           username: [{
             required: true,
@@ -120,10 +124,10 @@
         },
       };
     },
-
-    mounted() {
+    created() {
       this.getCaptcha();
     },
+    mounted() {},
     methods: {
       // 获取验证码 Start
       getCaptcha() {
@@ -143,13 +147,13 @@
                 const jwt = res.headers["authorization"];
                 this.$store.commit("SET_TOKEN", jwt);
                 this.$router.push("/dashboard");
-              })
-              .catch((res) => {
-                this.getCaptcha();
               });
           } else {
-            console.log("错误提交!");
-            return false;
+            this.getCaptcha();
+            this.$message({
+              message:"输入格式不正确",
+              type:"warning"
+            });
           }
         });
       },
@@ -211,5 +215,9 @@
 
   .clearfix:after {
     clear: both;
+  }
+
+  .login-form-item {
+    width: 380px;
   }
 </style>

@@ -2,10 +2,8 @@
   <el-container>
     <!-- 侧边菜单栏 -->
     <el-aside width="auto">
-      <!-- 开启滚动，避免出现滚动条 -->
-      <el-scrollbar>
-        <SideMenu></SideMenu>
-      </el-scrollbar>
+      <SideMenu></SideMenu>
+
     </el-aside>
 
     <el-container>
@@ -21,7 +19,9 @@
               </el-autocomplete>
             </div>
           </div>
+
           <el-avatar v-if="isChangeAvatar" fit="scale-down" size="large" :src="userInfo.avatar"></el-avatar>
+
           <el-dropdown>
             <span class="el-dropdown-link">
               {{ userInfo.trueName}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -77,10 +77,9 @@
 <script>
   import SideMenu from "./inc/SideMenu"
   import Tabs from "./inc/Tabs"
-  import screenfull from "screenfull"
+  import ScreenFull from "screenfull"
   import user from "@/api/sys/user"
   import menu from "@/api/sys/menu"
-  import bus from "@/bus"
 
   export default {
     emits: ['LoadUserInfo'],
@@ -113,26 +112,18 @@
         restaurants: [],
         isRouterAlive: true,
         fullscreenLoading: false
+
       };
     },
 
     mounted() {
-      // const that = this;
-      // bus.$on('LoadUserInfo', function () {
-      //   that.getUserInfo();
-      // });
       if (localStorage.getItem("token")) {
         this.getUserInfo();
         this.getUserInfoFormLocal();
-      }else{
-        // this.fullscreenLoading = true;
-      } 
-
-      this.screenIcon = screenfull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
+      }
+      this.screenIcon = ScreenFull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
     },
-    // beforeDestroy() {
-    //   bus.$off('LoadUserInfo');
-    // },
+
 
     methods: {
       // 局部刷新页面
@@ -144,15 +135,15 @@
       },
       // 全屏方法 Start
       fullScreen() {
-        if (!screenfull.isEnabled) {
+        if (!ScreenFull.isEnabled) {
           this.$message({
             message: "您的浏览器不支持全屏操作",
             type: "warning",
           });
           return false;
         }
-        screenfull.toggle();
-        this.screenIcon = screenfull.isFullscreen ? "el-icon-full-screen" : "el-icon-crop";
+        ScreenFull.toggle();
+        this.screenIcon = ScreenFull.isFullscreen ? "el-icon-full-screen" : "el-icon-crop";
       },
       // 全屏方法 End
 
@@ -180,8 +171,6 @@
             trueName: res.data.result.data.trueName
           }
           this.$store.commit("SET_USER_INFO", userData);
-
-          // localStorage.setItem("userInfo", JSON.stringify(userData));
         });
       },
       // 获取当前登录用户信息 End

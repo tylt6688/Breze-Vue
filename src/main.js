@@ -6,7 +6,7 @@ import Element from "element-ui"
 import eIconPicker from 'e-icon-picker'
 import axios from '@/utils/http'
 import qs from "qs"
-
+import constant from "@/utils/const"
 
 
 
@@ -27,6 +27,7 @@ Vue.prototype.qs = qs;
 Vue.prototype.BASE_API = axios.defaults.baseURL;
 
 Vue.use(Element);
+Vue.use(constant);
 
 // 全局图标选择管理
 Vue.use(eIconPicker, {
