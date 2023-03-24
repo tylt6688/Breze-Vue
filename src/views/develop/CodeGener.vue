@@ -11,7 +11,6 @@
                 <el-button type="primary" icon="el-icon-download" @click="generateCode(null)">批量生成
                 </el-button>
             </el-form-item>
-       
 
             <el-form-item>
                 <el-select v-model="value" placeholder="请选择数据库" @change="getTableData">
@@ -21,7 +20,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-tag type="success" >当前数据库：{{currentDataBase}}</el-tag>
+                <el-tag type="success">当前数据库：{{currentDataBase}}</el-tag>
             </el-form-item>
         </el-form>
         <!-- 头部操作部分 End -->
@@ -138,7 +137,7 @@
             return {
                 options: [],
                 value: '',
-                currentDataBase:'',
+                currentDataBase: '',
                 searchForm: {
                     tableName: "",
                 },
@@ -280,7 +279,6 @@
 
             // 删除表格 Start
             deleteTableInfo(index) {
-
                 var tempData = this.tableData.splice(index, 1)[0];
                 this.deletedDataCache.push(tempData);
 
@@ -296,7 +294,6 @@
 
             // 生成代码 Start
             generateCode(row) {
-
                 var tableNames = []
                 var tablePrefixs = []
                 if (this.multipleSelection == 0 && row != null) {
@@ -319,7 +316,6 @@
                     author: ""
                 }
                 generteCode.generteCode(params).then((res) => {
-
                     this.$message({
                         message: '代码生成成功',
                         type: 'success'

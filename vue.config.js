@@ -4,5 +4,4 @@ const {
 
 module.exports = defineConfig({
   transpileDependencies: true
-
 })

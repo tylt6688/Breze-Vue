@@ -1,5 +1,5 @@
 # Breze-Vue
-清枫一体化权限服务平台 vue web端
+清枫一体化权限服务平台 Vue Web端
 
 ## Project setup
 

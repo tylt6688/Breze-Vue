@@ -70,27 +70,27 @@
             }
         },
         mounted() {
-            this.init();
-         this.adaptiveInit();
+            this.adaptiveInit();
         },
         methods: {
             init() {
                 this.chart = echarts.init(document.getElementById(this.id));
                 this.chart.setOption(this.option);
+                
                 window.onresize = function () {
                     this.chart.resize();
                 };
             },
-            adaptiveInit(){
+            adaptiveInit() {
                 setTimeout(() => {
-                this.init();
-                const resizeOb = new ResizeObserver((entries) => {
-                    for (const entry of entries) {
-                        echarts.getInstanceByDom(entry.target).resize();
-                    }
+                    this.init();
+                    var resizeOb = new ResizeObserver((entries) => {
+                        for (var entry of entries) {
+                            echarts.getInstanceByDom(entry.target).resize();
+                        }
+                    });
+                    resizeOb.observe(document.getElementById(this.id));
                 });
-                resizeOb.observe(document.getElementById(this.id));
-            });
             }
         },
 
