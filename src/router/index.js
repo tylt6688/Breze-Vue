@@ -130,7 +130,7 @@ const menuToRoute = (menu) => {
     return null
   }
   // TODO 查看转成路由的menu
-  console.log("查看转成路由的menu", menu);
+  // console.log("查看转成路由的menu", menu);
   let route = {
     name: menu.name,
     path: menu.path,

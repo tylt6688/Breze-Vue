@@ -28,7 +28,7 @@
                 default () {
                     return {
                         title: {
-                            text: 'ECharts 入门示例'
+                            text: 'ECharts'
                         },
                         tooltip: {},
                         legend: {
@@ -49,6 +49,29 @@
                 }
             }
         },
+        directives: { // 使用局部注册指令的方式
+            resize: { // 指令的名称
+                bind(el, binding) { // el为绑定的元素，binding为绑定给指令的对象
+                    let width = '',
+                        height = '';
+
+                    function isReize() {
+                        const style = document.defaultView.getComputedStyle(el);
+                        if (width !== style.width || height !== style.height) {
+                            binding.value(); // 关键
+                        }
+                        width = style.width;
+                        height = style.height;
+                    }
+                    el.__vueSetInterval__ = setInterval(isReize, 300);
+                },
+                unbind(el) {
+                    clearInterval(el.__vueSetInterval__);
+                }
+            }
+        },
+
+
         computed: {
             style() {
                 return {
@@ -73,10 +96,13 @@
             this.adaptiveInit();
         },
         methods: {
+            resize() { // 当宽高变化时就会执行
+                //执行某些操作
+            },
             init() {
                 this.chart = echarts.init(document.getElementById(this.id));
                 this.chart.setOption(this.option);
-                
+
                 window.onresize = function () {
                     this.chart.resize();
                 };

@@ -124,7 +124,7 @@
 
 <script>
     import moment from "moment";
-    import generteCode from '@/api/codegener/codegener'
+    import codegener from '@/api/codegener/codegener'
 
     function getCamelCase(str) {
         return str.replace(/_([a-z])/g, function (all, i) {
@@ -179,7 +179,7 @@
             // 时间格式化 End
             // 获取数据库 Start
             getDataBases() {
-                generteCode.getDataBases().then((res) => {
+                codegener.getDataBases().then((res) => {
                     this.options = res.data.result.data;
                     console.log(this.options)
                 })
@@ -192,7 +192,7 @@
                     tableName = "breze";
                 }
                 this.currentDataBase = tableName;
-                generteCode.getTableData(tableName).then((res) => {
+                codegener.getTableData(tableName).then((res) => {
 
                     this.tableDataCache = res.data.result.data;
 
@@ -315,7 +315,7 @@
                     packageName: "",
                     author: ""
                 }
-                generteCode.generteCode(params).then((res) => {
+                codegener.generteCode(params).then((res) => {
                     this.$message({
                         message: '代码生成成功',
                         type: 'success'

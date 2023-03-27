@@ -26,8 +26,8 @@
             </el-col>
           </el-row>
         </el-card>
-
       </el-col>
+
       <el-col :span="5" class="contain-card">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -374,7 +374,7 @@
 
     },
     methods: {
-      //获取用户登录情况
+      // 获取用户登录情况
       getUserLoginLineList() {
         logapi.getUserLoginData().then((res) => {
           this.LineList = res.data.result.data;
@@ -438,7 +438,7 @@
     display: flex;
   }
 
-  .data-show>div.el-col {
+  .data-show>>>div.el-col {
     margin: auto
   }
 
