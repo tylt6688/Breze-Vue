@@ -102,24 +102,24 @@
           username: [{
             required: true,
             message: "请输入用户名",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
           password: [{
             required: true,
             message: "请输入密码",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
           code: [{
               required: true,
               message: "请输入验证码",
-              trigger: "blur",
+              trigger: "blur"
             },
             {
               min: 5,
               max: 5,
               message: "长度为 5 个字符",
-              trigger: "blur",
-            },
+              trigger: "blur"
+            }
           ],
         },
       };
@@ -140,19 +140,24 @@
 
       // 立即登录 Start
       submitForm(formName) {
-        console.log("stringify", this.qs.stringify(this.loginForm));
         this.$refs[formName].validate((valid) => {
           if (valid) {
             login.submitFormLogin(this.qs.stringify(this.loginForm)).then((res) => {
-                const jwt = res.headers["authorization"];
-                this.$store.commit("SET_TOKEN", jwt);
-                this.$router.push("/dashboard");
+              const jwt = res.headers["authorization"];
+              this.$store.commit("SET_TOKEN", jwt);
+              this.$router.push("/");
+            }).catch((err) => {
+              this.getCaptcha();
+              this.$message({
+                message: err,
+                type: "warning"
               });
+            });
           } else {
             this.getCaptcha();
             this.$message({
-              message:"输入格式不正确",
-              type:"warning"
+              message: "输入格式不正确",
+              type: "warning"
             });
           }
         });

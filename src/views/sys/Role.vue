@@ -27,7 +27,7 @@
 
       <el-table-column prop="name" label="名称" show-overflow-tooltip> </el-table-column>
 
-      <el-table-column prop="code" label="唯一编码" width="100" show-overflow-tooltip>
+      <el-table-column prop="code" label="唯一编码"  show-overflow-tooltip>
       </el-table-column>
 
       <el-table-column prop="remark" label="描述" show-overflow-tooltip>

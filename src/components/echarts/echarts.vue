@@ -103,9 +103,9 @@
                 this.chart = echarts.init(document.getElementById(this.id));
                 this.chart.setOption(this.option);
 
-                window.onresize = function () {
-                    this.chart.resize();
-                };
+                // window.onresize = function () {
+                //     this.chart.resize();
+                // };
             },
             adaptiveInit() {
                 setTimeout(() => {

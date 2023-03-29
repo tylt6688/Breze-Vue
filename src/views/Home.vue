@@ -12,8 +12,8 @@
         <div class="header-avatar">
           <div class="header-search">
             <div class="search-div">
-              <el-button class="search-btn" slot="append" @click="handleSelect" icon="el-icon-search" circle>
-              </el-button>
+              <i class="el-icon-search" slot="suffix">
+              </i>
               <el-autocomplete class="inline-input" v-model="searchForm.titleName" value-key="viewName"
                 :fetch-suggestions="querySearch" placeholder="请输入菜单名称" :trigger-on-focus="false" @select="handleSelect">
               </el-autocomplete>
@@ -263,7 +263,7 @@
     flex-direction: row-reverse;
   }
 
-  .search-btn {
+  .el-icon-search {
     position: relative;
     right: 40px;
     border: 0;
@@ -272,9 +272,6 @@
     color: #ffffff;
   }
 
-  .search-btn>>>i {
-    font-weight: 920;
-  }
 
   .inline-input {
     width: 100%;
