@@ -145,7 +145,7 @@
             login.submitFormLogin(this.qs.stringify(this.loginForm)).then((res) => {
               const jwt = res.headers["authorization"];
               this.$store.commit("SET_TOKEN", jwt);
-              this.$router.push("/");
+              this.$router.replace("/");
             }).catch((err) => {
               this.getCaptcha();
               this.$message({

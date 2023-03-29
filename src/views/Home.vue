@@ -43,11 +43,11 @@
               </el-dropdown>
             </el-badge>
           </div>
-          <div style="width:40px">
-            <i class="el-icon-refresh" style="font-weight:bold;cursor:pointer;" @click="reload"></i>
-          </div>
+          <el-tooltip effect="dark" content="刷新" placement="bottom">
+            <i class="el-icon-refresh" @click="reload" style="cursor:pointer;"></i>
+          </el-tooltip>
           <el-tooltip effect="dark" content="全屏切换" placement="bottom">
-            <i @click="fullScreen" :class="screenIcon"></i>
+            <i :class="screenIcon" @click="fullScreen" style="cursor:pointer;"></i>
           </el-tooltip>
         </div>
       </el-header>
@@ -295,6 +295,7 @@
 
   .el-dropdown-link {
     cursor: pointer;
+    font-weight: 500;
   }
 
   .el-header {

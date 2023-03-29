@@ -37,7 +37,7 @@
 
       <el-table-column prop="component" label="页面组件"> </el-table-column>
 
-      <el-table-column prop="orderNum"  sortable label="排序号" align="center">
+      <el-table-column prop="orderNum" sortable label="排序号" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type===0">{{scope.row.orderNum}}</el-tag>
           <el-tag v-else-if="scope.row.type===1" type="success">{{scope.row.orderNum}}</el-tag>
@@ -186,57 +186,57 @@
           name: [{
             required: true,
             message: "请输入名称",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
           perms: [{
             required: true,
             message: "请输入权限编码",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
 
           orderNum: [{
             required: true,
             message: "请填入排序号",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
           state: [{
             required: true,
             message: "请选择状态",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
         },
 
         editFormRules: {
           parentId: [{
             required: true,
             message: "请选择上级菜单",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
           name: [{
             required: true,
             message: "请输入名称",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
           perms: [{
             required: true,
             message: "请输入权限编码",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
           type: [{
             required: true,
             message: "请选择状态",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
           orderNum: [{
             required: true,
             message: "请填入排序号",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
           state: [{
             required: true,
             message: "请选择状态",
-            trigger: "blur",
-          }, ],
+            trigger: "blur"
+          }],
         },
       };
     },
