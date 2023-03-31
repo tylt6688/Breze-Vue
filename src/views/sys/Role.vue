@@ -69,7 +69,7 @@
     </el-pagination>
 
     <!--新增角色模态框-->
-    <el-dialog title="新增角色" :visible.sync="dialogVisible" width="600px" :before-close="handleClose">
+    <el-dialog title="角色信息" :visible.sync="dialogVisible" width="600px" :before-close="handleClose">
       <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
         <el-form-item label="角色名称" prop="name" label-width="100px">
           <el-input v-model="editForm.name" autocomplete="off"></el-input>

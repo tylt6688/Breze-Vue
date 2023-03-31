@@ -218,6 +218,13 @@
 </script>
 
 <style scoped>
+  .el-container {
+    padding: 0;
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+  }
+
   .title {
     font-size: 26px;
     margin-left: 16%;
@@ -235,12 +242,7 @@
     display: none;
   }
 
-  .el-container {
-    padding: 0;
-    margin: 0 auto;
-    height: 100%;
-    width: 100%;
-  }
+
 
   .header-avatar {
     float: right;

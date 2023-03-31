@@ -54,7 +54,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="username" label="用户名" width="120"  show-overflow-tooltip>
+      <el-table-column prop="username" label="用户名" width="120" show-overflow-tooltip>
       </el-table-column>
 
       <el-table-column prop="name" sortable label="角色名称">
@@ -64,12 +64,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="trueName" align="center" label="真实姓名" width="100"  show-overflow-tooltip>
+      <el-table-column prop="trueName" align="center" label="真实姓名" width="100" show-overflow-tooltip>
       </el-table-column>
 
       <el-table-column prop="email" label="邮箱" show-overflow-tooltip> </el-table-column>
 
-      <el-table-column prop="phone" label="手机号"  show-overflow-tooltip> </el-table-column>
+      <el-table-column prop="phone" label="手机号" show-overflow-tooltip> </el-table-column>
 
       <el-table-column prop="state" label="状态" align="center" width="80">
         <template slot-scope="scope">
@@ -78,7 +78,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="createTime" label="创建时间" align="center" :formatter="formatDate"  show-overflow-tooltip>
+      <el-table-column prop="createTime" label="创建时间" align="center" :formatter="formatDate" show-overflow-tooltip>
       </el-table-column>
 
       <el-table-column prop="icon" label="操作" width="330">
@@ -110,12 +110,12 @@
     </el-pagination>
 
     <!--新增编辑单用户模态框 Start-->
-    <el-dialog title="新增或编辑用户" :visible.sync="dialogVisible" width="600px" :before-close="handleClose">
+    <el-dialog title="用户信息" :visible.sync="dialogVisible" width="600px" :before-close="handleClose">
       <el-form :model="editForm" :rules="editFormRules" ref="editForm">
-        <el-form-item label="登录用户名" prop="username" label-width="100px">
+        <el-form-item label="系统用户名" prop="username" label-width="100px">
           <el-input v-model="editForm.username" autocomplete="off"></el-input>
 
-          <el-alert title="用户名可为统一工号，新增用户初始密码为:123456" :closable="false" type="info" style="line-height: 12px">
+          <el-alert title="用户名为统一工号，新用户初始密码为:123456" :closable="false" type="info" style="line-height: 10px">
           </el-alert>
         </el-form-item>
 
@@ -123,7 +123,7 @@
           <el-input v-model="editForm.trueName" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="邮箱" prop="email" label-width="100px" >
+        <el-form-item label="邮箱" prop="email" label-width="100px">
           <el-input v-model="editForm.email" autocomplete="off"></el-input>
         </el-form-item>
 

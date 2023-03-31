@@ -11,7 +11,8 @@
 		// TODO 监听tab栏变化
 		watch: {
 			$route(to, from) {
-				console.log("|--from -->", from.path, "|--to -->", to.path,"|-- title -->",to.meta.title,"|--name -->",to.name)
+				console.log("|--from -->", from.path, "|--to -->", to.path, "|-- title -->", to.meta.title, "|--name -->",
+					to.name)
 				if (to.path != '/login') {
 					let obj = {
 						name: to.name,
@@ -53,5 +54,4 @@
 	a {
 		text-decoration: none;
 	}
-
 </style>

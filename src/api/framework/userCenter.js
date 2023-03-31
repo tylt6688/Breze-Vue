@@ -1,5 +1,4 @@
 import axios from "@/utils/http";
-
 export default {
     // 更新登录提醒状态
     changeLoginWarn(params) {

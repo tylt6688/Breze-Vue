@@ -1,24 +1,24 @@
 <template>
-  <!-- 登录 -->
   <el-container>
+
     <el-header>
-      <!-- <strong style="font-size: 35px; font-family: 楷体">欢 迎 来 到 清 枫 一 体 化 管 理 平 台</strong> -->
+      <!-- <strong class="title">欢 迎 来 到 清 枫 一 体 化 管 理 平 台</strong> -->
     </el-header>
 
     <el-main>
       <el-row type="flex" justify="center" align="middle">
-        <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="7">
-          <el-image fit="cover" :src="require('@/assets/login.png')" style="margin-top: 60px">
-          </el-image>
+
+        <el-col :xs="0" :sm="8" :md="7" :lg="7" :xl="8">
+          <el-image fit="cover" :src="require('@/assets/login.png')"></el-image>
         </el-col>
 
-        <el-col :xs="1" :sm="2" :md="2" :lg="2" :xl="2">
+        <el-col :xs="0" :sm="1" :md="2" :lg="2" :xl="2">
           <el-divider direction="vertical"></el-divider>
         </el-col>
 
-        <el-col :xs="8" :sm="8" :md="8" :lg="7" :xl="6">
+        <el-col :xs="20" :sm="14" :md="8" :lg="7" :xl="8">
           <el-card class="box-card" shadow="hover" :body-style="{ padding: '0px' }">
-            <div slot="header" class="clearfix">
+            <div class="clearfix" slot="header">
               <el-tabs>
                 <el-tag type="info">科技拥抱生活🙆‍♂️</el-tag>
                 <!-- 账户密码登录面板 -->
@@ -33,13 +33,25 @@
                         <el-input v-model="loginForm.password" type="password" placeholder="请输入密码"></el-input>
                       </el-form-item>
                       <el-form-item class="login-form-item" label="验证码" prop="code">
-                        <el-input v-model="loginForm.code" style="width: 140px; float: left" maxlength="5"
-                          placeholder="请输入验证码"></el-input>
-                        <el-image :src="captchaImg" class="captcha_img" @click="getCaptcha"></el-image>
+                        <el-row>
+                          <el-col :span="12">
+                            <el-input v-model="loginForm.code" placeholder="请输入验证码"></el-input>
+                          </el-col>
+                          <el-col :span="12">
+                            <el-image class="captcha-img" :src="captchaImg" @click="getCaptcha()"></el-image>
+                          </el-col>
+                        </el-row>
                       </el-form-item>
+
                       <el-form-item>
-                        <el-button type="primary" round @click="submitForm('loginForm')">立即登录</el-button>
-                        <el-button round @click="resetForm('loginForm')">重置数据</el-button>
+                        <el-row>
+                          <el-col :span="14">
+                            <el-button type="primary" round @click="submitForm('loginForm')">立即登录</el-button>
+                          </el-col>
+                          <el-col :span="10">
+                            <el-button round @click="resetForm('loginForm')">重置数据</el-button>
+                          </el-col>
+                        </el-row>
                       </el-form-item>
                     </el-form>
                   </div>
@@ -65,7 +77,7 @@
                 </el-tab-pane>
                 <!-- 微信扫码登录面板 -->
                 <el-tab-pane label="微信登录">
-                  <el-image style="width: 50%; height: 50%" :src="require('@/assets/blog.png')"></el-image>
+                  <el-image class="wxcode-img" :src="require('@/assets/blog.png')"></el-image>
                 </el-tab-pane>
               </el-tabs>
             </div>
@@ -73,9 +85,11 @@
         </el-col>
       </el-row>
     </el-main>
+
     <!-- 网站底部信息 -->
-    <!-- <el-footer> 🐱‍🏍Copyright © 2021-2022 青枫网络工作室 All Rights Reserved.</el-footer> -->
-    <el-footer> 🐱‍🏍Copyright © 2021-2022 All Rights Reserved.</el-footer>
+    <!-- <el-footer> 🐱‍🏍Copyright © 2021-2023 青枫网络工作室 All Rights Reserved.</el-footer> -->
+    <el-footer> 🐱‍🏍Copyright © 2021-2023 QF All Rights Reserved.</el-footer>
+
   </el-container>
 </template>
 
@@ -145,7 +159,7 @@
             login.submitFormLogin(this.qs.stringify(this.loginForm)).then((res) => {
               const jwt = res.headers["authorization"];
               this.$store.commit("SET_TOKEN", jwt);
-              this.$router.replace("/");
+              this.$router.push("/");
             }).catch((err) => {
               this.getCaptcha();
               this.$message({
@@ -176,6 +190,29 @@
 <style scoped>
   .el-container {
     height: 100%;
+    width: 100%;
+  }
+
+  .el-header {
+    color: rgb(0, 0, 0);
+    text-align: center;
+    line-height: 120px;
+    height: 40%;
+  }
+
+  .el-main {
+    height: 60%;
+    display: flex;
+    /* 主轴对齐方式 */
+    justify-content: center;
+    /* 侧轴对齐方式 */
+    align-items: center;
+  }
+
+  .el-footer {
+    color: rgb(0, 0, 0);
+    text-align: center;
+    height: 10%;
   }
 
   .el-row {
@@ -184,32 +221,10 @@
     align-items: center;
     text-align: center;
     justify-content: center;
-    height: 100%;
   }
 
   .el-divider {
     height: 260px;
-  }
-
-  .captcha_img {
-    float: left;
-    margin-left: 8px;
-    border-radius: 4px;
-  }
-
-  .login {
-    margin-top: 20px;
-  }
-
-  .el-header,
-  .el-footer {
-    color: rgb(0, 0, 0);
-    text-align: center;
-  }
-
-  .el-header {
-    margin-top: 5%;
-    /* line-height: 120px; */
   }
 
   .clearfix:before,
@@ -222,7 +237,27 @@
     clear: both;
   }
 
+  .title {
+    font-size: 35px;
+    font-family: "楷体";
+  }
+
   .login-form-item {
-    width: 380px;
+    width: 100%;
+  }
+
+  .captcha-img {
+    float: left;
+    margin-left: 8px;
+    border-radius: 4px;
+  }
+
+  .login {
+    margin-top: 20px;
+  }
+
+  .wxcode-img {
+    width: 50%;
+    height: 50%;
   }
 </style>
