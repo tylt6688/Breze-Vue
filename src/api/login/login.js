@@ -7,10 +7,17 @@ export default {
             method: 'get'
         })
     },
-    // 提交登录请求
+    // 发起登录请求
     submitFormLogin(param) {
         return request({
-            url: '/login?' + param,
+            url: '/breze/login?' + param,
+            method: 'post'
+        })
+    },
+    // 退出登录 
+    logout() {
+        return request({
+            url: "/breze/logout",
             method: 'post'
         })
     },

@@ -78,6 +78,7 @@
   import SideMenu from "./inc/SideMenu"
   import Tabs from "./inc/Tabs"
   import ScreenFull from "screenfull"
+  import login from "@/api/login/login"
   import user from "@/api/sys/user"
   import menu from "@/api/sys/menu"
 
@@ -205,9 +206,8 @@
 
       // 退出登录 Start
       logout() {
-        user.logout().then((res) => {
+        login.logout().then((res) => {
           localStorage.clear();
-          // sessionStorage.clear();
           this.$store.commit("resetState");
           this.$router.push("/login");
         });

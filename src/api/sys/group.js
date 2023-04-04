@@ -1,9 +1,9 @@
-import axios from "@/utils/http";
+import request from "@/utils/http";
 
 export default {
 
     getGroupList() {
-        return axios({
+        return request({
             url: '/sys/group/select',
             method: 'get'
         })

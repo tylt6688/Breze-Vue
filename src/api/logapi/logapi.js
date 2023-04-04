@@ -1,9 +1,9 @@
-import axios from '@/utils/http'
+import request from '@/utils/http'
 
 export default{
   
  getLoginLogInfoList(params){
-    return axios({
+    return request({
       url: '/tool/log/list_login_log',
       method: 'get',
       params: params
@@ -11,20 +11,20 @@ export default{
   },
 
   getHandleLogInfoList(params){
-    return axios({
+    return request({
       url: '/tool/log/list_handle_log',
       method: 'get',
       params: params
     })
   },
   getUserLoginData(){
-    return axios({
+    return request({
       url: '/tool/log/login_count',
       method: 'get',
     })
   },
   getUserLoginCategory(){
-    return axios({
+    return request({
       url: '/tool/log/login_category',
       method: 'get',
     })

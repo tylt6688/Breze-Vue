@@ -1,14 +1,14 @@
-import axios from "@/utils/http";
+import request from "@/utils/http";
 
 export default {
     getDataBases() {
-        return axios({
+        return request({
             url: "/tool/code/show_databases",
             method: 'get'
         })
     },
     getTableData(dataBaseName) {
-        return axios({
+        return request({
             url: "/tool/code/tables",
             method: 'get',
             params: {
@@ -17,7 +17,7 @@ export default {
         })
     },
     generteCode(params){
-        return axios({
+        return request({
             url: "/tool/code/generate",
             method: 'post',
             data: params

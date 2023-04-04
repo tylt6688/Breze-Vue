@@ -5,6 +5,7 @@ import axios from "@/utils/http"
 
 import Login from '@/views/Login.vue'
 import Home from '@/views/Home.vue'
+import DashBoard from '@/views/framework/DashBoard.vue'
 
 
 Vue.use(VueRouter);
@@ -25,7 +26,7 @@ const routes = [{
     children: [{
         path: '/dashboard',
         name: 'DashBoard',
-        component: () => import('@/views/framework/DashBoard.vue'),
+        component: DashBoard,
         meta: {
           title: "仪表盘"
         },
