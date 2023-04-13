@@ -191,9 +191,10 @@
 </template>
 
 <script>
-  import moment from "moment";
   import userCenter from "@/api/framework/userCenter";
   import user from "@/api/sys/user";
+  import moment from "moment";
+
   export default {
     inject: ["reloadAvatar"],
     name: "UserCenter",

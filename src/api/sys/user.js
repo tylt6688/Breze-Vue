@@ -27,7 +27,7 @@ export default {
     // 编辑资料
     submitUserInfoForm(editForm) {
         return request({
-            url: "/sys/user/update_userinfo",
+            url: "/sys/user/update",
             method: 'post',
             data: editForm
         })
@@ -70,15 +70,7 @@ export default {
             }
         })
     },
-    // 下载用户导入模板Excel
-    exportModelExcel() {
-        return request({
-            url: "/sys/user/export_model_excel",
-            method: 'get',
-            responseType: "arraybuffer",
-        })
-    },
-    // 所有用户模板Excel
+    // 导出所有用户信息Excel
     exportExcel() {
         return request({
             url: "/sys/user/export_excel",
@@ -86,6 +78,15 @@ export default {
             responseType: "arraybuffer",
         })
     },
+    // 下载用户导入模板Excel
+    exportModelExcel() {
+        return request({
+            url: "/sys/user/export_template_excel",
+            method: 'get',
+            responseType: "arraybuffer",
+        })
+    },
+
     // 增加或修改用户 
     submitForm(editForm, id) {
         return request({
@@ -118,7 +119,6 @@ export default {
             data: roleIds
         })
     },
-
 
     // 获取用户数量 
     getUserCount() {

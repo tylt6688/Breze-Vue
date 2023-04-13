@@ -17,13 +17,14 @@ export default {
             data: editForm
         })
     },
-
+    // 获取单个角色信息
     roleInfo(id) {
         return request({
             url: "/sys/role/info/" + id,
             method: 'get'
         })
     },
+    // 删除角色
     delHandle(roleIds) {
         return request({
             url: "/sys/role/delete",
@@ -38,8 +39,8 @@ export default {
             method: 'get'
         })
     },
-   // 回显权限编辑中已选择的权限
-   submitPermFormHandle(menuIds,id) {
+    // 回显权限编辑中已选择的权限
+    submitPermFormHandle(menuIds, id) {
         return request({
             url: "/sys/role/perm/" + id,
             method: 'post',

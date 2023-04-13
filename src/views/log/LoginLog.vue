@@ -4,17 +4,22 @@
 
             <el-table-column prop="userName" label="登录用户">
             </el-table-column>
-            <el-table-column prop="createTime" label="登录时间" :formatter="formatDate">
+            
+            <el-table-column prop="trueName" label="登录用户">
             </el-table-column>
-            <el-table-column prop="trueName" label="用户姓名">
-            </el-table-column>
-            <el-table-column prop="state" label="状态">
+            <el-table-column prop="state" label="账户状态" align="center" width="80">
+                <template slot-scope="scope">
+                    <el-tag size="small" v-if="scope.row.state === 0" type="success">正常</el-tag>
+                    <el-tag size="small" v-else-if="scope.row.state === 1" type="danger">禁用</el-tag>
+                </template>
             </el-table-column>
             <el-table-column prop="ipAddress" label="登录IP">
             </el-table-column>
             <el-table-column prop="ipLocation" label="IP所在地">
             </el-table-column>
             <el-table-column prop="os" label="操作系统">
+            </el-table-column>
+            <el-table-column prop="createTime" label="登录时间" :formatter="formatDate">
             </el-table-column>
 
 
@@ -53,7 +58,7 @@
                 if (data == null) {
                     return null
                 }
-                return moment(data).format("YYYY-MM-DD HH:mm:ss");
+                return moment(data).format("YYYY 年 MM 月 DD 日 - HH : mm");
             },
             // 格式化日期时间 End
             // 获取表数据 Start
