@@ -8,7 +8,7 @@ export default {
             method: 'get'
         })
     },
-    // 编辑轮播图
+    // 通过Id获取轮播图信息
     editHandle(id) {
         return request({
             url: '/breze/portal/banner/info/' + id,

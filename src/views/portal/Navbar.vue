@@ -227,7 +227,7 @@
       currStationChange(val) {
         this.findAllNavbar(val, null);
       },
-      // 新增或编辑Banner图 
+      // 新增或编辑
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

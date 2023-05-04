@@ -12,14 +12,14 @@ export default {
     // 通过Id获取
     getNavbarInfo(id) {
         return request({
-            url: '/breze/portal/navbar/selectNavbar/'+id,
+            url: '/breze/portal/navbar/select_navbar/'+id,
             method: 'get'
         })
     },
     // 查询所有数据
     findAllNavbar(flag){
         return request({
-            url: '/breze/portal/navbar/findAllData/'+flag,
+            url: '/breze/portal/navbar/find_all_data/'+flag,
             method: 'get',
         })
     },
