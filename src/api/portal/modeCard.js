@@ -4,14 +4,14 @@ export default {
   // 获取模块信息
   getModeCardInfo(params) {
     return request({
-      url: '/breze/portal/modeCard/findModeCardInfo',
+      url: '/breze/portal/modeCard/find_mode_info',
       method: 'get',
       params: params
     })
   },
   findDataById(id) {
     return request({
-      url: '/breze/portal/modeCard/findDataById/' + id,
+      url: '/breze/portal/modeCard/find_data_by_id/' + id,
       method: 'get',
     })
   },
@@ -26,7 +26,7 @@ export default {
   // 删除菜单
   deleteModeCard(id) {
     return request({
-      url: '/breze/portal/modeCard/deleteById/' + id,
+      url: '/breze/portal/modeCard/delete_by_id/' + id,
       method: 'delete',
     })
   },

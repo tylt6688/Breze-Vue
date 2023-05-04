@@ -135,14 +135,14 @@
       },
       // 获取轮播图 End
 
-      // 编辑轮播图 Start
+      // 通过Id获取轮播图信息 Start
       editHandle(id) {
         banner.editHandle(id).then((res) => {
           this.editForm = res.data.result.data;
           this.dialogVisible = true;
         });
       },
-      // 编辑轮播图 End
+      // 通过Id获取轮播图信息 End
 
       // 取消编辑，重置模态框内容 Start
       resetForm(formName) {
