@@ -106,7 +106,7 @@
           username: "breze",
           password: "123456",
           key: "",
-          code: ""
+          code: "breze"
         },
         verifyForm: {
           phone: "",

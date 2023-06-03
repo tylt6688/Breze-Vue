@@ -159,8 +159,11 @@
 
       getUserInfoFormLocal() {
         var userShow = JSON.parse(localStorage.getItem("userInfo"));
-        this.userInfo.trueName = userShow.trueName;
-        this.userInfo.avatar = userShow.avatar;
+        if (userShow) {
+          this.userInfo.trueName = userShow.trueName;
+          this.userInfo.avatar = userShow.avatar;
+        }
+
       },
 
       // 获取当前登录用户信息 Start

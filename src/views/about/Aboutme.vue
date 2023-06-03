@@ -1,7 +1,8 @@
 <template>
-<h1 style="color:red;text-align:center">我叫张浩辉
+<h1 style="color:red;text-align:center">
+    我们是清枫Breze项目开源团队成员
     <br/>
-    是一位致力于科技拥抱生活的开源系统开发攻城狮😊 An open source system development siege lion dedicated to technology and life
+    一群致力于科技拥抱生活的开源系统开发攻城狮😊 A group of open source system development siege lions dedicated to technology embracing life
 </h1>
 
 </template>

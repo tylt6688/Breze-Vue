@@ -9,6 +9,9 @@
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.0.1",
     "axios": "^0.26.0",
+    "bpmn-js": "^7.3.1",
+    "bpmn-js-properties-panel": "^0.37.2",
+    "camunda-bpmn-moddle": "^4.4.0",
     "core-js": "^3.8.3",
     "e-icon-picker": "^1.1.7",
     "echarts": "^5.4.1",
