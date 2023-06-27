@@ -3,7 +3,6 @@
     <el-form :inline="true">
       <el-form-item>
         <el-input v-model="searchForm.username" placeholder="请输入用户名" clearable @input="getUserList">
-          <!-- <el-button slot="append" @click="getUserList" icon="el-icon-search">搜索</el-button> -->
         </el-input>
 
       </el-form-item>
@@ -14,7 +13,8 @@
 
       <el-form-item>
         <el-button type="primary" @click="dialogVisible = true" v-if="hasAuth('sys:user:insert')" icon="el-icon-plus">
-          新增用户</el-button>
+          新增用户
+        </el-button>
       </el-form-item>
 
       <el-form-item>
@@ -32,12 +32,14 @@
 
       <el-form-item>
         <el-button type="success" @click="moreDialogVisible = true" v-if="hasAuth('sys:user:insert')"
-          icon="el-icon-upload2">批量导入
+          icon="el-icon-upload2">
+          批量导入
         </el-button>
       </el-form-item>
 
       <el-form-item>
-        <el-button type="info" @click="exportExcel" icon="el-icon-download">批量导出
+        <el-button type="info" @click="exportExcel" icon="el-icon-download">
+          批量导出
         </el-button>
       </el-form-item>
     </el-form>
@@ -60,7 +62,8 @@
       <el-table-column prop="name" sortable label="角色名称">
         <template slot-scope="scope">
           <el-tag style="margin: 3px" size="small" v-for="(item, index) in scope.row.roles" :key="index">
-            {{ item.name }}</el-tag>
+            {{ item.name }}
+          </el-tag>
         </template>
       </el-table-column>
 
@@ -73,8 +76,8 @@
 
       <el-table-column prop="state" label="状态" align="center" width="80">
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.state === 0" type="success">正常</el-tag>
-          <el-tag size="small" v-else-if="scope.row.state === 1" type="danger">禁用</el-tag>
+          <el-tag size="small" v-if="scope.row.state === 1" type="success">正常</el-tag>
+          <el-tag size="small" v-else-if="scope.row.state === 0" type="danger">禁用</el-tag>
         </template>
       </el-table-column>
 
@@ -85,13 +88,17 @@
         <template slot-scope="scope">
           <div style="color:#ffbf00;" v-show="scope.row.showRightOp">
             <el-button type="text" @click="roleHandle(scope.row.id)" icon="el-icon-thumb">分配角色</el-button>
+
             <el-divider direction="vertical"></el-divider>
 
             <el-button type="text" @click="repassHandle(scope.row.id, scope.row.username)" icon="el-icon-refresh-left">
-              重置密码</el-button>
+              重置密码
+            </el-button>
+
             <el-divider direction="vertical"></el-divider>
 
             <el-button type="text" @click="editHandle(scope.row.id)" icon="el-icon-edit">编辑</el-button>
+
             <el-divider direction="vertical"></el-divider>
 
             <template>
@@ -133,8 +140,8 @@
 
         <el-form-item label="状态" prop="state" label-width="100px">
           <el-radio-group v-model="editForm.state">
-            <el-radio :label="0">正常</el-radio>
-            <el-radio :label="1">禁用</el-radio>
+            <el-radio :label="0">禁用</el-radio>
+            <el-radio :label="1">正常</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -152,7 +159,9 @@
       <el-upload class="downloadModel" ref="upload" action="url" drag :http-request="uploadExcel" multiple
         accept=".xls,.xlsx" :limit="1" :auto-upload="uploadState">
         <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__text">
+          将文件拖到此处，或<em>点击上传</em>
+        </div>
         <div class="el-upload__tip" slot="tip">
           只能上传xlsx文件,请按照模板文件上传
         </div>
@@ -239,6 +248,11 @@
         treeCheckedKeys: [],
         multipleSelection: [],
 
+        PermRoleDTO: {
+          userIds: [],
+          roleIds: []
+        },
+
         defaultProps: {
           children: "children",
           label: "name",
@@ -289,7 +303,7 @@
         this.$set(this.tableData, row.index, row);
       },
 
-      // 格式化日期时间 Start
+      // 格式化日期时间 
       formatDate(row, column) {
         let data = row[column.property];
         if (data == null) {
@@ -297,17 +311,16 @@
         }
         return moment(data).format("YYYY-MM-DD HH:mm:ss");
       },
-      // 格式化日期时间 End
 
-      // 获取已存在权限 Start
+      // 获取已存在权限
       getRoleTree() {
         role.getRoleList().then((res) => {
           this.roleTreeData = res.data.result.data.records;
         });
       },
-      // 获取已存在权限 End
 
-      // 获取用户列表 Start
+
+      // 获取用户列表
       getUserList() {
         let params = {
           "username": this.searchForm.username,
@@ -329,9 +342,8 @@
         });
       },
 
-      // 获取用户列表 End
 
-      // 获取选中的行数据 Start
+      // 获取选中的行数据
       toggleSelection(rows) {
         if (rows) {
           rows.forEach((row) => {
@@ -341,13 +353,14 @@
           this.$refs.multipleTable.clearSelection();
         }
       },
+      // 获取选中的行数据
       handleSelectionChange(val) {
         console.log("勾选的值", val);
         this.multipleSelection = val;
         this.delBtlState = val.length == 0;
         this.permMoreBtlState = val.length == 0;
       },
-      // 获取选中的行数据 End
+
 
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -489,21 +502,43 @@
           });
         });
       },
-      // 删除或批量删除用户 End
+ 
 
-      // 批量分配角色 Start
+      // 分配角色
+      submitRoleHandle() {
+
+        let list = [];
+        list.push(this.roleForm.id);
+        this.PermRoleDTO.userIds = list;
+        this.PermRoleDTO.roleIds = this.$refs.roleTree.getCheckedKeys();
+        user.permRole(this.PermRoleDTO).then((res) => {
+          this.$message({
+            showClose: true,
+            duration: 2000,
+            message: "操作成功",
+            type: "success",
+            onClose: () => {
+              this.getUserList();
+            },
+          });
+          this.roleDialogFormVisible = false;
+        });
+      },
+
+      // 批量分配角色
       roleMoreHandle() {
         this.roleMoreDialogFormVisible = true;
       },
       submitMoreRoleHandle(formName) {
+
         var userIds = [];
         this.multipleSelection.forEach((row) => {
           userIds.push(row.id);
         });
+        this.PermRoleDTO.userIds = userIds;
+        this.PermRoleDTO.roleIds = this.$refs.roleMoreTree.getCheckedKeys();
 
-        var roleIds = this.$refs.roleMoreTree.getCheckedKeys();
-
-        user.roleMoreHandle(roleIds, userIds).then((res) => {
+        user.permRole(this.PermRoleDTO).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,
@@ -517,9 +552,8 @@
           this.roleMoreDialogFormVisible = false;
         });
       },
-      // 批量分配角色 End
 
-      // 根据用户id回显角色信息 Start
+      // 根据用户id回显角色信息
       roleHandle(id) {
         this.roleDialogFormVisible = true;
         user.editUserInfo(id).then((res) => {
@@ -531,28 +565,8 @@
           this.$refs.roleTree.setCheckedKeys(roleIds);
         });
       },
-      // 回显角色 End
 
-      // 分配角色 Start
-      submitRoleHandle(formName) {
-        var roleIds = this.$refs.roleTree.getCheckedKeys();
-        console.log(roleIds);
-        user.submitRole(this.roleForm.id, roleIds).then((res) => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            message: "操作成功",
-            type: "success",
-            onClose: () => {
-              this.getUserList();
-            },
-          });
-          this.roleDialogFormVisible = false;
-        });
-      },
-      // 分配角色 End
-
-      // 重置密码 Start
+      // 重置密码
       repassHandle(id, username) {
         this.$confirm(
           "将重置用户[ " + username + " ]的密码, 是否继续?",
@@ -572,7 +586,7 @@
           });
         });
       },
-      // 重置密码 End
+
     },
   };
 </script>

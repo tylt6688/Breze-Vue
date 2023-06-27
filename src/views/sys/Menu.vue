@@ -37,11 +37,11 @@
 
       <el-table-column prop="component" label="页面组件"> </el-table-column>
 
-      <el-table-column prop="orderNum" sortable label="排序号" align="center">
+      <el-table-column prop="sort" sortable label="排序号" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.type===0">{{scope.row.orderNum}}</el-tag>
-          <el-tag v-else-if="scope.row.type===1" type="success">{{scope.row.orderNum}}</el-tag>
-          <el-tag v-else type="info">{{scope.row.orderNum}}</el-tag>
+          <el-tag v-if="scope.row.type===0">{{scope.row.sort}}</el-tag>
+          <el-tag v-else-if="scope.row.type===1" type="success">{{scope.row.sort}}</el-tag>
+          <el-tag v-else type="info">{{scope.row.sort}}</el-tag>
         </template>
       </el-table-column>
 

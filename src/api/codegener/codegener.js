@@ -9,18 +9,16 @@ export default {
     },
     getTableData(dataBaseName) {
         return request({
-            url: "/tool/code/tables",
+            url: "/tool/code/get_tables",
             method: 'get',
-            params: {
-                dataBaseName
-            }
+            params: {dataBaseName}
         })
     },
-    generteCode(params){
+    genertedCode(tableName) {
         return request({
             url: "/tool/code/generate",
             method: 'post',
-            data: params
+            data: tableName
         })
     }
 }

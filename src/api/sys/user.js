@@ -4,7 +4,7 @@ export default {
     // 获取当前登录用户信息
     getUserInfo() {
         return request({
-            url: "/sys/user/get_userinfo",
+            url: "/sys/user/current_userinfo",
             method: 'get'
         })
     },
@@ -104,21 +104,14 @@ export default {
         })
     },
     // 分配角色
-    submitRole(id, roleIds) {
+    permRole(PermRoleDTO) {
         return request({
-            url: "/sys/user/role_perm/" + id,
+            url: "/sys/user/perm_role/",
             method: 'post',
-            data: roleIds
+            data: PermRoleDTO
         })
     },
-    // 批量分配角色
-    roleMoreHandle(userIds, roleIds) {
-        return request({
-            url: "/sys/user/role_more_perm?userIds=" + userIds,
-            method: 'post',
-            data: roleIds
-        })
-    },
+ 
 
     // 获取用户数量 
     getUserCount() {

@@ -20,7 +20,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-tag type="success">当前数据库：{{currentDataBase}}</el-tag>
+                <el-tag type="success">当前数据库: {{currentDataBase}}</el-tag>
             </el-form-item>
         </el-form>
         <!-- 头部操作部分 End -->
@@ -92,7 +92,8 @@
                         :data="deletedData?deletedData.slice((this.dialogCurrentPage - 1) * this.dialogPageSize, (this.dialogCurrentPage - 1) * this.dialogPageSize + this.dialogPageSize):deletedData"
                         tooltip-effect="dark" style="width: 100%" border stripe
                         @selection-change="handleSelectionChangeDialog">
-                        <el-table-column type="selection" width="55" align="center">
+
+                        <el-table-column type="selection" width="50" align="center">
                         </el-table-column>
 
                         <el-table-column prop="tableName" label="表名称" width="120"> </el-table-column>
@@ -106,6 +107,7 @@
                     </el-table>
                 </el-col>
             </el-row>
+
             <el-col :span="12" :offset="9">
                 <el-pagination @size-change="handleSizeChangeDialog" @current-change="handleCurrentChangeDialog"
                     layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]"
@@ -113,6 +115,7 @@
                     :total="deletedData?deletedData.length:dialogTotal">
                 </el-pagination>
             </el-col>
+            
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogTableVisible = false">取 消</el-button>
                 <el-button type="primary" @click="addTableData()">确 定</el-button>
@@ -124,7 +127,7 @@
 
 <script>
     import moment from "moment";
-    import codegener from '@/api/codegener/codegener'
+    import codegener from '@/api/codegener/codegener';
 
     function getCamelCase(str) {
         return str.replace(/_([a-z])/g, function (all, i) {
@@ -151,12 +154,12 @@
                 dialogCurrentPage: 1,
 
                 dialogTableVisible: false,
-                tableData: [], //展示的数据
-                tableDataCache: [{ //查询到的数据
+                tableData: [], // 展示的数据
+                tableDataCache: [{ // 查询到的数据
                     entity: "",
                 }],
-                deletedData: [], //已删除的展示数据
-                deletedDataCache: [], //已删除的元数据
+                deletedData: [], // 已删除的展示数据
+                deletedDataCache: [], // 已删除的元数据
                 multipleSelection: [],
                 multipleSelectionDialog: [],
             };
@@ -167,7 +170,7 @@
 
         },
         methods: {
-            // 时间格式化 Start
+            // 时间格式化
             formatDate(row, column) {
                 // 获取单元格数据
                 let data = row[column.property];
@@ -176,17 +179,16 @@
                 }
                 return moment(data).format("YYYY-MM-DD HH:mm:ss");
             },
-            // 时间格式化 End
-            // 获取数据库 Start
+
+            // 获取数据库 
             getDataBases() {
                 codegener.getDataBases().then((res) => {
                     this.options = res.data.result.data;
-                    console.log(this.options)
                 })
             },
-            // 获取数据库 End
 
-            // 获取数据列表 Start
+
+            // 获取数据列表
             getTableData(tableName) {
                 if (tableName == "") {
                     tableName = "breze";
@@ -197,15 +199,14 @@
                     this.tableDataCache = res.data.result.data;
 
                     this.total = res.data.result.data.length;
-                    this.tableDataCache.forEach(element => {
-                        element.entity = getCamelCase(element.tableName)
+                    this.tableDataCache.forEach(item => {
+                        item.entity = getCamelCase(item.tableName)
                     });
                     this.tableData = this.tableDataCache;
                 })
             },
-            // 获取数据列表 End
 
-            // 查询 Start
+            // 查询
             queryTableData() {
                 if (this.searchForm.tableName == "") {
                     this.tableData = this.tableDataCache;
@@ -228,9 +229,8 @@
                 }
                 this.searchForm.tableName = ""
             },
-            // 查询 End
 
-            // 弹窗查询 Start
+            // 弹窗查询
             queryDialogTableData() {
 
                 if (this.searchForm.tableName == "") {
@@ -254,9 +254,8 @@
                 }
                 this.searchForm.tableName = ""
             },
-            // 弹窗查询 end
 
-            // 导入表格 Start
+            // 导入表格
             addTableData() {
 
                 for (var i = 0; i < this.multipleSelectionDialog.length; i++) {
@@ -271,13 +270,8 @@
                 this.dialogTableVisible = false;
 
             },
-            // 导入表格 End
 
-            // 编辑 Start
-            editTableInfo(id) {},
-            // 编辑 End
-
-            // 删除表格 Start
+            // 删除表格
             deleteTableInfo(index) {
                 var tempData = this.tableData.splice(index, 1)[0];
                 this.deletedDataCache.push(tempData);
@@ -290,9 +284,8 @@
 
 
             },
-            // 删除表格 End
 
-            // 生成代码 Start
+            // 生成代码
             generateCode(row) {
                 var tableNames = []
                 var tablePrefixs = []
@@ -315,7 +308,7 @@
                     packageName: "",
                     author: ""
                 }
-                codegener.generteCode(params).then((res) => {
+                codegener.genertedCode(params).then((res) => {
                     this.$message({
                         message: '代码生成成功',
                         type: 'success'

@@ -22,7 +22,7 @@ Vue.config.productionTip = false;
 
 //定义全局引用变量
 // Vue.prototype.$axios = axios; 
-Vue.prototype.qs = qs;
+Vue.prototype.$qs = qs;
 
 Vue.prototype.BASE_API = axios.defaults.baseURL;
 

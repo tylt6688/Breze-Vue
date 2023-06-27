@@ -3,13 +3,13 @@
     <!-- 侧边菜单栏 -->
     <el-aside width="auto">
       <SideMenu></SideMenu>
-
     </el-aside>
 
     <el-container>
       <el-header>
-        <!-- <strong class="title">青 枫 多 端 一 体 化 管 理 平 台</strong> -->
+        <!-- <strong class="title">清 枫 多 端 一 体 化 管 理 平 台</strong> -->
         <div class="header-avatar">
+          
           <div class="header-search">
             <div class="search-div">
               <i class="el-icon-search" slot="suffix">
@@ -24,7 +24,8 @@
 
           <el-dropdown>
             <span class="el-dropdown-link">
-              {{ userInfo.trueName}}<i class="el-icon-arrow-down el-icon--right"></i>
+              {{ userInfo.trueName }}
+              <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-user-solid">
@@ -43,9 +44,11 @@
               </el-dropdown>
             </el-badge>
           </div>
+
           <el-tooltip effect="dark" content="刷新" placement="bottom">
             <i class="el-icon-refresh" @click="reload" style="cursor:pointer;"></i>
           </el-tooltip>
+
           <el-tooltip effect="dark" content="全屏切换" placement="bottom">
             <i :class="screenIcon" @click="fullScreen" style="cursor:pointer;"></i>
           </el-tooltip>
@@ -68,8 +71,8 @@
         <el-backtop target=".container" :visibility-height="50" :bottom="12" :right="50"></el-backtop>
       </el-main>
 
-      <!-- <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer> -->
-      <el-footer> 🐱‍🏍 Copyright © 2022 💙 开发测试专用 </el-footer>
+      <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer>
+      <!-- <el-footer> 🐱‍🏍 Copyright © 2022 💙 开发测试专用 </el-footer> -->
     </el-container>
   </el-container>
 </template>

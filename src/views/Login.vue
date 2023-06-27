@@ -2,7 +2,7 @@
   <el-container>
 
     <el-header>
-      <!-- <strong class="title">欢 迎 来 到 清 枫 一 体 化 管 理 平 台</strong> -->
+      <strong class="title">欢 迎 来 到 清 枫 一 体 化 管 理 平 台</strong>
     </el-header>
 
     <el-main>
@@ -24,7 +24,7 @@
                 <!-- 账户密码登录面板 -->
                 <el-tab-pane label="密码登录">
                   <div class="login">
-                    <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
+                    <el-form :model="loginForm" :rules="rules" ref="accountLoginForm" label-width="80px">
                       <el-form-item class="login-form-item" label="用户名" prop="username">
                         <el-input v-model="loginForm.username" placeholder="请输入用户名"></el-input>
                       </el-form-item>
@@ -46,10 +46,10 @@
                       <el-form-item>
                         <el-row>
                           <el-col :span="14">
-                            <el-button type="primary" round @click="submitForm('loginForm')">立即登录</el-button>
+                            <el-button type="primary" round @click="submitForm('accountLoginForm')">立即登录</el-button>
                           </el-col>
                           <el-col :span="10">
-                            <el-button round @click="resetForm('loginForm')">重置数据</el-button>
+                            <el-button round @click="resetForm('accountLoginForm')">重置数据</el-button>
                           </el-col>
                         </el-row>
                       </el-form-item>
@@ -87,8 +87,8 @@
     </el-main>
 
     <!-- 网站底部信息 -->
-    <!-- <el-footer> 🐱‍🏍Copyright © 2021-2023 青枫网络工作室 All Rights Reserved.</el-footer> -->
-    <el-footer> 🐱‍🏍Copyright © 2021-2023 QF All Rights Reserved.</el-footer>
+    <el-footer> 🐱‍🏍Copyright © 2021-2023 青枫网络工作室 All Rights Reserved.</el-footer>
+    <!-- <el-footer> 🐱‍🏍Copyright © 2021-2023 QF All Rights Reserved.</el-footer> -->
 
   </el-container>
 </template>
@@ -143,46 +143,50 @@
     },
     mounted() {},
     methods: {
-      // 获取验证码 Start
+      // 获取验证码
       getCaptcha() {
         login.getCaptcha().then((res) => {
           this.loginForm.key = res.data.result.data.key;
           this.captchaImg = res.data.result.data.base64Img;
         });
       },
-      // 获取验证码 End
 
-      // 立即登录 Start
+
+      //  重置表单
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+      // 立即登录
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
+          console.log(valid);
           if (valid) {
-            login.submitFormLogin(this.qs.stringify(this.loginForm)).then((res) => {
-              const jwt = res.headers["authorization"];
-              this.$store.commit("SET_TOKEN", jwt);
-              this.$router.push("/");
-            }).catch((err) => {
-              this.getCaptcha();
-              this.$message({
-                message: err,
-                type: "warning"
+            login.submitFormLogin(this.$qs.stringify(this.loginForm))
+              .then((res) => {
+                const jwt = res.headers["authorization"];
+                this.$store.commit("SET_TOKEN", jwt);
+                this.$router.push("/");
+              })
+              .catch((err) => {
+                this.getCaptcha();
+                this.$message({
+                  message: err,
+                  type: "warning"
+                });
               });
-            });
           } else {
             this.getCaptcha();
             this.$message({
-              message: "输入格式不正确",
+              message: "数据格式不正确",
               type: "warning"
             });
           }
         });
       },
-      //  立即登录 End
 
-      //  重置表单 Start
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      //  重置表单 End
+
+
+
     },
   };
 </script>
