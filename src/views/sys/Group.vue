@@ -2,7 +2,7 @@
   <div class="page">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="searchForm.groupName" placeholder="请输入岗位名" clearable>
+        <el-input v-model="searchForm.groupName" placeholder="请输入部门名" clearable>
         </el-input>
       </el-form-item>
       <!-- <el-form-item label="">
@@ -39,7 +39,7 @@
       <el-table-column prop="icon" label="操作" width="250px">
 
         <template slot-scope="scope">
-          <el-button type="text" @click="editHandle(scope.row.id)"><i class="el-icon-connection"></i> 关联职位</el-button>
+          <el-button type="text" @click="editHandle(scope.row.id)"><i class="el-icon-connection"></i> 关联岗位</el-button>
 
           <el-divider direction="vertical"></el-divider>
           <el-button type="text" @click="insertOrUpdate(scope.row.id)"><i class="el-icon-edit"></i> 编辑</el-button>
