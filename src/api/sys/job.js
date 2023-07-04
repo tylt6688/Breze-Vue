@@ -2,23 +2,17 @@ import request from "@/utils/http";
 
 export default {
 
-    getJobList() {
+    getJobList(param) {
         return request({
             url: '/sys/job/select',
             method: 'get',
+            params:param
         })
     },
     getJobById(id){
         return request({
             url : '/sys/job/select/'+id,
             method:'get'
-        })
-    },
-    searchJobList(params){
-        return request({
-            url: '/sys/job/searchAnd',
-            method:'post',
-            data:params
         })
     },
     editJob(param){

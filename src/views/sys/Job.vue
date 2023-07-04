@@ -2,7 +2,7 @@
   <div class="page">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="searchForm.name" placeholder="请输入岗位名" clearable>
+        <el-input v-model="searchForm.jobName" placeholder="请输入岗位名" clearable>
         </el-input>
 
       </el-form-item>
@@ -15,7 +15,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="searchJob">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="getJobPageList">查询</el-button>
         <el-button type="primary" icon="el-icon-plus" @click="insertAndUpdate(null)">新增岗位</el-button>
       </el-form-item>
     </el-form>
@@ -87,8 +87,7 @@
     data() {
       return {
         searchForm: {
-          name: "",
-          state: ""
+          jobName: ""
         },
         tableData: [],
         stateOption: [{
@@ -135,20 +134,12 @@
         return moment(data).format("YYYY-MM-DD HH:mm:ss");
       },
       getJobPageList() {
-        job.getJobList().then((res) => {
+        let param = {
+          name:this.searchForm.jobName
+        }
+        job.getJobList(param).then((res) => {
           this.tableData = res.data.result.data;
         });
-      },
-      searchJob() {
-        let param = {
-          id: "",
-          name: this.searchForm.name,
-          state: this.searchForm.status,
-          remark: ""
-        }
-        job.searchJobList(param).then((res) => {
-          this.tableData = res.data.result.data;
-        })
       },
       insertAndUpdate(id) {
         this.dialogVisible = true
