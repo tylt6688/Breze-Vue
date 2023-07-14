@@ -39,9 +39,18 @@ const routes = [{
           title: "个人中心"
         },
       },
+      {
+        path: '/dictData',
+        name: 'dictData',
+        meta: {
+          title: "字典数据"
+        },
+        component: () => import('@/views/tool/DictData.vue')
+      },
 
     ]
   },
+
   // 错误页面  
   {
     path: '/401',
@@ -71,6 +80,7 @@ const router = new VueRouter({
 
 // 配置全局路由导航守卫
 router.beforeEach((to, from, next) => {
+  console.log("to",to,"from",from,"next",next,)
   // 后端动态路由生成
   let hasRoute = store.state.menus.hasRoutes;
 

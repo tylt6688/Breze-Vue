@@ -3,19 +3,25 @@
     <el-header>
       <el-form :inline="true">
         <el-form-item label="字典名称">
-          <el-input v-model="searchForm.dictName" placeholder="请输入字典名称"></el-input>
+          <el-select v-model="searchForm.dictName"  placeholder="请选择字典类型">
+            <el-option v-for="item in typeOptions" :key="item.type" :label="item.name" :value="item.type">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="字典类型">
-          <el-input v-model="searchForm.dictType" placeholder="请输入字典类型"></el-input>
+        <el-form-item label="状态">
+          <el-select v-model="searchForm.state" placeholder="请选择数据状态">
+            <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button @click="getDictPage()" icon="el-icon-search">
+          <el-button @click="getDictDataPage()" icon="el-icon-search">
             搜索
           </el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="insertDict()" icon="el-icon-plus">
-            新增字典
+          <el-button type="primary" @click="insertDictData()" icon="el-icon-plus">
+            添加数据
           </el-button>
         </el-form-item>
         <el-form-item>
@@ -29,25 +35,33 @@
             导出
           </el-button>
         </el-form-item>
+        <!-- <el-form-item>
+          <el-button
+          type="warning"
+          plain
+          icon="el-icon-close"
+          size="mini"
+          @click="handleClosetab"
+        >关闭</el-button>
+        </el-form-item> -->
 
       </el-form>
     </el-header>
     <el-main>
-      <el-table :data="dictList" style="width: 100%" row-key="id" ref="table" border
+      <el-table :data="dictDataList" style="width: 100%" row-key="id" ref="table" border
         @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center">
         </el-table-column>
-        <el-table-column prop="name" label="字典名称" align="center">
+        <el-table-column prop="dictKey" label="字典标签" align="center">
         </el-table-column>
-        <el-table-column prop="type" label="字典类型" align="center">
-          <template slot-scope="scope">
-            <el-link type="primary" @click="toDictDataPage(scope.row)">{{scope.row.type}}</el-link>
-          </template>
+        <el-table-column prop="dictValue" label="字典值" align="center">
+        </el-table-column>
+        <el-table-column prop="sort" label="字典排序" align="center">
         </el-table-column>
         <el-table-column prop="state" label="状态" align="center">
           <template slot-scope="scope">
             <el-tag size="small" v-if="scope.row.state === 0" type="success">正常</el-tag>
-            <el-tag size="small" v-else type="danger">禁用</el-tag>
+          <el-tag size="small" v-else type="danger">禁用</el-tag>
           </template>
         </el-table-column>
 
@@ -57,10 +71,10 @@
         </el-table-column>
         <el-table-column prop="icon" label="操作" width="150">
           <template slot-scope="scope">
-            <el-button type="text" @click="editDictForm(scope.row)" icon="el-icon-edit">编辑</el-button>
+            <el-button type="text" @click="editFormData(scope.row)" icon="el-icon-edit">编辑</el-button>
             <el-divider direction="vertical"></el-divider>
             <template>
-              <el-popconfirm title="确定删除此内容吗?" @confirm="deleteDict(scope.row)">
+              <el-popconfirm title="确定删除此内容吗?" @confirm="deleteDictData(scope.row)">
                 <el-button type="text" slot="reference" icon="el-icon-delete">
                   删除
                 </el-button>
@@ -79,11 +93,24 @@
     <!--编辑主体内容模态框 Start-->
     <el-dialog :title="title" :visible.sync="dialogVisible" width="500px" :before-close="handleClose">
       <el-form ref="editForm" :model="editForm" :rules="editFormRules">
-        <el-form-item label="字典名称" prop="name" label-width="100px">
-          <el-input v-model="editForm.name" autocomplete="off" style="width:300px"></el-input>
+        <el-form-item label="字典类型" label-width="100px">
+          <el-input v-model="editForm.dictType" autocomplete="off" :disabled="true" style="width:300px"></el-input>
         </el-form-item>
-        <el-form-item label="字典类型" label-width="100px" prop="type">
-          <el-input v-model="editForm.type" autocomplete="off" :disabled="inputDisable" style="width:300px"></el-input>
+        <el-form-item label="字典标签" label-width="100px" prop="dictKey">
+          <el-input v-model="editForm.dictKey" autocomplete="off" style="width:300px" placeholder="请输入字典标签"></el-input>
+        </el-form-item>
+        <el-form-item label="字典值" label-width="100px" prop="dictValue">
+          <el-input v-model="editForm.dictValue" autocomplete="off" style="width:300px" placeholder="请输入字典值"></el-input>
+        </el-form-item>
+        <el-form-item label="显示排序" label-width="100px" prop="sort">
+          <el-input-number v-model="editForm.sort" controls-position="right" :min="0" />
+        </el-form-item>
+        <el-form-item label="样式属性" label-width="100px" prop="valueClass">
+          <el-select v-model="editForm.valueClass">
+            <el-option v-for="item in valueClassOptions" :key="item.value" :label="item.label + '(' + item.value + ')'"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="状态" prop="state" label-width="100px">
           <el-radio-group v-model="editForm.state" style="width:300px">
@@ -92,7 +119,8 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" label-width="100px">
-          <el-input type="textarea" v-model="editForm.remark" rows="3" style="width:300px"></el-input>
+          <el-input type="textarea" v-model="editForm.remark" rows="3" style="width:300px" placeholder="请输入备注信息">
+          </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -122,6 +150,8 @@
 </template>
 
 <script>
+  import navbar from "@/api/portal/navbar";
+  import dictData from "@/api/sys/dictData";
   import dict from "@/api/sys/dict";
   import moment from "moment";
   export default {
@@ -133,44 +163,101 @@
         current: 1,
         size: 10,
 
+        count: "",
+
         searchForm: {
           dictName: "",
-          dictType: ""
+          state: ""
         },
+
+        type: "",
+        name: "",
+        // 默认字典类型
+        defaultDictType: "",
+
+        typeOptions: [],
+
+        dictType: '',
         multipleSelection: [],
         dialogVisible: false,
-        excelDialogVisible: false,
-        inputDisable: false,
+        excelDialogVisible:false,
 
-        dictList: [],
-
+        dictDataList: [],
         editForm: {
-          state: 0
+
         },
         title: "",
         //表单规则
         editFormRules: {
-          name: [{
+          dictKey: [{
             required: true,
-            message: "请输入字典名称",
+            message: "请输入字典标签",
             trigger: "blur",
           }, ],
-          type: [{
+          dictValue: [{
             required: true,
-            message: "请输入字典类型",
+            message: "请输入字典键值",
             trigger: "blur",
+          }, ],
+          sort: [{
+            required: true,
+            message: "数据顺序不能为空",
+            trigger: "blur"
+          }],
+          valueClass: [{
+            required: true,
+            message: "请选择样式类型",
+            trigger: "change",
           }, ],
           state: [{
             required: true,
-            message: "请确定状态",
+            message: '请选择状态',
+            trigger: 'change'
+          }],
+          remark: [{
+            required: true,
+            message: "请输入备注信息",
             trigger: "blur",
           }, ],
+
         },
+        valueClassOptions: [{
+            value: "default",
+            label: "默认"
+          },
+          {
+            value: "primary",
+            label: "主要"
+          },
+          {
+            value: "success",
+            label: "成功"
+          },
+          {
+            value: "info",
+            label: "信息"
+          },
+          {
+            value: "warning",
+            label: "警告"
+          },
+          {
+            value: "danger",
+            label: "危险"
+          }
+        ],
+
+        parentSelectorList: [],
       };
     },
-    created() {},
+    created() {
+      const dict = JSON.parse(localStorage.getItem("dict"))
+      console.log("name", dict.name)
+      this.searchForm.dictName = dict.type
+    },
     mounted() {
-      this.getDictPage();
+      this.getDictDataPage();
+      this.getDictSelectList()
     },
     methods: {
       // 时间格式化 Start
@@ -183,49 +270,58 @@
         return moment(data).format("YYYY-MM-DD HH:mm:ss");
       },
       // 时间格式化 End
-
-      // 获取字典类型分页数据 
-      getDictPage() {
+      // 获取导航菜单列表 
+      getDictDataPage() {
         let params = {
-          dictName: this.searchForm.dictName,
-          dictType: this.searchForm.dictType,
+          dictType: this.searchForm.dictName,
+          state: this.searchForm.state,
           current: this.current,
           size: this.size,
         };
-        dict.getDictPageList(params).then((res) => {
-          this.dictList = res.data.result.data.records
+        console.log("searchFowm", this.dictType)
+        dictData.getDictDataPageList(params).then((res) => {
+          this.dictDataList = res.data.result.data.records
           this.total = res.data.result.data.total
-          console.log(res.data)
+          console.log("ressdfs", res.data)
+          this.reset()
+        });
+      },
+      getDictSelectList() {
+        dict.getDictSelectList().then((res) => {
+          this.typeOptions = res.data.result.data
+          console.log(res)
+
         });
       },
       // 新增按钮调用
-      insertDict() {
-        this.title = "添加字典";
+      insertDictData() {
+        this.reset()
+        this.title = "新增字典数据";
         this.dialogVisible = true;
       },
       // 编辑按钮调用
-      editDictForm(row) {
-        this.title = "修改字典"
+      editFormData(row) {
+        this.reset()
+        this.title = "编辑字典数据"
         this.dialogVisible = true;
-        this.inputDisable = true
-        dict.getDictInfo(row.id).then(res => {
+        dictData.getDiceDataInfo(row.id).then(res => {
           this.editForm = res.data.result.data;
+          console.log("dictData",res.data)
         })
 
       },
-      // 新增或编辑提交处理
+      // 新增或编辑
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log(this.editForm)
-            dict.submitDictForm(this.editForm).then((res) => {
+            dictData.submitDictDataForm(this.editForm).then((res) => {
               this.$message({
                 showClose: true,
                 duration: 2000,
                 message: res.data.message,
                 type: "success",
                 onClose: () => {
-                  this.getDictPage();
+                  this.getDictDataPage();
                 },
               });
               this.handleClose();
@@ -237,27 +333,30 @@
         });
       },
 
-      // 删除单一字典类型
-      deleteDict(row) {
-        dict.deleteDictInfo(row.id).then((res) => {
+      // 删除内容 
+      deleteDictData(row) {
+        dictData.deleteDictData(row.id).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,
             message: res.data.message,
             type: "success",
             onClose: () => {
-              this.getDictPage();
+              this.getDictDataPage();
             },
-          })
-
-        }).catch(error => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            message: error.response.data.message,
-            type: "error",
           });
         });
+      },
+      reset() {
+        this.editForm = {
+          dictType: this.searchForm.dictName,
+          dictKey: undefined,
+          dictValue: undefined,
+          valueClass: 'default',
+          state: 0,
+          sort: 0,
+          remark: undefined
+        }
       },
       //导入excel确认
       submitExcel() {
@@ -266,16 +365,15 @@
       //导入excel处理
       importExcel(param) {
         const formData = new FormData();
-        console.log("formdata", typeof formData)
         formData.append("file", param.file);
-        dict.importExcel(formData).then((res) => {
+        dictData.importExcel(formData).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,
             message: res.data.message,
             type: "success",
             onClose: () => {
-              this.getDictPage();
+              this.getDictDataPage();
             },
           });
           this.handCloseUplod()
@@ -283,14 +381,14 @@
       },
       // 下载excel模板
       exportModelExcel() {
-        dict.exportModelExcel()
+        dictData.exportModelExcel()
           .then((res) => {
             const blob = new Blob([res.data]);
             const blobURL = window.URL.createObjectURL(blob);
             const tmpLink = document.createElement("a");
             tmpLink.style.display = "none";
             tmpLink.href = blobURL;
-            tmpLink.setAttribute("download", "数据字典模板.xlsx");
+            tmpLink.setAttribute("download", "字典数据模板.xlsx");
             document.body.appendChild(tmpLink);
             tmpLink.click();
             document.body.removeChild(tmpLink);
@@ -301,29 +399,27 @@
           });
       },
       exportExcel() {
-        dict.exportExcel().then((res) => {
-          console.log("sdgsdg", res)
+        dictData.exportExcel().then((res) => {
           const blob = new Blob([res.data]);
           const blobURL = window.URL.createObjectURL(blob);
           const tmpLink = document.createElement("a");
           tmpLink.style.display = "none";
           tmpLink.href = blobURL;
-          tmpLink.setAttribute("download", "数据字典.xlsx");
+          tmpLink.setAttribute("download", "字典数据.xlsx");
           document.body.appendChild(tmpLink);
           tmpLink.click();
           document.body.removeChild(tmpLink);
         })
       },
-      toDictDataPage(row) {
-        localStorage.setItem("dict", JSON.stringify({
-          "name": row.name,
-          "type": row.type
-        }))
-        this.$router.push({
-          path: "/dictData"
-        })
+      toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
       },
-
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
@@ -331,7 +427,10 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
         this.dialogVisible = false;
-        this.editForm = {};
+        this.reset()
+      },
+      handleClosetab() {
+
       },
       // 模态框关闭
       handleClose() {
