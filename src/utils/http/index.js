@@ -35,7 +35,7 @@ service.interceptors.response.use(
 	},
 	// 异常情况判断
 	error => {
-		console.log("请求异常===>>>", error);
+		console.log("请求异常===>>>", error,"网络异常码===>>>", error.response);
 		if (error.response.data) {
 			error.massage = error.response.data.message;
 			if (error.response.status === 401) {
@@ -54,6 +54,17 @@ service.interceptors.response.use(
 					duration: 1500
 				})
 			}
+			// else if (error.response.status === 500) {
+			// 	// 此处可进行更加细致的判断  FIXME 待进一步优化
+			// 	if(error.response.data.errorCode===700){
+			// 		Message.error(error.massage, {
+			// 			showClose: false,
+			// 			duration: 1500
+			// 		})
+			// 	}
+		
+				
+			// }
 		}
 		return Promise.reject(error);
 	}
