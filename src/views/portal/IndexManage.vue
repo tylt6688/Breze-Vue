@@ -150,7 +150,7 @@
                 modeCard.getModeCardInfo(params).then((res) => {
                     this.modeCardList = res.data.result.data.records;
                     this.total = res.data.result.data.total;
-
+                    console.log("dsgfsg",res)
                 })
             },
 

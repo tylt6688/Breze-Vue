@@ -142,16 +142,15 @@
 
         <el-form-item label="类型" prop="type" label-width="100px">
           <el-radio-group v-model="editForm.type">
-            <el-radio v-if="editForm.type === 0" :label="0">目录</el-radio>
-            <el-radio :label="1">菜单</el-radio>
-            <el-radio :label="2">按钮</el-radio>
+            <el-radio v-for="(item,index) in this.dictobject.sys_menu_type" :key="index" :label="item.dictValue">{{ item.dictKey }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="状态" prop="state" label-width="100px">
           <el-radio-group v-model="editForm.state">
-            <el-radio :label="0">正常</el-radio>
-            <el-radio :label="1">禁用</el-radio>
+            <el-radio v-for="(item,index) in this.dictobject.sys_state" :key="index" :label="item.dictValue">{{ item.dictKey }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -169,10 +168,14 @@
 </template>
 <script>
   import menu from "@/api/sys/menu";
+  import dictData from "@/api/sys/dictData";
   export default {
     name: "Menu",
     data() {
       return {
+        dicts: ['sys_state','sys_menu_type'],
+        dictobject: {},
+
         tableData: [],
         editForm: {
           orderNum: 1,
@@ -242,6 +245,7 @@
     },
     created() {
       this.getMenuTree();
+      this.getDcitCache(this.dicts)
     },
     methods: {
       // 获取菜单树 Start
@@ -251,6 +255,15 @@
         });
       },
       // 获取菜单树 End
+
+      //获取字典缓存数据
+      getDcitCache(dicts) {
+        dictData.getCacheData(dicts).then((res) => {
+          for(const key in res.data.result.data){
+            this.$set(this.dictobject,key,res.data.result.data[key])
+          }
+        })
+      },
 
       // 新增菜单 Start
       submitForm(formName) {

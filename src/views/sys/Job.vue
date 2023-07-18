@@ -8,8 +8,8 @@
       </el-form-item>
       <el-form-item label="">
         <el-select v-model="searchForm.state" placeholder="请选择岗位状态">
-          <div v-for="(item,index) in stateOption" :key="index">
-            <el-option :label="item.name" :value="item.value"></el-option>
+          <div v-for="(item,index) in this.dictobject.sys_state" :key="index">
+            <el-option :label="item.dictKey" :value="item.dictValue"></el-option>
           </div>
         </el-select>
       </el-form-item>
@@ -63,8 +63,8 @@
 
         <el-form-item label="状态" prop="state" label-width="100px">
           <el-radio-group v-model="editForm.state">
-            <el-radio :label="0">正常</el-radio>
-            <el-radio :label="1">禁用</el-radio>
+            <el-radio v-for="(item,index) in this.dictobject.sys_state" :key="index" :label="item.dictValue">{{ item.dictKey }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" label-width="100px">
@@ -82,23 +82,18 @@
 <script>
   import job from "@/api/sys/job";
   import moment from "moment";
+  import dictData from "@/api/sys/dictData";
   export default {
     name: "Job",
     data() {
       return {
+        dicts: ['sys_state'],
+        dictobject: {},
+
         searchForm: {
           jobName: ""
         },
         tableData: [],
-        stateOption: [{
-            name: "正常",
-            value: 0
-          },
-          {
-            name: "禁用",
-            value: 1
-          }
-        ],
         FormRules: {
           name: [{
             required: true,
@@ -123,6 +118,7 @@
     },
     created() {
       this.getJobPageList();
+      this.getDcitCache(this.dicts)
     },
     methods: {
       // 格式化日期时间 Start
@@ -140,6 +136,15 @@
         job.getJobList(param).then((res) => {
           this.tableData = res.data.result.data;
         });
+      },
+       //获取字典缓存数据
+       getDcitCache(dicts) {
+        dictData.getCacheData(dicts).then((res) => {
+          for(const key in res.data.result.data){
+            this.$set(this.dictobject,key,res.data.result.data[key])
+          }
+
+        })
       },
       insertAndUpdate(id) {
         this.dialogVisible = true

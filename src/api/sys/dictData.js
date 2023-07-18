@@ -52,4 +52,14 @@ export default {
         })
     },
 
+    getCacheData(dicts){
+        return request({
+            url: '/sys/dict/data/get_dict_data_by_type',
+            method: 'get',
+           params: {
+            dicts: dicts.join(',')
+           }
+        })
+    }
+
 }
