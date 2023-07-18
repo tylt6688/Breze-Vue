@@ -87,8 +87,8 @@
         </el-form-item>
         <el-form-item label="状态" prop="state" label-width="100px">
           <el-radio-group v-model="editForm.state" style="width:300px">
-            <el-radio :label="0">正常</el-radio>
-            <el-radio :label="1">禁用</el-radio>
+            <el-radio v-for="(item,index) in this.dictobject.sys_state" :key="index" :label="item.dictValue">{{ item.dictKey }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" label-width="100px">
@@ -124,10 +124,13 @@
 <script>
   import dict from "@/api/sys/dict";
   import moment from "moment";
+  import dictData from '@/api/sys/dictData';
   export default {
     name: "Dict",
     data() {
       return {
+        dicts: ['sys_state'],
+        dictobject: {},
         // 分页数据
         total: 0,
         current: 1,
@@ -171,6 +174,7 @@
     created() {},
     mounted() {
       this.getDictPage();
+      this.getDcitCache(this.dicts)
     },
     methods: {
       // 时间格式化 Start
@@ -197,6 +201,15 @@
           this.total = res.data.result.data.total
           console.log(res.data)
         });
+      },
+
+      getDcitCache(dicts) {
+        dictData.getCacheData(dicts).then((res) => {
+          for(const key in res.data.result.data){
+            this.$set(this.dictobject,key,res.data.result.data[key])
+          }
+
+        })
       },
       // 新增按钮调用
       insertDict() {

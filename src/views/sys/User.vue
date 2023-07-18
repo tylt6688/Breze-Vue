@@ -140,8 +140,8 @@
 
         <el-form-item label="状态" prop="state" label-width="100px">
           <el-radio-group v-model="editForm.state">
-            <el-radio :label="0">禁用</el-radio>
-            <el-radio :label="1">正常</el-radio>
+            <el-radio v-for="(item,index) in this.dictobject.sys_state" :key="index" :label="item.dictValue">{{ item.dictKey }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -210,12 +210,15 @@
 <script>
   import moment from "moment";
   import user from "@/api/sys/user";
-  import role from "@/api/sys/role";
-
-  export default {
+  import role from "@/api/sys/role";  
+  import dictData from "@/api/sys/dictData";
+  export default {  
     name: "User",
     data() {
       return {
+        dicts: ['sys_state'],
+        dictobject: {},
+
         dialogVisible: false,
         moreDialogVisible: false,
         uploadState: false,
@@ -285,6 +288,7 @@
     created() {
       this.getUserList();
       this.getRoleTree();
+      this.getDcitCache(this.dicts)
     },
     methods: {
       tableRowClassName({
@@ -341,7 +345,15 @@
           });
         });
       },
+       //获取字典缓存数据
+       getDcitCache(dicts) {
+        dictData.getCacheData(dicts).then((res) => {
+          for(const key in res.data.result.data){
+            this.$set(this.dictobject,key,res.data.result.data[key])
+          }
 
+        })
+      },
 
       // 获取选中的行数据
       toggleSelection(rows) {

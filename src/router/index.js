@@ -80,7 +80,6 @@ const router = new VueRouter({
 
 // 配置全局路由导航守卫
 router.beforeEach((to, from, next) => {
-  console.log("to",to,"from",from,"next",next,)
   // 后端动态路由生成
   let hasRoute = store.state.menus.hasRoutes;
 

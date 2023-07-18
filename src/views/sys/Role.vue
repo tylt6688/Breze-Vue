@@ -85,8 +85,8 @@
 
         <el-form-item label="状态" prop="state" label-width="100px">
           <el-radio-group v-model="editForm.state">
-            <el-radio :label="0">正常</el-radio>
-            <el-radio :label="1">禁用</el-radio>
+            <el-radio v-for="(item,index) in this.dictobject.sys_state" :key="index" :label="item.dictValue">{{ item.dictKey }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -120,12 +120,15 @@
   import moment from "moment";
   import role from "@/api/sys/role";
   import menu from "@/api/sys/menu";
-
+  import dictData from "@/api/sys/dictData";
   export default {
     // inject: ["reload"],
     name: "Role",
     data() {
       return {
+        dicts: ['sys_state'],
+        dictobject: {},
+
         permDialogVisible: false,
         // 批量删除
         delBtlState: true,
@@ -175,6 +178,7 @@
       menu.getMenuTree().then((res) => {
         this.permTreeData = res.data.result.data;
       });
+      this.getDcitCache(this.dicts)
     },
     methods: {
       // 时间格式化 Start
@@ -196,6 +200,15 @@
         } else {
           this.$refs.multipleTable.clearSelection();
         }
+      },
+       //获取字典缓存数据
+       getDcitCache(dicts) {
+        dictData.getCacheData(dicts).then((res) => {
+          for(const key in res.data.result.data){
+            this.$set(this.dictobject,key,res.data.result.data[key])
+          }
+
+        })
       },
       handleSelectionChange(val) {
         console.log("勾选", val);
