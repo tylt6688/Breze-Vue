@@ -309,11 +309,8 @@
       },
       // 更新登录提醒状态 Start
       changeLoginWarn(e) {
-        var flag = e ? 0 : 1;
-        let params = {
-          loginWarn: flag,
-        }
-        userCenter.changeLoginWarn(this.qs.stringify(params)).then((res) => {
+        const loginWarn = e ? 0 : 1;
+        userCenter.changeLoginWarn(loginWarn).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,
@@ -327,7 +324,6 @@
         });
       },
       // 更新登录提醒状态 End
-
 
 
       // 编辑用户信息时回显 Start

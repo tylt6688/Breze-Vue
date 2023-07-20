@@ -89,8 +89,8 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="序号" prop="orderNum" label-width="100px">
-          <el-input-number v-model="editForm.orderNum" :min="1" label="序号">1</el-input-number>
+        <el-form-item label="序号" prop="sort" label-width="100px">
+          <el-input-number v-model="editForm.sort" :min="1" label="序号">1</el-input-number>
         </el-form-item>
 
         <el-form-item>
@@ -154,8 +154,8 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="排序号" prop="orderNum" label-width="100px">
-          <el-input-number v-model="editForm.orderNum" :min="1" label="排序号"></el-input-number>
+        <el-form-item label="排序号" prop="sort" label-width="100px">
+          <el-input-number v-model="editForm.sort" :min="1" label="排序号"></el-input-number>
         </el-form-item>
 
         <el-form-item>
@@ -178,7 +178,7 @@
 
         tableData: [],
         editForm: {
-          orderNum: 1,
+          sort: 1,
           state: 0
         },
 
@@ -333,7 +333,3 @@
     },
   };
 </script>
-
-
-<style scoped>
-</style>

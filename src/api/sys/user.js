@@ -96,19 +96,19 @@ export default {
         })
     },
     // 删除或批量删除用户
-    delHandle(ids) {
+    delHandle(userList) {
         return request({
             url: "/sys/user/delete",
             method: 'delete',
-            data: ids
+            data: userList
         })
     },
     // 分配角色
-    permRole(PermRoleDTO) {
+    permRole(permRoleDTO) {
         return request({
             url: "/sys/user/perm_role/",
             method: 'post',
-            data: PermRoleDTO
+            data: permRoleDTO
         })
     },
  

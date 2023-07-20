@@ -4,8 +4,8 @@
       <el-form-item>
         <el-input v-model="searchForm.username" placeholder="请输入用户名" clearable @input="getUserList">
         </el-input>
-
       </el-form-item>
+      
       <el-form-item label="">
         <el-input v-model="searchForm.trueName" placeholder="请输入姓名" clearable @input="getUserList">
         </el-input>
@@ -102,7 +102,7 @@
             <el-divider direction="vertical"></el-divider>
 
             <template>
-              <el-popconfirm title="确定删除此用户吗?" @confirm="delHandle(scope.row.id)">
+              <el-popconfirm title="确定删除此用户吗?" @confirm="delHandle(scope.row)">
                 <el-button type="text" slot="reference" icon="el-icon-delete">删除</el-button>
               </el-popconfirm>
             </template>
@@ -492,17 +492,15 @@
       // 编辑用户 End
 
       // 删除或批量删除用户 Start
-      delHandle(id) {
-        var ids = [];
-        if (id) {
-          ids.push(id);
+      delHandle(user) {
+        var userList = [];
+        if (user) {
+          userList.push(user);
         } else {
-          this.multipleSelection.forEach((row) => {
-            ids.push(row.id);
-          });
+          userList = this.multipleSelection;
         }
-        console.log(ids);
-        user.delHandle(ids).then((res) => {
+     
+        user.delHandle(userList).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,
