@@ -18,7 +18,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-popconfirm title="确定将已选择用户批量删除吗?" @confirm="delHandle(null)">
+        <el-popconfirm title="确定将已选择用户批量删除吗?" @confirm="deleteUser()">
           <el-button type="danger" icon="el-icon-delete" slot="reference" :disabled="delBtlState"
             v-if="hasAuth('sys:user:delete')">
             批量删除</el-button>
@@ -102,7 +102,7 @@
             <el-divider direction="vertical"></el-divider>
 
             <template>
-              <el-popconfirm title="确定删除此用户吗?" @confirm="delHandle(scope.row)">
+              <el-popconfirm title="确定删除此用户吗?" @confirm="deleteUser(scope.row)">
                 <el-button type="text" slot="reference" icon="el-icon-delete">删除</el-button>
               </el-popconfirm>
             </template>
@@ -146,7 +146,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm('editForm')">确 定</el-button>
+        <el-button type="primary" @click="updateUser('editForm')">确 定</el-button>
         <el-button @click="resetForm('editForm')">取 消</el-button>
       </div>
     </el-dialog>
@@ -340,7 +340,7 @@
           this.size = res.data.result.data.size;
           this.current = res.data.result.data.current;
           this.total = res.data.result.data.total;
-          this.tableData.map((item, index) => {
+          this.tableData.map(item => {
             item.showRightOp = false; //需要先在tableData数组中每个元素添加showRightOp为false
           });
         });
@@ -459,10 +459,34 @@
       // 导出Excel上传模板 END
 
       // 增加或修改用户 Start
-      submitForm(formName) {
+      insertUser(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            user.submitForm(this.editForm, this.editForm.id).then((res) => {
+            user.insertUser(this.editForm).then((res) => {
+              this.$message({
+                showClose: true,
+                duration: 2000,
+                message: "操作成功",
+                type: "success",
+                onClose: () => {
+                  this.getUserList();
+                },
+              });
+              this.dialogVisible = false;
+            });
+          } else {
+            console.log("error submit!!");
+            return false;
+          }
+        });
+      },
+      // 增加或修改用户 End
+
+      // 增加或修改用户 Start
+      updateUser(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            user.updateUser(this.editForm).then((res) => {
               this.$message({
                 showClose: true,
                 duration: 2000,
@@ -492,15 +516,17 @@
       // 编辑用户 End
 
       // 删除或批量删除用户 Start
-      delHandle(user) {
-        var userList = [];
-        if (user) {
-          userList.push(user);
+      deleteUser(row) {
+        let userList = [];
+        if (row) {
+          userList.push(row);
         } else {
           userList = this.multipleSelection;
         }
+
+        console.log("删除的用户", userList);
      
-        user.delHandle(userList).then((res) => {
+        user.deleteUser(userList).then((res) => {
           this.$message({
             showClose: true,
             duration: 2000,
