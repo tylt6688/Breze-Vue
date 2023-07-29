@@ -39,7 +39,7 @@
       <el-table-column prop="icon" label="操作" width="250px">
 
         <template slot-scope="scope">
-          <el-button type="text" @click="editHandle(scope.row.id)"><i class="el-icon-connection"></i> 关联岗位</el-button>
+          <el-button type="text" @click="bindJob(scope.row.id)"><i class="el-icon-connection"></i> 关联岗位</el-button>
 
           <el-divider direction="vertical"></el-divider>
           <el-button type="text" @click="insertOrUpdate(scope.row.id)"><i class="el-icon-edit"></i> 编辑</el-button>
@@ -54,6 +54,7 @@
         </template>
       </el-table-column>
     </el-table>
+
     <el-dialog :title="title" :visible.sync="dialogVisible" width="600px" :before-close="handleClose">
       <el-form :model="editForm" :rules="FormRules" ref="editForm">
         <el-form-item label="部门名称" prop="name" label-width="100px">
@@ -82,11 +83,32 @@
         <el-button @click="resetForm('editForm')">取 消</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :title="title" :visible.sync="dialogFormVisible" width="600px">
+      <el-form :model="bindForm" ref="bindForm">
+        <el-form-item label="部门名称" label-width="100px">
+          <el-input disabled v-model="bindForm.group.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="选择岗位" prop="jobId" label-width="100px">
+          <el-select v-model="bindForm.params.jobId" placeholder="请选择岗位">
+            <div v-for="(item,index) in bindForm.job" :key="index">
+              <el-option :label="item.name" :value="item.id"></el-option>
+            </div>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="bind">确 定</el-button>
+        <el-button @click="this.dialogFormVisible = false;">取 消</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
   import group from "@/api/sys/group";
+  import job from "@/api/sys/job";
   import moment from "moment";
   import dictData from "@/api/sys/dictData";
   export default {
@@ -95,7 +117,6 @@
       return {
         dicts: ['sys_state'],
         dictobject: {},
-
         searchForm: {
           groupName: ""
         },
@@ -124,8 +145,18 @@
           state: 0,
           remark: ""
         },
+        bindForm: {
+          group: "",
+          job: "",
+          params: {
+            groupId: "",
+            jobId: ""
+          }
+        },
         parentGroup: {},
+        jobGroup: {},
         dialogVisible: false,
+        dialogFormVisible: false,
         title: ""
       };
     },
@@ -150,6 +181,22 @@
           this.tableData = res.data.result.data;
         });
       },
+      bindJob(id) {
+        this.dialogFormVisible = true;
+        if (id) {
+          this.title = "关联岗位"
+          this.bindForm.params.groupId = id
+          let param = {
+            name: ""
+          }
+          group.getGroupById(id).then((res) => {
+            this.bindForm.group = res.data.result.data
+          })
+          job.getJobList(param).then((res) => {
+            this.bindForm.job = res.data.result.data;
+          });
+        }
+      },
       insertOrUpdate(id) {
         this.dialogVisible = true;
         group.getGroupParent().then((res) => {
@@ -170,13 +217,22 @@
         }
       },
 
-       //获取字典缓存数据
-       getDcitCache(dicts) {
+      //获取字典缓存数据
+      getDcitCache(dicts) {
         dictData.getCacheData(dicts).then((res) => {
           for(const key in res.data.result.data){
             this.$set(this.dictobject,key,res.data.result.data[key])
           }
-
+        })
+      },
+      bind() {
+        group.bindJob(this.bindForm.params).then((res) => {
+          this.handleClose();
+          this.getStudentList();
+          this.$message({
+            message: res.data.message,
+            type: 'success'
+          });
         })
       },
       submitForm() {

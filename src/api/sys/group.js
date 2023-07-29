@@ -41,4 +41,11 @@ export default {
             method: 'delete',
         })
     },
+    bindJob(param){
+        return request({
+            url: '/sys/group/bind/insert',
+            method: 'post',
+            data:param
+        })
+    }
 }
