@@ -199,7 +199,7 @@
     inject: ["reloadAvatar"],
     name: "UserCenter",
     data() {
-      var validatePass = (rule, value, callback) => {
+      let validatePass = (rule, value, callback) => {
         if (value === "") {
           callback(new Error("请再次输入密码"));
         } else if (value !== this.passForm.password) {

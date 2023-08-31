@@ -3,25 +3,32 @@
         <!-- 头部操作部分 Start -->
         <el-form :inline="true">
             <el-form-item>
-                <el-input v-model="searchForm.tableName" placeholder="请输入表名称" clearable>
-                    <el-button slot="append" @click="queryTableData" icon="el-icon-search">搜索</el-button>
-                </el-input>
+                <!-- <el-input v-model="searchForm.tableName" placeholder="请输入表名称" clearable>
+                    <el-button slot="append" icon="el-icon-search">搜索</el-button>
+                </el-input> -->
+
+                <el-autocomplete class="inline-input" v-model="searchForm.tableName" :fetch-suggestions="querySearch"
+                    placeholder="请输入内容" @select="handleSelect">
+                </el-autocomplete>
             </el-form-item>
+
             <el-form-item>
                 <el-button type="primary" icon="el-icon-download" @click="generateCode(null)">批量生成
                 </el-button>
             </el-form-item>
 
             <el-form-item>
-                <el-select v-model="value" placeholder="请选择数据库" @change="getTableData">
-                    <el-option v-for="(item,index) in options" :value="item" :key="index">
+                <el-tag type="success">当前数据库: {{currentDataBase}}</el-tag>
+            </el-form-item>
+
+            <el-form-item>
+                <el-select v-model="generCodeParams.dataBaseName" placeholder="请选择数据库" @change="getTableData">
+                    <el-option v-for="(item,index) in dataBaseOptions" :value="item" :key="index">
                     </el-option>
                 </el-select>
             </el-form-item>
 
-            <el-form-item>
-                <el-tag type="success">当前数据库: {{currentDataBase}}</el-tag>
-            </el-form-item>
+
         </el-form>
         <!-- 头部操作部分 End -->
 
@@ -31,18 +38,17 @@
                 <el-table ref="multipleTable"
                     :data="tableData?tableData.slice((this.currentPage - 1) * this.pageSize, (this.currentPage - 1) * this.pageSize + this.pageSize):tableData"
                     tooltip-effect="dark" style="width: 100%" border stripe @selection-change="handleSelectionChange">
+
                     <el-table-column type="selection" width="55" align="center">
                     </el-table-column>
 
                     <el-table-column type="index" label="序号" width="50" align="center">
                     </el-table-column>
 
-                    <el-table-column prop="tableName" label="数据表名称"> </el-table-column>
-
-                    <el-table-column prop="remark" label="描述信息" show-overflow-tooltip>
+                    <el-table-column prop="tableName" label="数据表名称">
                     </el-table-column>
 
-                    <el-table-column prop="entity" label="对应实体" show-overflow-tooltip>
+                    <el-table-column prop="remark" label="描述信息" show-overflow-tooltip>
                     </el-table-column>
 
                     <el-table-column prop="coding" label="编码格式" align="center" show-overflow-tooltip>
@@ -62,112 +68,107 @@
                 </el-table>
             </el-col>
         </el-row>
+
         <!-- 分页数据选择 -->
-        <el-row class="footer-page">
-            <el-col :span="24">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                    layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]"
-                    :current-page="currentPage" :page-size="pageSize" :total="tableData?tableData.length:total">
-                </el-pagination>
-            </el-col>
-        </el-row>
-        <!-- 导入表格弹窗 -->
-        <el-dialog title="表格列表" :visible.sync="dialogTableVisible">
+        <div class="footer-page">
             <el-row>
                 <el-col :span="24">
-                    <el-form :inline="true">
-                        <el-form-item label="表名称">
-                            <el-input v-model="searchForm.tableName" placeholder="请输入表名称" clearable>
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="queryDialogTableData" icon="el-icon-search">搜索</el-button>
-                        </el-form-item>
-                    </el-form>
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                        layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]"
+                        :current-page="currentPage" :page-size="pageSize" :total="tableData?tableData.length:total">
+                    </el-pagination>
                 </el-col>
             </el-row>
-            <el-row>
-                <el-col :span="24">
-                    <el-table
-                        :data="deletedData?deletedData.slice((this.dialogCurrentPage - 1) * this.dialogPageSize, (this.dialogCurrentPage - 1) * this.dialogPageSize + this.dialogPageSize):deletedData"
-                        tooltip-effect="dark" style="width: 100%" border stripe
-                        @selection-change="handleSelectionChangeDialog">
+        </div>
 
-                        <el-table-column type="selection" width="50" align="center">
-                        </el-table-column>
+        <!--编辑代码生成下载模板模态框-->
+        <el-dialog v-dialogDrag title="生成信息" :visible.sync="generCodeDialogVisible" width="600px" :before-close="generCodeDialogClose">
+            <el-form :model="generCodeParams" :rules="generCodeFormRules" ref="generCodeForm">
 
-                        <el-table-column prop="tableName" label="表名称" width="120"> </el-table-column>
+                <el-form-item label="所选数据库" label-width="100px">
+                    <el-input :disabled="true" v-model="currentDataBase" autocomplete="off"></el-input>
+                    <el-alert title="用于生成代码的数据库名称，请注意确认" :closable="false" type="info" style="line-height: 12px">
+                    </el-alert>
+                </el-form-item>
 
-                        <el-table-column prop="remark" label="描述信息" width="180" show-overflow-tooltip>
-                        </el-table-column>
+                <el-form-item label="作者名称" label-width="100px" prop="author">
+                    <el-input v-model="generCodeParams.author" autocomplete="off"></el-input>
+                    <el-alert title="作者名尽量填写，会在代码注释中体现" :closable="false" type="warning" show-icon style="line-height: 12px">
+                    </el-alert>
+                </el-form-item>
 
-                        <el-table-column prop="createTime" label="创建时间" width="180" align="center"
-                            :formatter="formatDate" show-overflow-tooltip>
-                        </el-table-column>
-                    </el-table>
-                </el-col>
-            </el-row>
+                <el-form-item label="项目包名" label-width="100px" prop="packageName">
+                    <el-input v-model="generCodeParams.packageName" autocomplete="off"></el-input>
+                    <el-alert title="包名间通过'.'隔开" :closable="false" type="info" show-icon style="line-height: 12px">
+                    </el-alert>
+                </el-form-item>
 
-            <el-col :span="12" :offset="9">
-                <el-pagination @size-change="handleSizeChangeDialog" @current-change="handleCurrentChangeDialog"
-                    layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]"
-                    :current-page="dialogCurrentPage" :page-size="dialogPageSize"
-                    :total="deletedData?deletedData.length:dialogTotal">
-                </el-pagination>
-            </el-col>
-            
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogTableVisible = false">取 消</el-button>
-                <el-button type="primary" @click="addTableData()">确 定</el-button>
-            </span>
+                <el-form-item label="输出目录" label-width="100px">
+
+                    <el-select v-model="generCodeParams.outputDir" placeholder="请选择本地生成路径" @change="getOutputDir">
+                        <el-option v-for="(item,index) in outputDirOptions" :value="item" :key="index">
+                        </el-option>
+                    </el-select>
+                    <el-alert title="Windows系统下默认生成到D盘根目录下" :closable="false" type="info" style="line-height: 12px">
+                    </el-alert>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="sendGenerateCode">确 定</el-button>
+                <el-button @click="generCodeDialogClose">取 消</el-button>
+            </div>
         </el-dialog>
-
     </div>
 </template>
 
 <script>
-    import moment from "moment";
-    import codegener from '@/api/codegener/codegener';
-
-    function getCamelCase(str) {
-        return str.replace(/_([a-z])/g, function (all, i) {
-            return i.toUpperCase();
-        })
-    }
+    import codegener from '@/api/codegener/codegener'
     export default {
         name: "CodeGener",
         data() {
             return {
-                options: [],
-                value: '',
+                dataBaseOptions: [],
                 currentDataBase: '',
                 searchForm: {
                     tableName: "",
+                },
+                // 表格数据
+                tableData: [],
+                generCodeFormRules: {
+
+                    packageName: [{
+                        required: true,
+                        message: "请输入项目包名",
+                        trigger: "blur"
+                    }],
+
                 },
                 // 分页数据
                 total: 0,
                 pageSize: 10,
                 currentPage: 1,
 
-                dialogTotal: 0,
-                dialogPageSize: 10,
-                dialogCurrentPage: 1,
+                outputDirOptions: ['C://', 'D://', 'E://'],
 
-                dialogTableVisible: false,
-                tableData: [], // 展示的数据
-                tableDataCache: [{ // 查询到的数据
-                    entity: "",
-                }],
-                deletedData: [], // 已删除的展示数据
-                deletedDataCache: [], // 已删除的元数据
+                // 生成代码参数
+                generCodeParams: {
+                    dataBaseName: '',
+                    tableNames: [],
+                    tablePrefix: [],
+                    packageName: '',
+                    author: '',
+                    outputDir: 'D://'
+                },
+
+                generCodeDialogVisible: false,
+
                 multipleSelection: [],
-                multipleSelectionDialog: [],
             };
         },
-        created() {
-            this.getTableData(this.value);
-            this.getDataBases();
 
+        mounted() {
+            this.getTableData(this.generCodeParams.dataBaseName);
+            this.getDataBases();
         },
         methods: {
             // 时间格式化
@@ -177,177 +178,120 @@
                 if (data == null) {
                     return null;
                 }
-                return moment(data).format("YYYY-MM-DD HH:mm:ss");
+                return this.$moment(data).format("YYYY-MM-DD HH:mm:ss");
             },
 
-            // 获取数据库 
+            // 获取数据库
             getDataBases() {
                 codegener.getDataBases().then((res) => {
-                    this.options = res.data.result.data;
+                    this.dataBaseOptions = res.data.result.data;
                 })
             },
 
 
             // 获取数据列表
-            getTableData(tableName) {
-                if (tableName == "") {
-                    tableName = "breze";
+            getTableData(dataBaseName) {
+                if (dataBaseName == "") {
+                    dataBaseName = "breze";
                 }
-                this.currentDataBase = tableName;
-                codegener.getTableData(tableName).then((res) => {
+                this.currentDataBase = dataBaseName;
+                this.generCodeParams.dataBaseName = dataBaseName;
 
-                    this.tableDataCache = res.data.result.data;
-
-                    this.total = res.data.result.data.length;
-                    this.tableDataCache.forEach(item => {
-                        item.entity = getCamelCase(item.tableName)
-                    });
-                    this.tableData = this.tableDataCache;
+                codegener.getTableData(dataBaseName).then((res) => {
+                    this.tableData = res.data.result.data;
                 })
             },
 
-            // 查询
-            queryTableData() {
-                if (this.searchForm.tableName == "") {
-                    this.tableData = this.tableDataCache;
-                    return;
-                }
-                for (let i in this.searchForm) {
-                    const arr = []
-                    if (this.searchForm[i] !== '') {
-                        if (this.tableData.length != this.total) {
-                            this.tableData = this.tableDataCache;
-                        }
-                        this.tableData.forEach((item) => {
-
-                            if (item[i].toUpperCase().indexOf(this.searchForm[i].toUpperCase()) !== -1) {
-                                arr.push(item)
-                            }
-                        })
-                        this.tableData = arr
+// 动态查询搜索
+            querySearch(queryString, cb) {
+                let tableNames = this.tableData.map(item => {
+                    return {
+                        value: item.tableName
                     }
-                }
-                this.searchForm.tableName = ""
+                });
+                let results = queryString ? tableNames.filter(this.createFilter(queryString)) : tableNames;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
             },
 
-            // 弹窗查询
-            queryDialogTableData() {
-
-                if (this.searchForm.tableName == "") {
-                    this.deletedData = this.deletedDataCache;
-                    return;
-                }
-                for (let i in this.searchForm) {
-                    const arr = []
-                    if (this.searchForm[i] !== '') {
-                        if (this.deletedData.length != this.dialogTotal) {
-                            this.deletedData = this.deletedDataCache;
-                        }
-                        this.deletedData.forEach((item) => {
-
-                            if (item[i].toUpperCase().indexOf(this.searchForm[i].toUpperCase()) !== -1) {
-                                arr.push(item)
-                            }
-                        })
-                        this.deletedData = arr
-                    }
-                }
-                this.searchForm.tableName = ""
+            createFilter(queryString) {
+                return (result) => {
+                    return (result.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
             },
 
-            // 导入表格
-            addTableData() {
-
-                for (var i = 0; i < this.multipleSelectionDialog.length; i++) {
-                    var index = this.deletedDataCache.findIndex(item => {
-                        if (item.tableName == this.multipleSelectionDialog[i].tableName) {
-                            return true;
-                        }
-                    })
-                    this.tableDataCache.push(this.multipleSelectionDialog[i])
-                    this.deletedDataCache.splice(index, 1);
-                }
-                this.dialogTableVisible = false;
-
+            // 选择搜索结果
+            handleSelect(item) {
+                console.log(item);
             },
 
-            // 删除表格
-            deleteTableInfo(index) {
-                var tempData = this.tableData.splice(index, 1)[0];
-                this.deletedDataCache.push(tempData);
 
-            },
-            getDialogData() {
-                this.dialogTableVisible = true;
-                this.dialogTotal = this.deletedData.length;
-                this.deletedData = this.deletedDataCache;
-
-
+            // 获取输出路径
+            getOutputDir(e) {
+                this.generCodeParams.outputDir = e;
             },
 
             // 生成代码
             generateCode(row) {
-                var tableNames = []
-                var tablePrefixs = []
-                if (this.multipleSelection == 0 && row != null) {
-                    tableNames.push(row.tableName)
-                    tablePrefixs.push(row.tableName.split("_")[0] + "_")
-                } else if (this.multipleSelection != 0 && row == null) {
-                    for (var i = 0; i < this.multipleSelection.length; i++) {
-                        tableNames.push(this.multipleSelection[i].tableName)
-                        tablePrefixs.push(this.multipleSelection[i].tableName.split("_")[0] + "_")
-                    }
+                this.generCodeDialogVisible = true;
+
+                let tableNames = [];
+                let tablePrefixs = [];
+
+                if (this.multipleSelection.length === 0 && row != null) {
+                    tableNames.push(row.tableName);
+                    tablePrefixs.push(row.tableName.split("_")[0] + "_");
+                } else if (this.multipleSelection.length != 0 && row == null) {
+                    this.multipleSelection.forEach(item => {
+                        tableNames.push(item.tableName)
+                        tablePrefixs.push(item.tableName.split("_")[0] + "_")
+                    })
                 } else {
-                    this.$message.error('请求失败');
+                    this.$message.error('出现异常');
                     return;
                 }
-                let params = {
-                    dataBaseName: this.value,
-                    tableNames: tableNames,
-                    tablePrefix: tablePrefixs,
-                    packageName: "",
-                    author: ""
-                }
-                codegener.genertedCode(params).then((res) => {
-                    this.$message({
-                        message: '代码生成成功',
-                        type: 'success'
-                    });
-                })
+
+                this.generCodeParams.tableNames = tableNames;
+                this.generCodeParams.tablePrefix = tablePrefixs;
+
             },
-            // 生成代码 End
+            // 后端请求生成代码
+            sendGenerateCode() {
+                this.$refs['generCodeForm'].validate((valid) => {
+                    console.log(valid);
+                    if (valid) {
+                        codegener.genertedCode(this.generCodeParams).then((res) => {
+                            this.$message({
+                                message: res.data.message,
+                                type: 'success'
+                            });
+                        })
+                    }
+                });
+
+            },
+
+            // 关闭生成信息模态框
+            generCodeDialogClose(){
+                this.generCodeDialogVisible = false;
+                this.$refs['generCodeForm'].resetFields();
+            },
 
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-            handleSelectionChangeDialog(val) {
-                this.multipleSelectionDialog = val;
-            },
-            handleSizeChangeDialog(val) {
-                this.dialogPageSize = val;
-                this.dialogCurrentPage = 1;
-                this.deletedData = this.list.slice(0, this.dialogPageSize);
 
-            },
-            handleCurrentChangeDialog(val) {
-                this.dialogCurrentPage = val;
-                if (val == 1) {
-                    this.deletedData = this.list.slice(0, this.dialogPageSize);
-                    return;
-                }
-                val = (val - 1) * this.dialogPageSize;
-                this.deletedData = this.list.slice(val, val + this.dialogPageSize);
+           
 
-            },
-
+          
 
             handleSizeChange(val) {
                 this.pageSize = val;
                 this.currentPage = 1;
                 this.tableData = this.list.slice(0, this.pageSize);
-
             },
+
             handleCurrentChange(val) {
                 this.currentPage = val;
                 if (val == 1) {
@@ -356,7 +300,6 @@
                 }
                 val = (val - 1) * this.pageSize;
                 this.tableData = this.list.slice(val, val + this.pageSize);
-
             }
         }
     };

@@ -1,5 +1,6 @@
 <template>
   <el-container>
+    
     <!-- 侧边菜单栏 -->
     <el-aside width="auto">
       <SideMenu></SideMenu>
@@ -12,8 +13,7 @@
           
           <div class="header-search">
             <div class="search-div">
-              <i class="el-icon-search" slot="suffix">
-              </i>
+              <i class="el-icon-search" slot="suffix"></i>
               <el-autocomplete class="inline-input" v-model="searchForm.titleName" value-key="viewName"
                 :fetch-suggestions="querySearch" placeholder="请输入菜单名称" :trigger-on-focus="false" @select="handleSelect">
               </el-autocomplete>

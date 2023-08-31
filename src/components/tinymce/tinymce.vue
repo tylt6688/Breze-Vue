@@ -6,11 +6,11 @@
 </template>
 
 <script>
-  import tinymce from 'tinymce/tinymce' //tinymce默认hidden，不引入不显示
+  import tinymce from 'tinymce/tinymce'
+  
   import Editor from '@tinymce/tinymce-vue'
   import 'tinymce/themes/silver'
-  // 编辑器插件plugins
-  // 更多插件参考：https://www.tiny.cloud/docs/plugins/
+  // 编辑器插件plugins 更多插件参考：https://www.tiny.cloud/docs/plugins/
   import 'tinymce/plugins/image' // 插入上传图片插件
   import 'tinymce/plugins/media' // 插入视频插件
   import 'tinymce/plugins/table' // 插入表格插件
@@ -85,6 +85,3 @@
     }
   }
 </script>
-<style scoped>
-
-</style>

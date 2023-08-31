@@ -157,19 +157,19 @@ const menuToRoute = (menu) => {
 // 首页管理模块路由
 async function loadModeRoutes() {
   let modeRoutes = []
-  let res = await axios.get("/breze/portal/modeCard/select");
-  let modeList = res.data.result.data;
+  // let res = await axios.get("/breze/portal/modeCard/select");
+  // let modeList = res.data.result.data;
 
-  modeList.forEach(mode => {
-    modeRoutes.push({
-      name: mode.modeComponent,
-      path: mode.modeLink,
-      meta: {
-        title: mode.modeTitle
-      },
-      component: () => import('@/views/' + mode.modeComponent + '.vue')
-    })
-  })
+  // modeList.forEach(mode => {
+  //   modeRoutes.push({
+  //     name: mode.modeComponent,
+  //     path: mode.modeLink,
+  //     meta: {
+  //       title: mode.modeTitle
+  //     },
+  //     component: () => import('@/views/' + mode.modeComponent + '.vue')
+  //   })
+  // })
   modeRoutes.forEach(route => {
     router.addRoute('Home', route);
   })

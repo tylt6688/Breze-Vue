@@ -1,33 +1,36 @@
 import Vue from 'vue'
+
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Element from "element-ui"
+import Element from 'element-ui'
 import eIconPicker from 'e-icon-picker'
+
 import axios from '@/utils/http'
-import qs from "qs"
-import constant from "@/utils/const"
+import qs from 'qs'
+import moment from "moment"
+import Constant from '@/utils/const'
 
 
+import '@/utils/dialog' // 可拖拽式弹窗
 
-import "e-icon-picker/lib/symbol.js" // 基本彩色图标库
+import 'e-icon-picker/lib/symbol.js' // 基本彩色图标库
 import 'e-icon-picker/lib/index.css' // 基本样式，包含基本图标
 import 'element-ui/lib/theme-chalk/icon.css' // element-ui 图标库
-import "element-ui/lib/theme-chalk/index.css"
-import './utils/dialog'
-
+import 'element-ui/lib/theme-chalk/index.css'
 
 // 控制台生产信息提示是否开启
 Vue.config.productionTip = false;
 
-//定义全局引用变量
+//定义全局引用挂载
 // Vue.prototype.$axios = axios; 
 Vue.prototype.$qs = qs;
+Vue.prototype.$moment = moment;
 
 Vue.prototype.BASE_API = axios.defaults.baseURL;
 
 Vue.use(Element);
-Vue.use(constant);
+Vue.use(Constant);
 
 // 全局图标选择管理
 Vue.use(eIconPicker, {
@@ -45,7 +48,7 @@ Vue.use(eIconPicker, {
 Vue.mixin({
 	methods: {
 		hasAuth(perm) {
-			var authority = this.$store.state.menus.permList;
+			let authority = this.$store.state.menus.permList;
 			return authority.indexOf(perm) > -1
 		}
 	}

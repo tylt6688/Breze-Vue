@@ -150,8 +150,6 @@
           this.captchaImg = res.data.result.data.base64Img;
         });
       },
-
-
       //  重置表单
       resetForm(formName) {
         this.$refs[formName].resetFields();
@@ -159,12 +157,11 @@
       // 立即登录
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
-          console.log(valid);
           if (valid) {
             login.submitFormLogin(this.$qs.stringify(this.loginForm))
               .then((res) => {
-                const jwt = res.headers["authorization"];
-                this.$store.commit("SET_TOKEN", jwt);
+                const token = res.headers["authorization"];
+                this.$store.commit("SET_TOKEN", token);
                 this.$router.push("/");
               })
               .catch((err) => {

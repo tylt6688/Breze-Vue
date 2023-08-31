@@ -6,7 +6,6 @@ export default {
             title:'仪表盘',
             name:'DashBoard',
             path: '/dashboard'
-            
         };
         
     }
