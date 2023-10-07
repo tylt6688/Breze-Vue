@@ -103,7 +103,13 @@
                 dialogModeVisible: false,
                 dialogTitle:"新增模块",
                 //新建编辑存储
-                editForm: {},
+                editForm: {
+                    id:"",
+                    modeTitle:"",
+                    modeInfo:"",
+                    modeLink:"",
+                    modeComponent:""
+                },
                 //表单规则
                 editModeFormRules: {
                     mainTitle: [{
