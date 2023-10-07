@@ -17,11 +17,19 @@ export default {
   },
   // 新增或修改菜单
   submitModeForm(editForm, id) {
-    return request({
-      url: '/breze/portal/modeCard/' + (id ? "update" : "insert"),
-      method: 'post',
-      data: editForm
-    })
+    if(id == ""){
+      return request({
+        url: '/breze/portal/modeCard/insert',
+        method: 'post',
+        data: editForm
+      })
+    }else{
+      return request({
+        url: '/breze/portal/modeCard/update',
+        method: 'put',
+        data: editForm
+      })
+    }
   },
   // 删除菜单
   deleteModeCard(id) {

@@ -5,7 +5,7 @@ export default {
     //分页
     getContentList(params) {
         return request({
-            url: '/breze/portal/mainContent/page',
+            url: '/breze/portal/detailContent/page',
             method: 'get',
             params: params
         })
@@ -13,14 +13,14 @@ export default {
     // 通过Id查询数据
     findContentById(id) {
         return request({
-            url: '/breze/portal/mainContent/info/' + id,
+            url: '/breze/portal/detailContent/info/' + id,
             method: 'get'
         })
     },
     // 编辑（没改变图片）
     editContent(editForm) {
         return request({
-            url: '/breze/portal/mainContent/update',
+            url: '/breze/portal/detailContent/update',
             method: 'post',
             data: editForm,
         })
@@ -28,7 +28,7 @@ export default {
     // 删除
     delContentInfo(formData) {
         return request({
-            url: '/breze/portal/mainContent/delete' ,
+            url: '/breze/portal/detailContent/delete' ,
             method: 'post',
             data: formData
         })
@@ -36,15 +36,9 @@ export default {
     //新增或编辑(改变原图片)
     upload(formData){
         return request({
-          url: '/breze/portal/mainContent/insert',
+          url: '/breze/portal/detailContent/insert',
           method: 'post',
           data: formData,
         })
-      },
-      getSelectOptionInfo(){
-        return request({
-            url: '/breze/portal/mainContent/get_select_option',
-            method: 'get',
-          })
       },
 }

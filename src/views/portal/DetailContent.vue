@@ -3,11 +3,12 @@
     <el-header>
       <el-form :inline="true">
         <el-form-item>
-          <el-input v-model="searchForm.titleName" placeholder="请输入名称" clearable>
-            <el-button slot="append" @click="getContentList" icon="el-icon-search">搜索</el-button>
-          </el-input>
+          <el-select v-model="searchForm.contentId" clearable placeholder="请选择">
+            <el-option v-for="item in selectList" :key="item.id" :label="item.mainTitle" :value="item.id">
+            </el-option>
+          </el-select>
+          <el-button  @click="getContentList" icon="el-icon-search">搜索</el-button>
         </el-form-item>
-
         <el-form-item>
           <el-button type="primary" @click="insertContent" icon="el-icon-picture-outline">
             添加主页内容
@@ -16,14 +17,14 @@
       </el-form>
     </el-header>
     <el-main>
-      <el-table ref="maincontentTable" :data="maincontents" style="width: 100%" row-key="orderNum" border lazy
+      <el-table ref="detailContntTable" :data="detailContents" style="width: 100%" row-key="orderNum" border lazy
         :load="getChildrens" :tree-props="{ children: 'children' }">
         <el-table-column prop="mainTitle" label="主标题">
         </el-table-column>
-        <el-table-column prop="subtitle" label="副标题">
+        <el-table-column prop="subTitle" label="副标题">
         </el-table-column>
 
-        <el-table-column prop="titleInfo" label="内容模块简介">
+        <el-table-column prop="info" label="内容模块简介">
         </el-table-column>
         <el-table-column prop="imgUrl" label="内容模块图片" align="center">
           <template slot-scope="scope">
@@ -35,15 +36,14 @@
             </el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="routerPath" label="指定路由跳转"> </el-table-column>
         <el-table-column prop="orderNum" label="内容序号"> </el-table-column>
 
         <el-table-column prop="icon" label="操作" width="160">
-          <template slot-scope="scope" v-if="scope.row.parentId != 0">
+          <template slot-scope="scope">
             <el-button type="text" @click="editContent(scope.row.id)" icon="el-icon-edit">编辑</el-button>
             <el-divider direction="vertical"></el-divider>
             <template>
-              <el-popconfirm title="确定删除此内容吗?" @confirm="delContent(scope.row)">
+              <el-popconfirm title="确定删除此内容吗?" @confirm="delContent(scope.row)" >
                 <el-button type="text" slot="reference" icon="el-icon-delete">
                   删除
                 </el-button>
@@ -63,16 +63,22 @@
     <el-dialog :title="title" :visible.sync="dialogVisible" width="600px" style="margin-top:-10vh"
       :before-close="handleClose">
       <el-form ref="editForm" :model="editForm" :rules="editFormRules">
+        <el-form-item label="上级菜单" label-width="100px">
+          <el-select v-model="editForm.contentId" clearable placeholder="请选择">
+            <el-option v-for="item in selectList" :key="item.id" :label="item.mainTitle" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="主标题" prop="mainTitle" label-width="100px">
           <el-input v-model="editForm.mainTitle" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="副标题" prop="subtitle" label-width="100px">
-          <el-input v-model="editForm.subtitle" autocomplete="off"></el-input>
+        <el-form-item label="副标题" prop="subTitle" label-width="100px">
+          <el-input v-model="editForm.subTitle" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="内容简介" prop="titleInfo" label-width="100px">
-          <el-input v-model="editForm.titleInfo" autocomplete="off"></el-input>
+        <el-form-item label="内容简介" prop="info" label-width="100px">
+          <el-input v-model="editForm.info" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="展示图片" label-width="100px">
+        <el-form-item label="展示图片" label-width="100px" v-if="flag">
           <el-upload action="#" list-type="picture-card" ref="upload" :auto-upload="false" :file-list="fileList"
             :http-request="uploadFile" :on-change="uploadHandelChage" :before-upload="beforeAvatarUpload">
             <i slot="default" class="el-icon-plus"></i>
@@ -96,12 +102,9 @@
           <!-- <el-input v-model="editForm.orderNum" autocomplete="off"></el-input> -->
           <el-input-number v-model="editForm.orderNum" :min="1"></el-input-number>
         </el-form-item>
-        <el-form-item label="跳转链接" prop="routerPath" label-width="100px">
-          <el-input v-model="editForm.routerPath" autocomplete="off"></el-input>
-        </el-form-item>
         <el-form-item label="父级菜单" label-width="100px" prop="parentId">
           <el-select v-model="editForm.parentId" placeholder="请选择上一级菜单">
-            <el-option v-for="item in this.maincontents" :key="item.id" :label="item.mainTitle" :value="item.id">
+            <el-option v-for="item in this.detailContents" :key="item.id" :label="item.mainTitle" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -124,8 +127,9 @@
 
 <script>
   import maincontent from "@/api/portal/maincontent";
+  import detailContent from "@/api/portal/detailContent";
   export default {
-    name: "MaincontentManage",
+    name: "DetailContent",
     data() {
       return {
         // 分页数据
@@ -133,13 +137,15 @@
         size: 10,
         current: 1,
         searchForm: {
-          titleName: ""
+          contentId: ""
         },
 
         title: "",
         //序号列表
         orderList: [],
 
+        selectList: [],
+        flag: true,
         fileList: [],
         //图片缩略图
         dialogImageUrl: '',
@@ -151,19 +157,19 @@
         editForm: {},
 
         form: {},
-        maincontents: [],
+        detailContents: [],
         editFormRules: {
           mainTitle: [{
             required: true,
             message: "请输入标题",
             trigger: "blur",
           }, ],
-          subtitle: [{
+          subTitle: [{
             required: true,
             message: "请输入标题",
             trigger: "blur",
           }, ],
-          titleInfo: [{
+          info: [{
             required: true,
             message: "请输入简介介绍",
             trigger: "blur",
@@ -171,11 +177,6 @@
           orderNum: [{
             required: true,
             message: "请输入排列序号",
-            trigger: "blur",
-          }, ],
-          routerPath: [{
-            required: true,
-            message: "请填入链接地址",
             trigger: "blur",
           }, ],
           parentId: [{
@@ -189,29 +190,30 @@
     created() {},
     mounted() {
       this.getContentList();
+      this.getSelectInfo();
     },
     methods: {
 
       // 获取用户列表 
       getContentList() {
         let params = {
-          titleName: this.searchForm.titleName,
+          contentId: this.searchForm.contentId,
           current: this.current,
           size: this.size,
           parentId: 0
         };
-        maincontent.getContentList(params).then((res) => {
-          this.maincontents = res.data.result.data.records;
-          console.log("maincontents", this.maincontents)
+        detailContent.getContentList(params).then((res) => {
+          this.detailContents = res.data.result.data.records;
+          console.log("detailContent", this.detailContents)
           this.total = res.data.result.data.total
-          this.maincontents.forEach(maincontent => {
+          this.detailContents.forEach(detailContent => {
             this.orderList.push(
-              maincontent.orderNum
+              detailContent.orderNum
             )
-            if (maincontent.children.length != 0) {
-              maincontent.children.forEach(maincontent => {
+            if (detailContent.children.length != 0) {
+              detailContent.children.forEach(detailContent => {
                 this.orderList.push(
-                  maincontent.orderNum
+                  detailContent.orderNum
                 )
               })
             }
@@ -222,7 +224,15 @@
       //获取子节点
       getChildrens(tree, treeNode, resolve) {
         // 懒加载树级 
-        resolve(this.maincontents.children)
+        console.log(resolve)
+        resolve(this.detailContents.children)
+      },
+
+      getSelectInfo() {
+        maincontent.getSelectOptionInfo().then((res) => {
+          console.log(res)
+          this.selectList = res.data.result.data;
+        })
       },
       // 获取内容 
       insertContent() {
@@ -238,27 +248,31 @@
       editContent(id) {
         this.dialogVisible = true;
         this.title = "编辑内容";
-        maincontent.findContentById(id).then((res) => {
+        detailContent.findContentById(id).then((res) => {
           this.editForm = res.data.result.data;
-          console.log("edit",this.editForm)
-          if(res.data.result.data.imgUrl != null){
+          console.log("edit", this.editForm)
+          if (res.data.result.data.imgUrl != null) {
             this.fileList.push({
               'url': res.data.result.data.imgUrl
             })
             var edit = document.getElementsByClassName("el-upload--picture-card")[0];
             edit.style.display = "none"
-          } 
-          
+          }
+          if(this.editForm.parentId == 0){
+            this.flag = false;
+          }
+
         });
       },
 
 
       // 触发上传图片
       submitUpload() {
-        if (this.$refs.upload.uploadFiles[0].raw) {
+        console.log("dsgds",this.$refs.upload.uploadFiles)
+        if (this.$refs.upload.uploadFiles.length != 0) {
           this.$refs.upload.submit();
         } else {
-          maincontent.editContent(this.editForm).then((res) => {
+          detailContent.editContent(this.editForm).then((res) => {
             this.$message({
               message: res.data.message,
               type: "success",
@@ -281,11 +295,11 @@
         const form = new FormData();
         form.append("file", fileObj);
         form.append("editData", blob) // 文件对象  'upload'是后台接收的参数名
-        maincontent
+        detailContent
           .upload(form)
           .then((response) => {
             this.dialogVisible = false;
-           this.editForm={};
+            this.editForm = {};
             this.$refs.upload.clearFiles()
             this.$message({
               showClose: true,
@@ -320,7 +334,7 @@
           fileList.splice(0, fileList.length, file)
         }
         var edit = document.getElementsByClassName("el-upload--picture-card")[0];
-          edit.style.display = "none"
+        edit.style.display = "none"
       },
       // 文件缩略图删除
       handleRemove(file) {
@@ -345,17 +359,29 @@
 
       // 删除内容 Start
       delContent(row) {
-        maincontent.delContentInfo(row).then((res) => {
-          this.$message({
-            showClose: true,
-            duration: 2000,
-            message: res.data.message,
-            type: "success",
-            onClose: () => {
-              this.getContentList();
-            },
+        if(row.children.length == 0){
+          detailContent.delContentInfo(row).then((res) => {
+            this.$message({
+              showClose: true,
+              duration: 2000,
+              message: res.data.message,
+              type: "success",
+              onClose: () => {
+                this.getContentList();
+              },
+            });
           });
-        });
+        }else{
+          this.$message({
+              showClose: true,
+              duration: 2000,
+              message: "该信息有子节点，无法删除",
+              type: "error",
+              onClose: () => {
+                this.getContentList();
+              },
+            });
+        }
       },
       // 取消编辑，重置模态框内容 
       resetForm(formName) {
@@ -364,7 +390,7 @@
         this.$refs.upload.clearFiles()
         var edit = document.getElementsByClassName("el-upload--picture-card")[0];
         edit.style.display = "",
-        this.fileList = []
+          this.fileList = []
       },
       handleClose() {
         this.resetForm("editForm");
