@@ -16,6 +16,7 @@
     "e-icon-picker": "^1.1.7",
     "echarts": "^5.4.1",
     "element-ui": "^2.15.6",
+    "js-cookie": "^3.0.5",
     "loadsh": "^0.0.4",
     "qs": "^6.10.3",
     "screenfull": "^6.0.1",

@@ -3,12 +3,8 @@
         <!-- 头部操作部分 Start -->
         <el-form :inline="true">
             <el-form-item>
-                <!-- <el-input v-model="searchForm.tableName" placeholder="请输入表名称" clearable>
-                    <el-button slot="append" icon="el-icon-search">搜索</el-button>
-                </el-input> -->
-
-                <el-autocomplete class="inline-input" v-model="searchForm.tableName" :fetch-suggestions="querySearch"
-                    placeholder="请输入内容" @select="handleSelect">
+                <el-autocomplete v-model="searchForm.tableName" :fetch-suggestions="querySearch" @select="handleSelect"
+                    placeholder="请输入内容">
                 </el-autocomplete>
             </el-form-item>
 
@@ -22,7 +18,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-select v-model="generCodeParams.dataBaseName" placeholder="请选择数据库" @change="getTableData">
+                <el-select v-model="generCodeParams.dataBaseName" @change="getTableData" placeholder="请选择数据库">
                     <el-option v-for="(item,index) in dataBaseOptions" :value="item" :key="index">
                     </el-option>
                 </el-select>
@@ -54,13 +50,13 @@
                     <el-table-column prop="coding" label="编码格式" align="center" show-overflow-tooltip>
                     </el-table-column>
 
-                    <el-table-column prop="createTime" label="创建时间" align="center" :formatter="formatDate"
-                        show-overflow-tooltip>
+                    <el-table-column prop="createTime" label="创建时间" align="center" show-overflow-tooltip
+                        :formatter="formatDate">
                     </el-table-column>
 
                     <el-table-column prop="icon" label="操作" align="center">
                         <template slot-scope="scope">
-                            <el-button type="text" @click="generateCode(scope.row)" icon="el-icon-download">生成代码
+                            <el-button type="text" icon="el-icon-download" @click="generateCode(scope.row)">生成代码
                             </el-button>
                         </template>
                     </el-table-column>
@@ -82,24 +78,26 @@
         </div>
 
         <!--编辑代码生成下载模板模态框-->
-        <el-dialog v-dialogDrag title="生成信息" :visible.sync="generCodeDialogVisible" width="600px" :before-close="generCodeDialogClose">
+        <el-dialog v-dialogDrag title="生成信息" :visible.sync="generCodeDialogVisible" width="600px"
+            :before-close="generCodeDialogClose">
             <el-form :model="generCodeParams" :rules="generCodeFormRules" ref="generCodeForm">
 
                 <el-form-item label="所选数据库" label-width="100px">
-                    <el-input :disabled="true" v-model="currentDataBase" autocomplete="off"></el-input>
+                    <el-input v-model="currentDataBase" autocomplete="off" :disabled="true"></el-input>
                     <el-alert title="用于生成代码的数据库名称，请注意确认" :closable="false" type="info" style="line-height: 12px">
                     </el-alert>
                 </el-form-item>
 
                 <el-form-item label="作者名称" label-width="100px" prop="author">
                     <el-input v-model="generCodeParams.author" autocomplete="off"></el-input>
-                    <el-alert title="作者名尽量填写，会在代码注释中体现" :closable="false" type="warning" show-icon style="line-height: 12px">
+                    <el-alert title="作者名尽量填写，会在代码注释中体现" :closable="false" type="warning" show-icon
+                        style="line-height: 12px">
                     </el-alert>
                 </el-form-item>
 
                 <el-form-item label="项目包名" label-width="100px" prop="packageName">
                     <el-input v-model="generCodeParams.packageName" autocomplete="off"></el-input>
-                    <el-alert title="包名间通过'.'隔开" :closable="false" type="info" show-icon style="line-height: 12px">
+                    <el-alert title="包名间通过'.'隔开" type="info" show-icon :closable="false" style="line-height: 12px">
                     </el-alert>
                 </el-form-item>
 
@@ -109,7 +107,7 @@
                         <el-option v-for="(item,index) in outputDirOptions" :value="item" :key="index">
                         </el-option>
                     </el-select>
-                    <el-alert title="Windows系统下默认生成到D盘根目录下" :closable="false" type="info" style="line-height: 12px">
+                    <el-alert title="Windows系统下默认生成到D盘根目录下" type="info" :closable="false" style="line-height: 12px">
                     </el-alert>
                 </el-form-item>
             </el-form>
@@ -202,7 +200,7 @@
                 })
             },
 
-// 动态查询搜索
+            // 动态查询搜索
             querySearch(queryString, cb) {
                 let tableNames = this.tableData.map(item => {
                     return {
@@ -214,6 +212,7 @@
                 cb(results);
             },
 
+            // 创建拦截寻找指定字符串
             createFilter(queryString) {
                 return (result) => {
                     return (result.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
@@ -255,16 +254,17 @@
                 this.generCodeParams.tablePrefix = tablePrefixs;
 
             },
+            
             // 后端请求生成代码
             sendGenerateCode() {
                 this.$refs['generCodeForm'].validate((valid) => {
-                    console.log(valid);
                     if (valid) {
                         codegener.genertedCode(this.generCodeParams).then((res) => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'
                             });
+                            this.generCodeDialogClose();
                         })
                     }
                 });
@@ -272,7 +272,7 @@
             },
 
             // 关闭生成信息模态框
-            generCodeDialogClose(){
+            generCodeDialogClose() {
                 this.generCodeDialogVisible = false;
                 this.$refs['generCodeForm'].resetFields();
             },
@@ -282,9 +282,9 @@
                 this.multipleSelection = val;
             },
 
-           
 
-          
+
+
 
             handleSizeChange(val) {
                 this.pageSize = val;

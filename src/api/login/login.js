@@ -1,4 +1,5 @@
 import request from "axios";
+
 export default {
     // 获取验证码
     getCaptcha() {
