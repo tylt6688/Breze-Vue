@@ -2,7 +2,7 @@
   <el-container>
 
     <el-header>
-      <strong class="title">欢 迎 来 到 清 枫 一 体 化 管 理 平 台</strong>
+      <!-- <strong class="title">欢 迎 来 到 清 枫 一 体 化 管 理 平 台</strong> -->
     </el-header>
 
     <el-main>
@@ -146,8 +146,9 @@
       // 获取验证码
       getCaptcha() {
         login.getCaptcha().then((res) => {
-          this.loginForm.key = res.data.result.data.key;
           this.captchaImg = res.data.result.data.base64Img;
+          this.loginForm.key = res.data.result.data.key;
+
         });
       },
       //  重置表单
@@ -160,8 +161,9 @@
           if (valid) {
             login.submitFormLogin(this.$qs.stringify(this.loginForm))
               .then((res) => {
+                console.log(res);
                 const token = res.headers["authorization"];
-                this.$store.commit("SET_TOKEN", token);
+                this.$store.commit("setToken", token);
                 this.$router.push("/");
               })
               .catch((err) => {

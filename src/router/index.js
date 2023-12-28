@@ -83,7 +83,7 @@ router.beforeEach((to, from, next) => {
   // 后端动态路由生成
   let hasRoute = store.state.menus.hasRoutes;
 
-  let token = localStorage.getItem("token");
+  let token = store.getters.getToken;
   // 如果当前是登录页并且token为空时就去登录页,不为空且正确时直接跳转主页,防止手动输入登录地址时不跳转情况
   if (token) {
     if (to.path == '/login') {

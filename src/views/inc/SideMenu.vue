@@ -5,6 +5,7 @@
       <el-menu :collapse="isCollapse" :collapse-transition="true"
         :default-active="this.$store.state.menus.editableTabsValue" class="el-menu-vertical-demo"
         background-color="#304156" text-color="#fff" active-text-color="#F5E44F" :unique-opened="uniqueOpened">
+        
         <el-tooltip :content="content" placement="right-start">
           <el-menu-item style="position: sticky; top: 0; z-index: 10" @click="changeCollapse">
             <i :class="icon" style="color: white; font-size: 24px"></i>

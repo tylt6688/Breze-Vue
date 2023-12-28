@@ -31,17 +31,21 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="remark" label="备注"> </el-table-column>
-      <el-table-column prop="createTime" :formatter="formatDate" label="创建时间"> </el-table-column>
+      <el-table-column prop="remark" label="备注">
+      </el-table-column>
 
-      <el-table-column prop="updateTime" :formatter="formatDate" label="更新时间"> </el-table-column>
+      <el-table-column prop="createTime" :formatter="formatDate" label="创建时间">
+      </el-table-column>
+
+      <el-table-column prop="updateTime" :formatter="formatDate" label="更新时间">
+      </el-table-column>
 
       <el-table-column prop="icon" label="操作" width="250px">
-
         <template slot-scope="scope">
           <el-button type="text" @click="bindJob(scope.row.id)"><i class="el-icon-connection"></i> 关联岗位</el-button>
 
           <el-divider direction="vertical"></el-divider>
+
           <el-button type="text" @click="insertOrUpdate(scope.row.id)"><i class="el-icon-edit"></i> 编辑</el-button>
 
           <el-divider direction="vertical"></el-divider>
@@ -53,6 +57,7 @@
           </template>
         </template>
       </el-table-column>
+
     </el-table>
 
     <el-dialog :title="title" :visible.sync="dialogVisible" width="600px" :before-close="handleClose">
@@ -162,7 +167,7 @@
     },
     created() {
       this.getStudentList();
-      this.getDcitCache(this.dicts)
+      this.getDictCache(this.dicts)
     },
     methods: {
       // 格式化日期时间 Start
@@ -209,7 +214,6 @@
         if (id) {
           this.title = "修改部门信息"
           group.getGroupById(id).then((res) => {
-            console.log(res)
             this.editForm = res.data.result.data
           })
         } else {
@@ -218,7 +222,7 @@
       },
 
       //获取字典缓存数据
-      getDcitCache(dicts) {
+      getDictCache(dicts) {
         dictData.getCacheData(dicts).then((res) => {
           for(const key in res.data.result.data){
             this.$set(this.dictobject,key,res.data.result.data[key])

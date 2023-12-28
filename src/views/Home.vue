@@ -71,8 +71,8 @@
         <el-backtop target=".container" :visibility-height="50" :bottom="12" :right="50"></el-backtop>
       </el-main>
 
-      <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer>
-      <!-- <el-footer> 🐱‍🏍 Copyright © 2022 💙 开发测试专用 </el-footer> -->
+      <!-- <el-footer> 🐱‍🏍 Copyright © 2022 💙 青枫网络工作室 </el-footer> -->
+      <el-footer> 🐱‍🏍 Copyright © 2022 💙 开发测试专用 </el-footer>
     </el-container>
   </el-container>
 </template>
@@ -121,7 +121,7 @@
     },
 
     mounted() {
-      if (localStorage.getItem("token")) {
+      if (this.$store.getters.getToken) {
         this.getUserInfo();
         this.getUserInfoFormLocal();
       }
@@ -161,7 +161,7 @@
       // 局部刷新头像 End
 
       getUserInfoFormLocal() {
-        var userShow = JSON.parse(localStorage.getItem("userInfo"));
+        let userShow = JSON.parse(sessionStorage.getItem("userInfo"));
         if (userShow) {
           this.userInfo.trueName = userShow.trueName;
           this.userInfo.avatar = userShow.avatar;
@@ -173,18 +173,18 @@
       getUserInfo() {
         user.getUserInfo().then((res) => {
           this.userInfo = res.data.result.data;
-          var userData = {
+          let userData = {
             avatar: res.data.result.data.avatar,
             trueName: res.data.result.data.trueName
           }
-          this.$store.commit("SET_USER_INFO", userData);
+          this.$store.commit("setUserInfo", userData);
         });
       },
       // 获取当前登录用户信息 End
 
       // 搜索框查询菜单跳转
       querySearch(queryString, cb) {
-        var results = [{
+        let results = [{
           viewName: "",
           title: "",
           name: "",
@@ -213,8 +213,8 @@
       // 退出登录 Start
       logout() {
         login.logout().then((res) => {
-          localStorage.clear();
           this.$store.commit("resetState");
+          this.$store.commit("removeToken");
           this.$router.push("/login");
         });
       },
