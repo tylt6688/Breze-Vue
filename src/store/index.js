@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import menus from "./modules/menus"
-
 import Cookies from 'js-cookie'
+import menus from "./modules/menus"
 
 Vue.use(Vuex);
 
@@ -21,14 +20,17 @@ const getters = {
 };
 
 const mutations = {
+  // 设置token至state中
   setToken(state, token) {
     state.token = token;
     Cookies.set("token", token);
   },
+  // 将token从state中移除
   removeToken(state) {
-    state.token = null;
+    state.token = undefined;
     Cookies.remove("token");
   },
+  // 设置用户信息至sessionStorage中
   setUserInfo(state, userInfo) {
     state.userInfo = userInfo;
     sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -36,7 +38,6 @@ const mutations = {
 };
 
 const actions={};
-
 
 
 export default new Vuex.Store({

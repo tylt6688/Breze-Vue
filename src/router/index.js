@@ -51,7 +51,12 @@ const routes = [{
     ]
   },
 
-  // 错误页面  
+  // 错误页面
+  {
+    path: '*',
+    name: 'NotFound',
+    component: () => import('@/components/NotFound')
+  },
   {
     path: '/401',
     name: '401Page',
@@ -82,12 +87,14 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // 后端动态路由生成
   let hasRoute = store.state.menus.hasRoutes;
-
   let token = store.getters.getToken;
+  console.log("ttt", token,token===undefined);
+
   // 如果当前是登录页并且token为空时就去登录页,不为空且正确时直接跳转主页,防止手动输入登录地址时不跳转情况
-  if (token) {
-    if (to.path == '/login') {
+  if (token != undefined) {
+    if (to.path === '/login') {
       next('/');
+      return;
     }
     // 验证token不为空并且hasRoute为空时去请求获取SideMenu菜单树
     else if (!hasRoute) {
@@ -114,19 +121,14 @@ router.beforeEach((to, from, next) => {
           }
         })
         router.addRoutes(newRoutes);
-        hasRoute = true;
-        store.commit("changeRouteState", hasRoute);
-        // 加载Portal首页管理模块路由
-        loadModeRoutes();
-        // 都没问题的话地址请求哪里就去哪里
-        next({
-          path: to.path
-        })
+        // 对store中的路由状态标识进行变更
+        store.commit("changeRouteState", true);
+
+        // 都没问题的话路由地址请求哪里就去哪里
+        next({path: to.path});
       })
+
     }
-  } else {
-    // token为空的话直接跳到登录页
-    next();
   }
   // 每个页面的浏览器标签名称显示
   to.meta.title && (document.title = "清枫Breze—" + to.meta.title);
@@ -153,29 +155,7 @@ const menuToRoute = (menu) => {
   return route
 }
 
-
-// 首页管理模块路由
-async function loadModeRoutes() {
-  let modeRoutes = []
-  // let res = await axios.get("/breze/portal/modeCard/select");
-  // let modeList = res.data.result.data;
-
-  // modeList.forEach(mode => {
-  //   modeRoutes.push({
-  //     name: mode.modeComponent,
-  //     path: mode.modeLink,
-  //     meta: {
-  //       title: mode.modeTitle
-  //     },
-  //     component: () => import('@/views/' + mode.modeComponent + '.vue')
-  //   })
-  // })
-  modeRoutes.forEach(route => {
-    router.addRoute('Home', route);
-  })
-}
-
-// 防止重复点击一个路径是浏览器报路径重复的错
+// 防止重复点击一个路径时浏览器报路径重复的错
 const VueRouterPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(to) {
   return VueRouterPush.call(this, to).catch(err => err)

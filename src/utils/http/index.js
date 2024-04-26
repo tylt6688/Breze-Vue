@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '@/router'
 import store from '@/store'
-import { countDownMessage } from '@/utils/message_timer/index'
+import { countDownMessage } from '@/utils/countdown'
 import { Message } from 'element-ui'
 
 
@@ -15,9 +15,10 @@ const service = axios.create({
 })
 // 进行request请求数据拦截处理
 service.interceptors.request.use(config => {
-	console.log("打印Cookie token", store.getters.getToken)
+	let token = store.getters.getToken;
+	console.log("打印Cookie token", token,token===undefined);
 	// 将所有请求头里面进行jwt设置，方便权限访问
-	config.headers['Authorization'] = 'Bearer ' + store.getters.getToken;
+	config.headers['Authorization'] = 'Bearer ' + token;
 	return config
 })
 // 进行response返回数据拦截处理
@@ -26,7 +27,7 @@ service.interceptors.response.use(
 		console.log('AllResponse ===>>>', response);
 		// 缩短一点变为res
 		let res = response.data;
-		console.log('响应数据=>ResponseData===>>>', res);
+		console.log('响应数据ResponseData===>>>', res);
 		// 判断后端响应是否正确或是否为文件类型
 		if (res.success || res instanceof ArrayBuffer) {
 			return response;
@@ -43,7 +44,7 @@ service.interceptors.response.use(
 			const errorCode = error.response.status;
 			switch (errorCode) {
 				case 401:
-					localStorage.clear();
+					store.commit("removeToken");
 					countDownMessage(3, error.massage);
 					break;
 				case 403:
@@ -61,7 +62,7 @@ service.interceptors.response.use(
 					})
 					break;
 				case 500:
-					// 此处可进行更加细致的判断  FIXME 待进一步优化
+					// 需要进行更加细致的判断  FIXME 待进一步优化
 					if (error.response.data.errorCode === 700) {
 						Message.error(error.massage, {
 							showClose: false,
@@ -73,7 +74,6 @@ service.interceptors.response.use(
 						showClose: false,
 						duration: 1500
 					})
-
 					break;
 
 				default:

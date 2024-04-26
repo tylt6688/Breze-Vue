@@ -9,6 +9,7 @@ export default {
 	state: {
 		menuList: [],
 		permList: [],
+		// 是否有路由标识
 		hasRoutes: false,
 		editableTabsValue: name,
 		editableTabs: [{

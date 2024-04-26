@@ -22,7 +22,7 @@
               <el-tabs>
                 <el-tag type="info">科技拥抱生活🙆‍♂️</el-tag>
                 <!-- 账户密码登录面板 -->
-                <el-tab-pane label="密码登录">
+                <el-tab-pane label="账户登录">
                   <div class="login">
                     <el-form :model="loginForm" :rules="rules" ref="accountLoginForm" label-width="80px">
                       <el-form-item class="login-form-item" label="用户名" prop="username">
@@ -87,8 +87,8 @@
     </el-main>
 
     <!-- 网站底部信息 -->
-    <el-footer> 🐱‍🏍Copyright © 2021-2023 青枫网络工作室 All Rights Reserved.</el-footer>
-    <!-- <el-footer> 🐱‍🏍Copyright © 2021-2023 QF All Rights Reserved.</el-footer> -->
+    <!-- <el-footer> 🐱‍🏍Copyright © 2021-2023 青枫网络工作室 All Rights Reserved.</el-footer> -->
+    <el-footer> 🐱‍🏍Copyright © 2021-2023 QF All Rights Reserved.</el-footer>
 
   </el-container>
 </template>
@@ -161,8 +161,8 @@
           if (valid) {
             login.submitFormLogin(this.$qs.stringify(this.loginForm))
               .then((res) => {
-                console.log(res);
-                const token = res.headers["authorization"];
+                console.log("登录数据",res);
+                const token = res.data.result.data;
                 this.$store.commit("setToken", token);
                 this.$router.push("/");
               })

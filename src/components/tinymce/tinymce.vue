@@ -1,13 +1,12 @@
 <template>
   <div class="tinymce-box">
-    <editor v-model="myValue" :init="init" :disabled="disabled" @onClick="onClick">
+    <editor v-model="contentValue" :init="init" :disabled="disabled" @onClick="onClick">
     </editor>
   </div>
 </template>
 
 <script>
   import tinymce from 'tinymce/tinymce'
-  
   import Editor from '@tinymce/tinymce-vue'
   import 'tinymce/themes/silver'
   // 编辑器插件plugins 更多插件参考：https://www.tiny.cloud/docs/plugins/
@@ -58,7 +57,7 @@
             success(img)
           }
         },
-        myValue: this.value
+        contentValue: this.value
       }
     },
     mounted() {
@@ -72,14 +71,14 @@
       },
       // 可以添加一些自己的自定义事件，如清空内容
       clear() {
-        this.myValue = ''
+        this.contentValue = ''
       }
     },
     watch: {
       value(newValue) {
-        this.myValue = newValue
+        this.contentValue = newValue
       },
-      myValue(newValue) {
+      contentValue(newValue) {
         this.$emit('input', newValue)
       }
     }
