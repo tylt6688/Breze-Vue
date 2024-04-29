@@ -5,7 +5,7 @@ import { countDownMessage } from '@/utils/countdown'
 import { Message } from 'element-ui'
 
 
-axios.defaults.baseURL = 'http://localhost:8090'
+axios.defaults.baseURL = process.env.VUE_APP_BASE_API
 
 const service = axios.create({
 	timeout: 5000,

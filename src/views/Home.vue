@@ -80,7 +80,7 @@
 <script>
   import SideMenu from "./inc/SideMenu"
   import Tabs from "./inc/Tabs"
-  import ScreenFull from "screenfull"
+  import screenfull from "screenfull"
   import login from "@/api/login/login"
   import user from "@/api/sys/user"
   import menu from "@/api/sys/menu"
@@ -125,7 +125,7 @@
         this.getUserInfo();
         this.getUserInfoFormLocal();
       }
-      this.screenIcon = ScreenFull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
+      this.screenIcon = screenfull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
     },
 
 
