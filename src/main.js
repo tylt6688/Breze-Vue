@@ -6,7 +6,7 @@ import store from './store'
 import Element from 'element-ui'
 import eIconPicker from 'e-icon-picker'
 
-import axios from '@/utils/http'
+import axios from '@/utils/request'
 import qs from 'qs'
 import moment from "moment"
 import Constant from '@/utils/const'

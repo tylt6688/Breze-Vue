@@ -1,4 +1,4 @@
-import request from "@/utils/http";
+import request from "@/utils/request";
 export default {
     // 更新登录提醒状态
     changeLoginWarn(params) {

@@ -11,11 +11,11 @@
             <i :class="icon" style="color: white; font-size: 24px"></i>
           </el-menu-item>
         </el-tooltip>
-
-        <router-link :to="this.dashboard.path">
-          <el-menu-item index="Index" @click="selectMenu({ name: this.dashboard.name, title: this.dashboard.title })">
+        <!-- TODO 此处应该从store中读出数据 -->
+        <router-link to="/dashboard">
+          <el-menu-item index="Index" >
             <i class="el-icon-s-home"></i>
-            <span slot="title">{{dashboard.title}}</span>
+            <span slot="title">仪表盘</span>
           </el-menu-item>
         </router-link>
 

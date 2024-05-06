@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from "@/store"
-import axios from "@/utils/http"
+import axios from "@/utils/request"
 
 import Login from '@/views/Login.vue'
 import Home from '@/views/Home.vue'
 import DashBoard from '@/views/framework/DashBoard.vue'
-
 
 Vue.use(VueRouter);
 
@@ -82,25 +81,18 @@ const router = new VueRouter({
   routes
 })
 
-
 // 配置全局路由导航守卫
 router.beforeEach((to, from, next) => {
   // 后端动态路由生成
   let hasRoute = store.state.menus.hasRoutes;
   let token = store.getters.getToken;
-  console.log("ttt", token,token===undefined);
+  console.log("token--->", token, token != undefined, token === undefined);
 
   // 如果当前是登录页并且token为空时就去登录页,不为空且正确时直接跳转主页,防止手动输入登录地址时不跳转情况
   if (token != undefined) {
-    if (to.path === '/login') {
-      next('/');
-      return;
-    }
-    // 验证token不为空并且hasRoute为空时去请求获取SideMenu菜单树
-    else if (!hasRoute) {
+    // 验证token不为空且hasRoute为空时去请求获取SideMenu菜单树
+    if (!hasRoute) {
       axios.get("/sys/menu/nav").then(res => {
-        // 传递给Home页面一个触发事件，让Home页面去更新加载用户信息
-        // bus.$emit('LoadUserInfo');
         // 拿到menuList
         store.commit("setMenuList", res.data.result.data.nav);
         // 拿到用户权限
@@ -123,17 +115,26 @@ router.beforeEach((to, from, next) => {
         router.addRoutes(newRoutes);
         // 对store中的路由状态标识进行变更
         store.commit("changeRouteState", true);
-
         // 都没问题的话路由地址请求哪里就去哪里
-        next({path: to.path});
+        next({
+          path: to.path
+        });
       })
-
     }
+
+    // if (to.path === '/login') {
+    //   next('/');
+    //   return;
+    // }
   }
   // 每个页面的浏览器标签名称显示
-  to.meta.title && (document.title = "清枫Breze—" + to.meta.title);
+  to.meta.title && (document.title = "Breze—" + to.meta.title);
   next();
 })
+
+
+
+
 
 
 // 导航转成路由
@@ -142,7 +143,7 @@ const menuToRoute = (menu) => {
     return null
   }
   // TODO 查看转成路由的menu
-  // console.log("查看转成路由的menu", menu);
+  console.log("查看转成路由的menu", menu);
   let route = {
     name: menu.name,
     path: menu.path,
@@ -151,7 +152,10 @@ const menuToRoute = (menu) => {
       title: menu.title
     }
   }
-  route.component = () => import('@/views/' + menu.component + '.vue')
+  // route.component = () => import(`@/views/${menu.component}.vue`)
+  
+    route.component = (resolve) => require([`@/views/${menu.component}.vue`], resolve)
+    
   return route
 }
 

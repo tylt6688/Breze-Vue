@@ -1,4 +1,4 @@
-import request from "@/utils/http";
+import request from "@/utils/request";
 
 export default {
     // 获取角色列表数据

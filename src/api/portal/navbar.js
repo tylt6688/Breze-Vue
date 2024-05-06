@@ -1,4 +1,4 @@
-import request from '@/utils/http'
+import request from '@/utils/request'
 
 export default {
     //分页查询

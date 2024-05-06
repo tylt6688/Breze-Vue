@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 let title = '仪表盘';
 let name = 'DashBoard';
+
 export default {
 	state: {
 		menuList: [],

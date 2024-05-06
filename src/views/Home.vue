@@ -125,6 +125,10 @@
         this.getUserInfo();
         this.getUserInfoFormLocal();
       }
+      else{
+        console.log('token不存在');
+        this.logout();
+      }
       this.screenIcon = screenfull.isFullscreen ? "el-icon-crop" : "el-icon-full-screen";
     },
 
@@ -139,15 +143,15 @@
       },
       // 全屏方法 Start
       fullScreen() {
-        if (!ScreenFull.isEnabled) {
+        if (!screenfull.isEnabled) {
           this.$message({
             message: "您的浏览器不支持全屏操作",
             type: "warning",
           });
           return false;
         }
-        ScreenFull.toggle();
-        this.screenIcon = ScreenFull.isFullscreen ? "el-icon-full-screen" : "el-icon-crop";
+        screenfull.toggle();
+        this.screenIcon = screenfull.isFullscreen ? "el-icon-full-screen" : "el-icon-crop";
       },
       // 全屏方法 End
 

@@ -13,6 +13,7 @@ const service = axios.create({
 		'Content-Type': 'application/json; charset=utf-8'
 	}
 })
+
 // 进行request请求数据拦截处理
 service.interceptors.request.use(config => {
 	let token = store.getters.getToken;
@@ -21,6 +22,7 @@ service.interceptors.request.use(config => {
 	config.headers['Authorization'] = 'Bearer ' + token;
 	return config
 })
+
 // 进行response返回数据拦截处理
 service.interceptors.response.use(
 	response => {
@@ -36,6 +38,7 @@ service.interceptors.response.use(
 		}
 		return Promise.reject(res.message);
 	},
+
 	// 异常情况判断
 	error => {
 		console.log('请求异常===>>>', error, '网络异常码===>>>', error.response);
@@ -62,7 +65,7 @@ service.interceptors.response.use(
 					})
 					break;
 				case 500:
-					// 需要进行更加细致的判断  FIXME 待进一步优化
+					// FIXME 不同情况需要进行更加细致的判断
 					if (error.response.data.errorCode === 700) {
 						Message.error(error.massage, {
 							showClose: false,

@@ -37,7 +37,7 @@
         let tabs = this.editableTabs;
         let activeName = this.editableTabsValue;
 
-        //拒绝首页tab删除
+        // 拒绝首页tab删除
         if (targetName === "Dashboard") {
           return;
         }
