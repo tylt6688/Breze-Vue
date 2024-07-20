@@ -124,8 +124,7 @@
       if (this.$store.getters.getToken) {
         this.getUserInfo();
         this.getUserInfoFormLocal();
-      }
-      else{
+      }else{
         console.log('token不存在');
         this.logout();
       }

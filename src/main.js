@@ -11,7 +11,6 @@ import qs from 'qs'
 import moment from "moment"
 import Constant from '@/utils/const'
 
-
 import '@/utils/dialog' // 可拖拽式弹窗
 
 import 'e-icon-picker/lib/symbol.js' // 基本彩色图标库
@@ -22,7 +21,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 控制台生产信息提示是否开启
 Vue.config.productionTip = false;
 
-//定义全局引用挂载
+// 定义全局引用挂载
 // Vue.prototype.$axios = axios; 
 Vue.prototype.$qs = qs;
 Vue.prototype.$moment = moment;
